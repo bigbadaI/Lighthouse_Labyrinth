@@ -22,9 +22,6 @@ export const config = {
 };
 
 const game = new Phaser.Game(config);
-// game.scale.pageAlignHorizontally = true;
-// game.scale.pageAlignVertically = true;
-// game.scale.refresh();
 
 ReactDOM.render(
   <App />,
