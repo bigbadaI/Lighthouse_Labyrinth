@@ -1,19 +1,45 @@
 import Phaser from "phaser";
 import NeoImg from "../assets/Neo.png";
+import caveTiles from "../assets/tiles/mainlev_build.png";
+import Map_Example from "../assets/tiles/map_test.json";
 const gameState = {};
 
-class playGame extends Phaser.Scene {
+export default class playGame extends Phaser.Scene {
   constructor() {
     super("PlayGame");
   }
   preload() {
-    this.load.crossOrigin = 'anonymous';
+    this.load.crossOrigin = "anonymous";
     this.load.image("Neo", NeoImg);
+    this.load.image("caveTiles", caveTiles);
+    this.load.tilemapTiledJSON("map_example", Map_Example);
   }
 
   create() {
-    gameState.Neo = this.physics.add.sprite(500,275, "Neo").setScale(0.2);
+    //Creates the background and wall layers for example map
+    const map = this.make.tilemap({ key: "map_example" });
+    const tileset = map.addTilesetImage("cave", "caveTiles");
+    map.createStaticLayer("Background_test", tileset);
+    const wallsLayer = map.createStaticLayer("Walls", tileset);
+    wallsLayer.setCollisionByProperty({ collides: true });
+    //Debug to show collision outlines in the tiles
+    const debugGraphics = this.add.graphics().setAlpha(0.7);
+    wallsLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+
+    gameState.Neo = this.physics.add.sprite(100, 50, "Neo").setScale(0.05);
+    //Code to reduce Neo hit box size
+    gameState.Neo.body.setSize(
+      gameState.Neo.width * 0.5,
+      gameState.Neo.height * 0.5
+    );
+
     gameState.cursors = this.input.keyboard.createCursorKeys();
+    /* Glowing has disappeared that the moment adding in the map
+
     gameState.graphics = this.add.graphics({
       x: (gameState.Neo.x - gameState.Neo.width / 2) - 242,
       y: (gameState.Neo.y - gameState.Neo.height / 2) -16
@@ -30,42 +56,31 @@ class playGame extends Phaser.Scene {
       repeat: -1,
       yoyo: true
     })
+    */
+
+    //Adds collision factors so far just new and wallsLayer
+    this.physics.add.collider(gameState.Neo, wallsLayer);
   }
 
   update() {
+    //Changed new to use velocity instead of changing location so that he hits walls
+    const speed = 100;
     if (gameState.cursors.left.isDown) {
-      gameState.Neo.x -= 5;
-      gameState.graphics.x -= 5;
-    }
-    if (gameState.cursors.right.isDown) {
-      gameState.Neo.x += 5;
-      gameState.graphics.x += 5;
-    }
-    if (gameState.cursors.up.isDown) {
-      gameState.Neo.y -= 5;
-      gameState.graphics.y -= 5;
-    }
-    if (gameState.cursors.down.isDown) {
-      gameState.Neo.y += 5;
-      gameState.graphics.y += 5;
+      gameState.Neo.setVelocity(-speed, 0);
+      // gameState.graphics.x -= 3;
+    } else if (gameState.cursors.right.isDown) {
+      gameState.Neo.setVelocity(speed, 0);
+      // gameState.graphics.x += 3;
+    } else if (gameState.cursors.up.isDown) {
+      gameState.Neo.setVelocity(0, -speed);
+      // gameState.graphics.y -= 3;
+    } else if (gameState.cursors.down.isDown) {
+      gameState.Neo.setVelocity(0, speed);
+      // gameState.graphics.y += 3;
+
+      //Else to stop movement when no longer pressing an arrow key
+    } else {
+      gameState.Neo.setVelocity(0, 0);
     }
   }
 }
-
-export default playGame;
-
-// if (gameState.cursors.left.isDown) {
-//   gameState.Neo.setVelocityX(-200);
-//   // gameState.graphics.setVelocityX(-100);
-// } else if (gameState.cursors.right.isDown) {
-//   gameState.Neo.setVelocityX(200);
-//   // gameState.graphics.setVelocityX(100);
-// } else if (gameState.cursors.up.isDown) {
-//   gameState.Neo.setVelocityY(-200);
-//   // gameState.graphics.setVelocityY(-100);
-// } else if (gameState.cursors.down.isDown) {
-//   gameState.Neo.setVelocityY(200);
-//   // gameState.graphics.setVelocityY(100);
-// } else {
-//   gameState.Neo.setVelocity(0);
-// }

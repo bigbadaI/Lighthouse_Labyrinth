@@ -9,16 +9,19 @@ import playGame from "./phaser/scene";
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
-  width: 800,
-  height: 600,
+  width: 400,
+  height: 250,
   physics: {
     default: 'arcade',
     arcade: {
       gravity: 0,
-      enableBody: true
+      debug: true
     }
   },
-  scene: playGame
+  scene: playGame,
+  scale: {
+    zoom: 2
+  }
 };
 
 const game = new Phaser.Game(config);
