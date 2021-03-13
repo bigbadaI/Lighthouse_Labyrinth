@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
 import playGame from "./phaser/scene";
-
+import NeoClass from "./phaser/characters/Neo";
 //console.log(App);
 
 export const config = {
@@ -18,13 +18,10 @@ export const config = {
       enableBody: true
     }
   },
-  scene: playGame
+  scene: playGame 
 };
 
 const game = new Phaser.Game(config);
-// game.scale.pageAlignHorizontally = true;
-// game.scale.pageAlignVertically = true;
-// game.scale.refresh();
 
 ReactDOM.render(
   <App />,
