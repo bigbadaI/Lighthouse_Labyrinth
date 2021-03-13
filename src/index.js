@@ -11,10 +11,20 @@ export const config = {
   parent: "phaser",
   width: 800,
   height: 600,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: 0,
+      enableBody: true
+    }
+  },
   scene: playGame
 };
 
 const game = new Phaser.Game(config);
+// game.scale.pageAlignHorizontally = true;
+// game.scale.pageAlignVertically = true;
+// game.scale.refresh();
 
 ReactDOM.render(
   <App />,
