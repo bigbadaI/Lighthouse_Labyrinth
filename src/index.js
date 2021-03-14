@@ -23,11 +23,7 @@ export const config = {
     }
   },
 
-<<<<<<< HEAD
   scene: [LVL1, playGame, scene2],
-=======
-  scene: [playGame, scene2, Example],
->>>>>>> master
   scale: {
     zoom: 1.5
   }
