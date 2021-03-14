@@ -7,6 +7,8 @@ const gameState = {};
 export default class playGame extends Phaser.Scene {
   constructor() {
     super({ key: 'playGame' });
+    this.light = null
+    this.renderTexture = null
   }
   
   preload() {
@@ -20,9 +22,16 @@ export default class playGame extends Phaser.Scene {
     //Creates the background and wall layers for example map
     const map = this.make.tilemap({ key: "map_example" });
     const tileset = map.addTilesetImage("cave", "caveTiles");
-    map.createStaticLayer("Background_test", tileset);
+    map.createStaticLayer("Background_test", tileset);//bglayer
     const wallsLayer = map.createStaticLayer("Walls", tileset);
-    wallsLayer.setCollisionByProperty({ collides: true });
+    
+    // //for lighting - can't get walls working, stops neo loading?
+    this.cover = this.physics.add.sprite(200, 50, "Neo").setScale(.1);
+    this.cover.setTint(0x4bf542)
+    // const wallsLayerCover = map.createStaticLayer("Walls", tileset);
+    // wallsLayerCover.setTint(0x4bf542)
+
+    wallsLayer.setCollisionByProperty({ collides: true });//why does this set collision and not the collider below?
     //Debug to show collision outlines in the tiles
     const debugGraphics = this.add.graphics().setAlpha(0.7);
     wallsLayer.renderDebug(debugGraphics, {
@@ -32,6 +41,7 @@ export default class playGame extends Phaser.Scene {
     });
 
     gameState.Neo = this.physics.add.sprite(100, 50, "Neo").setScale(0.05);
+    
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
@@ -59,8 +69,50 @@ export default class playGame extends Phaser.Scene {
     })
     */
 
+    //for lighting
+    const width = this.cover.width
+		const height = this.cover.height
+    const rt = this.make.renderTexture({
+			width,
+			height,
+			add: false
+		})
+
+		const maskImage = this.make.image({
+			x: 200,
+			Y: 50,
+			key: rt.texture.key,
+			add: false
+		})
+    this.cover.mask = new Phaser.Display.Masks.BitmapMask(this, maskImage)
+		this.cover.mask.invertAlpha = true
+
+		// reveal.mask = new Phaser.Display.Masks.BitmapMask(this, maskImage)
+
+		//this defines the size/shape of light circle, the 1 at the end represents intensity at max, 0 min
+    this.light = this.add.circle(0, 0, 30, 0x000000, 1)
+		this.light.visible = false
+
+
+		// //this assigns the pointer handler to the pointer moving, we would do same but for neo
+		this.input.on(Phaser.Input.Events.POINTER_MOVE, this.handlePointerMove, this)
+
+		this.renderTexture = rt
+
+    //end of for lighting
+
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
+  }
+
+  //follows pointer around, can change to follow neo
+  handlePointerMove(pointer)
+  {
+    const x = pointer.x - this.cover.x + this.cover.width * 0.5
+    const y = pointer.y - this.cover.y + this.cover.height * 0.5
+
+    this.renderTexture.clear()
+    this.renderTexture.draw(this.light, x, y)
   }
 
   update() {

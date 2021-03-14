@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
 import playGame from "./phaser/scene";
 import scene2 from "./phaser/scene2";
+import RevealMaskScene from "./phaser/revealScene"
 
 //console.log(App);
 
