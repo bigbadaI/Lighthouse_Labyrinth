@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
 import playGame from "./phaser/scene";
 import scene2 from "./phaser/scene2";
+import LVL1 from "./phaser/scene_lvl1"
 
 import Example from "./phaser/flickeringSpotlightEx"
 
@@ -12,8 +13,8 @@ import Example from "./phaser/flickeringSpotlightEx"
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
-  width: 400,
-  height: 250,
+  width: 600,
+  height: 450,
   physics: {
     default: 'arcade',
     arcade: {
@@ -22,9 +23,9 @@ export const config = {
     }
   },
 
-  scene: [playGame, scene2, Example],
+  scene: [LVL1, playGame, scene2],
   scale: {
-    zoom: 2
+    zoom: 1.5
   }
 };
 
