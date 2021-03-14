@@ -6,8 +6,9 @@ const gameState = {};
 
 export default class playGame extends Phaser.Scene {
   constructor() {
-    super("PlayGame");
+    super({ key: 'playGame' });
   }
+  
   preload() {
     this.load.crossOrigin = "anonymous";
     this.load.image("Neo", NeoImg);
@@ -66,10 +67,15 @@ export default class playGame extends Phaser.Scene {
     //Changed new to use velocity instead of changing location so that he hits walls
     const speed = 100;
     if (gameState.cursors.left.isDown) {
+
       gameState.Neo.setVelocity(-speed, 0);
       // gameState.graphics.x -= 3;
     } else if (gameState.cursors.right.isDown) {
       gameState.Neo.setVelocity(speed, 0);
+      if (gameState.Neo.x > 800) {
+        this.scene.stop('playGame');
+        this.scene.start('scene2');
+      }
       // gameState.graphics.x += 3;
     } else if (gameState.cursors.up.isDown) {
       gameState.Neo.setVelocity(0, -speed);
@@ -81,6 +87,8 @@ export default class playGame extends Phaser.Scene {
       //Else to stop movement when no longer pressing an arrow key
     } else {
       gameState.Neo.setVelocity(0, 0);
+
     }
   }
+
 }

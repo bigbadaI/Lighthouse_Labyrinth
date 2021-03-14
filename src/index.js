@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
 import playGame from "./phaser/scene";
+import scene2 from "./phaser/scene2";
 
 //console.log(App);
 
@@ -18,10 +19,14 @@ export const config = {
       debug: true
     }
   },
-  scene: playGame,
+
+  scene: [playGame, scene2],
   scale: {
     zoom: 2
   }
+
+  
+
 };
 
 const game = new Phaser.Game(config);
