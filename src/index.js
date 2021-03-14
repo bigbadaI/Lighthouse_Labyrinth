@@ -10,16 +10,23 @@ import scene2 from "./phaser/scene2";
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
-  width: 800,
-  height: 600,
+  width: 400,
+  height: 250,
   physics: {
     default: 'arcade',
     arcade: {
       gravity: 0,
-      enableBody: true
+      debug: true
     }
   },
-  scene: [playGame, scene2]
+
+  scene: [playGame, scene2],
+  scale: {
+    zoom: 2
+  }
+
+  
+
 };
 
 const game = new Phaser.Game(config);
