@@ -81,27 +81,25 @@ export default class playGame extends Phaser.Scene {
     //lighting attempt with method 3
 
     //const platform = this.add.sprite(200, 50,'platform')
-    const spotlight = this.make.sprite({
+    gameState.spotlight = this.make.sprite({
       x: 100,
       y: 50,
       key: 'mask',
       add: false
     });
-    bg.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+    bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
-    this.input.on('Neomove', function () {
-
-        spotlight.x = gameState.Neo.x;
-        spotlight.y = gameState.Neo.y;
-        
-
-    });
+    // this.input.on('Neomove', function () {
+    //     spotlight.x = gameState.Neo.x;
+    //     spotlight.y = gameState.Neo.y;
+      
+    // });
 
     
 
     this.tweens.add({
-        targets: spotlight,
+        targets: gameState.spotlight,
         alpha: 0,
         duration: 2000,
         ease: 'Sine.easeInOut',
@@ -195,15 +193,11 @@ export default class playGame extends Phaser.Scene {
     if (gameState.cursors.left.isDown) {
 
       gameState.Neo.setVelocity(-speed, 0);
-      //spotlight.setVelocity(-speed, 0);
-      //spotlight.x -= 3
-      //neoMove()
+      NeoMoves();
       // gameState.graphics.x -= 3;
     } else if (gameState.cursors.right.isDown) {
       gameState.Neo.setVelocity(speed, 0);
-      //spotlight.setVelocity(speed, 0);
-      //spotlight.x += 3
-      //neoMove()
+      NeoMoves();
       if (gameState.Neo.x > 800) {
         this.scene.stop('playGame');
         this.scene.start('scene2');
@@ -211,33 +205,24 @@ export default class playGame extends Phaser.Scene {
       // gameState.graphics.x += 3;
     } else if (gameState.cursors.up.isDown) {
       gameState.Neo.setVelocity(0, -speed);
-      //spotlight.setVelocity(0, -speed);
-      //spotlight.y -= 3
-      //neoMove()
+      NeoMoves();
       // gameState.graphics.y -= 3;
     } else if (gameState.cursors.down.isDown) {
       gameState.Neo.setVelocity(0, speed);
-      //spotlight.setVelocity(0, speed);
-      //spotlight.y += 3
-      //neoMove()
+      NeoMoves();
       // gameState.graphics.y += 3;
 
       //Else to stop movement when no longer pressing an arrow key
     } else {
       gameState.Neo.setVelocity(0, 0);
-      //spotlight.setVelocity(0, 0);
-
     }
-
-    // const neoMove = function() {
-    //   console.log("am i here?")
-    //   setInterval(() => {
-    //     spotlight.x = gameState.Neo.x;
-    //     spotlight.y = gameState.Neo.y;
-    //   }, 100)
-    // }
-    // neoMove()
     
+    function NeoMoves() {
+        console.log('spotlight interval runs');
+        gameState.spotlight.x = gameState.Neo.x;
+        gameState.spotlight.y = gameState.Neo.y;
+      
+    }
   }
 
 }
