@@ -26,9 +26,6 @@ export const config = {
   scale: {
     zoom: 2
   }
-
-  
-
 };
 
 const game = new Phaser.Game(config);
