@@ -108,11 +108,20 @@ export default class playGame extends Phaser.Scene {
     //Changed new to use velocity instead of changing location so that he hits walls
     const speed = 50;
     if (gameState.cursors.left.isDown) {
-
+      if (gameState.cursors.up.isDown) {
+        gameState.Neo.setVelocity(-speed, -speed);
+      } else if (gameState.cursors.down.isDown) {
+        gameState.Neo.setVelocity(-speed, speed);
+      }
       gameState.Neo.setVelocityX(-speed);
       NeoMoves();
       // gameState.graphics.x -= 3;
     } else if (gameState.cursors.right.isDown) {
+      if (gameState.cursors.up.isDown) {
+        gameState.Neo.setVelocity(speed, -speed);
+      } else if (gameState.cursors.down.isDown) {
+        gameState.Neo.setVelocity(speed, speed);
+      }
       gameState.Neo.setVelocityX(speed);
       NeoMoves();
       if (gameState.Neo.x > 800) {
@@ -121,15 +130,12 @@ export default class playGame extends Phaser.Scene {
       }
       // gameState.graphics.x += 3;
     } else if (gameState.cursors.up.isDown) {
-
       gameState.Neo.setVelocityY(-speed);
       NeoMoves();
       // gameState.graphics.y -= 3;
-   
     } else if (gameState.cursors.down.isDown) {
       gameState.Neo.setVelocityY(speed);
       NeoMoves();
-
       // gameState.graphics.y += 3;
     } else {
       gameState.Neo.setVelocity(0,0);
