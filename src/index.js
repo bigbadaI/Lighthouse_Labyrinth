@@ -4,7 +4,8 @@ import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
 import playGame from "./phaser/scene";
 import scene2 from "./phaser/scene2";
-import RevealMaskScene from "./phaser/revealScene"
+
+import Example from "./phaser/flickeringSpotlightEx"
 
 //console.log(App);
 
@@ -17,11 +18,11 @@ export const config = {
     default: 'arcade',
     arcade: {
       gravity: 0,
-      debug: true
+      debug: false
     }
   },
 
-  scene: [playGame, scene2],
+  scene: [playGame, scene2, Example],
   scale: {
     zoom: 2
   }
