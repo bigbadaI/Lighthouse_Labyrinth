@@ -1,9 +1,13 @@
-function preload() {
-  this.load.crossOrigin = 'anonymous';
-  this.load.image("Neo", NeoImg);
+// import { config } from "../../index";
+const gameState = {};
+
+function preloadNeo(s){
+  // console.log(config.scene[s]);
+  // config.scene[s].load.crossOrigin = 'anonymous';
+  // config.scene[s].load.image("Neo", NeoImg);
 }
 
-function create() {
+function createNeo(){
   gameState.Neo = this.physics.add.sprite(10,10, "Neo").setScale(0.2);
   gameState.cursors = this.input.keyboard.createCursorKeys();
   gameState.graphics = this.add.graphics({
@@ -24,7 +28,7 @@ function create() {
   })
 }
 
-function update() {
+function updateNeo() {Neo
   if (gameState.cursors.left.isDown) {
     gameState.Neo.x -= 5;
     gameState.graphics.x -= 5;
@@ -48,8 +52,4 @@ function update() {
   }
 }
 
-module.exports = {
-  preload,
-  create,
-  update
-}
+export default { preloadNeo,createNeo,updateNeo };
