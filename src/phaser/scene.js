@@ -33,12 +33,6 @@ export default class playGame extends Phaser.Scene {
     const bg = map.createStaticLayer("Background_test", tileset);//bglayer
     const wallsLayer = map.createStaticLayer("Walls", tileset);
     
-    // //for lighting - can't get walls working, stops neo loading?
-    // this.cover = this.physics.add.sprite(200, 50, "Neo").setScale(.1);
-    // this.cover.setTint(0x4bf542)
-    // const wallsLayerCover = map.createStaticLayer("Walls", tileset);
-    // wallsLayerCover.setTint(0x4bf542)
-
     wallsLayer.setCollisionByProperty({ collides: true });//why does this set collision and not the collider below?
     //Debug to show collision outlines in the tiles
     const debugGraphics = this.add.graphics().setAlpha(0.7);
@@ -90,11 +84,7 @@ export default class playGame extends Phaser.Scene {
     bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
-    // this.input.on('Neomove', function () {
-    //     spotlight.x = gameState.Neo.x;
-    //     spotlight.y = gameState.Neo.y;
-      
-    // });
+    
 
     
 
@@ -108,84 +98,11 @@ export default class playGame extends Phaser.Scene {
     });
 
 
-    // //for lighting attempt 2 using plugin
-    // this.lamps = [];
-
-    // const lamp = this.illuminated.createLamp(
-    // 150, 
-    // 170, {
-    //     distance: 200,
-    //     diffuse: 0.8,
-    //     color: "rgba(255, 255, 255, 0.9)", // 0.2
-    //     radius: 0,
-    //     samples: 1,
-    //     angle: 0,
-    //     roughness: 0
-    // });
-
-
-    // this.lamps.push(lamp);
-
-    // const mask = this.illuminated.createDarkMask(this.lamps, {
-    //     width: 800,
-    //     height: 600,
-    // }, "rgba(0, 0, 0, 0.2)");
-
-
-    // const recObject = this.illuminated.createRectangleObject(0, 0, 16, 24);
-
-    // for (let i = 0; i < this.lamps.length; i ++) {
-
-    //   this.lamps[i].createLighting([recObject]);
-    // }
-
-
-
-    // //for lighting
-    // const width = this.cover.width
-		// const height = this.cover.height
-    // const rt = this.make.renderTexture({
-		// 	width,
-		// 	height,
-		// 	add: false
-		// })
-
-		// const maskImage = this.make.image({
-		// 	x: 200,
-		// 	Y: 50,
-		// 	key: rt.texture.key,
-		// 	add: false
-		// })
-    // this.cover.mask = new Phaser.Display.Masks.BitmapMask(this, maskImage)
-		// this.cover.mask.invertAlpha = true
-
-		// // reveal.mask = new Phaser.Display.Masks.BitmapMask(this, maskImage)
-
-		// //this defines the size/shape of light circle, the 1 at the end represents intensity at max, 0 min
-    // this.light = this.add.circle(0, 0, 30, 0x000000, 1)
-		// this.light.visible = false
-
-
-		// // //this assigns the pointer handler to the pointer moving, we would do same but for neo
-		// this.input.on(Phaser.Input.Events.POINTER_MOVE, this.handlePointerMove, this)
-
-		// this.renderTexture = rt
-
-    // //end of for lighting
 
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
   }
 
-  // //follows pointer around, can change to follow neo
-  // handlePointerMove(pointer)
-  // {
-  //   const x = pointer.x - this.cover.x + this.cover.width * 0.5
-  //   const y = pointer.y - this.cover.y + this.cover.height * 0.5
-
-  //   this.renderTexture.clear()
-  //   this.renderTexture.draw(this.light, x, y)
-  // }
 
   update() {
     //Changed new to use velocity instead of changing location so that he hits walls
