@@ -15,6 +15,7 @@ export default class Preloader extends Phaser.Scene {
   }
   
   preload() {
+    
     this.load.crossOrigin = "anonymous";
     this.load.image("Neo", NeoImg);
     this.load.image("caveTiles", caveTiles);
@@ -27,7 +28,7 @@ export default class Preloader extends Phaser.Scene {
     // ])
     this.load.tilemapTiledJSON("LVL2", LVL2)
     this.load.image("BG1", BG1)
-    this.load.image("BG2")
+    //this.load.image("BG2")
   }
 
   create() {

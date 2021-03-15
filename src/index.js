@@ -9,7 +9,7 @@ import LVL2 from "./phaser/scene_lvl2"
 import Preloader from "./phaser/helper/preloader";
 import Example from "./phaser/flickeringSpotlightEx";
 
-
+console.log("does this show up?")
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
