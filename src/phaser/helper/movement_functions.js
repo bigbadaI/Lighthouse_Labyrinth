@@ -6,7 +6,7 @@ const NeoMovment = function(gameState) {
   const MOVE = function(x, y) {
     gameState.Neo.setVelocity(x, y);
   };
-  const speed = 125;
+  const speed = 300;
   if (LEFT) {
     if (DOWN) MOVE(-speed, speed);
     else if (UP) MOVE(-speed, -speed);
