@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import NeoImg from "../assets/Neo.png";
-import caveTiles from "../assets/tiles/mainlev_build.png";
-import LVL1 from "../assets/tiles/lvl1.json"
+import { NeoMovment } from "./helper/movement_functions";
+import { parallaxBackground } from "./helper/backgrounds";
+
 const gameState = {};
-import BG1 from "../assets/backgrounds/background3.png"
+
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -11,12 +11,6 @@ export default class Level1 extends Phaser.Scene {
   }
   
   preload() {
-    this.load.crossOrigin = "anonymous";
-    this.load.image("Neo", NeoImg);
-    this.load.image("caveTiles", caveTiles);
-    this.load.tilemapTiledJSON("LVL1", LVL1);
-    this.load.image("BG1", BG1)
-    this.load.image("BG2")
   }
 
   create() {
@@ -65,27 +59,6 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update() {
-    //Changed new to use velocity instead of changing location so that he hits walls
-    const speed = 150;
-    if (gameState.cursors.left.isDown) {
-
-      gameState.Neo.setVelocity(-speed, 0);
-      // gameState.graphics.x -= 3;
-    } else if (gameState.cursors.right.isDown) {
-      gameState.Neo.setVelocity(speed, 0);
-      // gameState.graphics.x += 3;
-    } else if (gameState.cursors.up.isDown) {
-      gameState.Neo.setVelocity(0, -speed);
-      // gameState.graphics.y -= 3;
-    } else if (gameState.cursors.down.isDown) {
-      gameState.Neo.setVelocity(0, speed);
-      // gameState.graphics.y += 3;
-
-      //Else to stop movement when no longer pressing an arrow key
-    } else {
-      gameState.Neo.setVelocity(0, 0);
-
-    }
+     NeoMovment(gameState)
   }
-
 }
