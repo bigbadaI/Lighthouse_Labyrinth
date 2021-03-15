@@ -23,10 +23,10 @@ export default class Level1 extends Phaser.Scene {
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
-    this.add.image(0, height + 75, 'BG1')
+    this.add.image(0, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    this.add.image(width, height + 75, 'BG1')
+    this.add.image(width, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
     this.add.image(0, height + height, 'BG1')
