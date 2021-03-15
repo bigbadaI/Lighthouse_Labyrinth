@@ -4,11 +4,12 @@ const gameState = {};
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
-    super({ key: 'Level' });
+    super({ key: 'Level1' });
   }
 
   // 
   create() {
+    console.log("does this show up either?")
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -28,7 +29,7 @@ export default class Level1 extends Phaser.Scene {
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
     const tileset = map.addTilesetImage("lvl1_cave", "caveTiles");
-    map.createLayer("Background_Walls(non-colide)", tileset);
+    const bg = map.createLayer("Background_Walls(non-colide)", tileset);
     const wallsLayer = map.createLayer("Walls", tileset);
     wallsLayer.setCollisionByProperty({ collides: true });
 
