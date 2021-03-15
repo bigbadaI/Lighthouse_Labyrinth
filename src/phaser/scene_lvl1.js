@@ -1,11 +1,21 @@
 import Phaser from "phaser";
+<<<<<<< HEAD
 import { NeoMovment, createNeo } from "./helper/movement_functions";
+=======
+import { NeoMovment } from "./helper/movement_functions";
+<<<<<<< HEAD
+=======
+import { parallaxBackground } from "./helper/backgrounds";
+
+>>>>>>> emitter
+>>>>>>> master
 const gameState = {};
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super({ key: 'Level1' });
   }
+    
 
   // 
   create() {
@@ -41,8 +51,11 @@ export default class Level1 extends Phaser.Scene {
       gameState.Neo.width * 0.5,
       gameState.Neo.height * 0.5
     );
+<<<<<<< HEAD
 
     //camera bound to Neo and set ranges for best viewing
+=======
+>>>>>>> emitter
     this.cameras.main.setBounds(0, 0, 3200, 1400)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
@@ -53,6 +66,7 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, wallsLayer);
 
     //lighting
+    //this creates a spotlight
     gameState.spotlight = this.make.sprite({
       x: 300,
       y: 250,
@@ -60,8 +74,12 @@ export default class Level1 extends Phaser.Scene {
       add: false,
       scale: 2
     });
+
+    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
     bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+
+    //this animates the gameState.spotlight to flicker
     this.tweens.add({
         targets: gameState.spotlight,
         alpha: 0,
@@ -70,23 +88,27 @@ export default class Level1 extends Phaser.Scene {
         loop: -1,
         yoyo: true
     });
-    //still need to figure out:
-    //stop looping the particle...
-    //generate multiple particles, or one/two that get reused
-    //have particles start/end follow map, or go whole length of map
-      //figured out x/y starting positions, can randomize, but not follow camera yet
+    
 
     //energy emitter
+      //still need to figure out:
+        //stop looping the particle...
+        //generate multiple particles, or one/two that get reused
+        //have particles start/end follow map, or go whole length of map
+          //figured out x/y starting positions, can randomize, but not follow camera yet
     const curveArr = [ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]
     const curveArr2 = [ 100, 350, 214, 296, 324, 392, 462, 307, 572, 391, 714, 314, 418, 515, 420, 608, 246, 635, 462, 307, 572, 391, 714, 314 ]
-    const curve = new Phaser.Curves.Spline(curveArr2);
+    const curve = new Phaser.Curves.Spline(curveArr);
     //const mappedCurve = curveArr.map(x => x * Math.random())
 
     //const particleSpeed = Math.floor(Math.random() * 500) + 270
     const particles = this.add.particles('energyBall');
 
+    //I want to make 3 different energy functions, for 3 different point values
+    //then I can loop over the function to create them? or try the method below this...
+
     const createEnergy = particles.createEmitter({
-      frame: { cycle: true },
+      frame: { cycle: false },
       scale: { start: 0.04, end: 0 },
       blendMode: 'ADD',
       emitZone: { type: 'edge', source: curve, quantity: 275, yoyo: false },
@@ -120,7 +142,11 @@ export default class Level1 extends Phaser.Scene {
   
 
   update() {
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+>>>>>>> master
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {
@@ -138,4 +164,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   }
+=======
+    NeoMovment(gameState)
+  }
+>>>>>>> emitter
 }
