@@ -5,6 +5,8 @@ const NeoMovment = function(gameState) {
   const DOWN = gameState.cursors.down.isDown;
   const MOVE = function(x, y) {
     gameState.Neo.setVelocity(x, y);
+    gameState.spotlight.x = gameState.Neo.x;
+    gameState.spotlight.y = gameState.Neo.y;
   };
   const speed = 125;
   if (LEFT) {
