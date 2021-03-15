@@ -1,5 +1,9 @@
 import Phaser from "phaser";
 import NeoImg from "../assets/Neo.png";
+import pause from "../assets/pause_button.png"
+import infrared from "../assets/colourSelector/NeoInfrared.png";
+import ultraviolet from "../assets/colourSelector/NeoUltraviolet.png";
+import neoVision from "../assets/colourSelector/NeoVision.png";
 import caveTiles from "../assets/tiles/mainlev_build.png";
 import Map_Example from "../assets/tiles/map_test.json";
 import platform from "../assets/platform.png"
@@ -19,6 +23,10 @@ export default class playGame extends Phaser.Scene {
     this.load.tilemapTiledJSON("map_example", Map_Example);
     this.load.image("platform", platform)
     this.load.image('mask', 'src/assets/mask1.png');
+    this.load.image('ultraviolet', ultraviolet);
+    this.load.image('infrared', infrared);
+    this.load.image('neoVision', neoVision);
+    this.load.image('pause', pause);
   //   this.load.scenePlugin({
   //     key: "IlluminatedJS",
   //     url: "path/to/illuminated.p3.js",
@@ -53,6 +61,10 @@ export default class playGame extends Phaser.Scene {
     );
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
+    gameState.shiftAvailable = true;
+    gameState.currentState = 0;
+    gameState.paused = false;
+    
     /* Glowing has disappeared that the moment adding in the map
 
     gameState.graphics = this.add.graphics({
@@ -84,10 +96,6 @@ export default class playGame extends Phaser.Scene {
     bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
-    
-
-    
-
     this.tweens.add({
         targets: gameState.spotlight,
         alpha: 0,
@@ -96,18 +104,41 @@ export default class playGame extends Phaser.Scene {
         loop: -1,
         yoyo: true
     });
-
-
-
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
   }
 
-
   update() {
+    if(Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
+      gameState.paused = !gameState.paused;
+    } 
+    if(gameState.paused) return;
+
+    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
+      if (!gameState.paused) {
+        //add the pause animation here
+        const pause = this.add.image(200, 125, "pause");
+        this.scene.pause();
+        gameState.paused = true;
+        console.log("paused");
+      } else {
+        //remove pause image or animation
+        pause.destroy();
+        this.scene.resume();
+        gameState.paused = false;
+        console.log("unpaused");
+       }
+    }
+
     //Changed new to use velocity instead of changing location so that he hits walls
     const speed = 50;
+    function removeShift () {
+      if (gameState.shiftState) {
+        gameState.shiftState.destroy();
+      }
+    } 
     if (gameState.cursors.left.isDown) {
+      removeShift();
       if (gameState.cursors.up.isDown) {
         gameState.Neo.setVelocity(-speed, -speed);
       } else if (gameState.cursors.down.isDown) {
@@ -117,6 +148,7 @@ export default class playGame extends Phaser.Scene {
       NeoMoves();
       // gameState.graphics.x -= 3;
     } else if (gameState.cursors.right.isDown) {
+      removeShift();
       if (gameState.cursors.up.isDown) {
         gameState.Neo.setVelocity(speed, -speed);
       } else if (gameState.cursors.down.isDown) {
@@ -130,22 +162,35 @@ export default class playGame extends Phaser.Scene {
       }
       // gameState.graphics.x += 3;
     } else if (gameState.cursors.up.isDown) {
+      removeShift();
       gameState.Neo.setVelocityY(-speed);
       NeoMoves();
       // gameState.graphics.y -= 3;
     } else if (gameState.cursors.down.isDown) {
+      removeShift();
       gameState.Neo.setVelocityY(speed);
       NeoMoves();
       // gameState.graphics.y += 3;
     } else {
       gameState.Neo.setVelocity(0,0);
     }
-    
+
+    if (gameState.shiftAvailable) {
+      if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
+        const shiftStates = ["ultraviolet", "infrared", "neoVision"];
+        if (gameState.shiftState) {
+          removeShift();
+        }
+        gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(0.2);
+        gameState.currentState === 2 ? gameState.currentState = 0 : gameState.currentState++;
+      }
+    }
+
+  
     function NeoMoves() {
         console.log('spotlight interval runs');
         gameState.spotlight.x = gameState.Neo.x;
         gameState.spotlight.y = gameState.Neo.y;
-      
     }
 
   }
