@@ -108,28 +108,35 @@ export default class playGame extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, wallsLayer);
   }
 
-  update() {
-    if(Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-      gameState.paused = !gameState.paused;
-    } 
-    if(gameState.paused) return;
+  shake() {
+    console.log("shake");
+    this.cameras.main.shake(0.05, 500);
+    // this.cameras.main.shake.isRunning
+  }
 
-    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-      if (!gameState.paused) {
-        //add the pause animation here
-        const pause = this.add.image(200, 125, "pause");
-        this.scene.pause();
-        gameState.paused = true;
-        console.log("paused");
-      } else {
-        //remove pause image or animation
-        pause.destroy();
+  update() {
+    if(Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) gameState.paused = !gameState.paused;
+    if(gameState.paused) return;
+    
+    if(Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
+      console.log(gameState.paused); 
+      if (gameState.paused) {
+        // gameState.p.destroy();
         this.scene.resume();
         gameState.paused = false;
         console.log("unpaused");
+      } else {
+        //add the pause animation here
+        console.log("paused");
+        gameState.paused = true;
+        console.log(gameState.paused);
+        const p = this.add.image(200, 125, "pause");
+        this.scene.pause();
        }
-    }
+       
+    } 
 
+    
     //Changed new to use velocity instead of changing location so that he hits walls
     const speed = 50;
     function removeShift () {
@@ -177,13 +184,18 @@ export default class playGame extends Phaser.Scene {
 
     if (gameState.shiftAvailable) {
       if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
-        const shiftStates = ["ultraviolet", "infrared", "neoVision"];
+        const shiftStates = ["ultraviolet", "neoVision", "infrared"];
         if (gameState.shiftState) {
           removeShift();
         }
-        gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(0.2);
-        //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet mask
-        gameState.currentState === 2 ? gameState.currentState = 0 : gameState.currentState++;
+        gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
+        //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
+        if (gameState.currentState === 2) {
+          this.shake();
+          gameState.currentState = 0;
+        } else {
+          gameState.currentState++;
+        }
       }
     }
 
