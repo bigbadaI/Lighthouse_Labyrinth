@@ -1,30 +1,11 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 const gameState = {};
-<<<<<<< HEAD
-import BG1 from "../assets/backgrounds/background3.png"
-import { config } from "..";
-=======
->>>>>>> cf2dbe48f250463abc2ee4bfbda402323918a92a
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super({ key: 'Level' });
   }
-<<<<<<< HEAD
-  
-  preload() {
-    this.load.crossOrigin = "anonymous";
-    this.load.image("Neo", NeoImg);
-    this.load.image("energyBall", NeoImg);
-    this.load.image("caveTiles", caveTiles);
-    this.load.tilemapTiledJSON("LVL1", LVL1);
-    this.load.image("BG1", BG1)
-    this.load.image("BG2")
-    this.load.image('mask', 'src/assets/mask1.png');
-  }
-=======
->>>>>>> cf2dbe48f250463abc2ee4bfbda402323918a92a
 
   // 
   create() {
@@ -47,13 +28,8 @@ export default class Level1 extends Phaser.Scene {
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
     const tileset = map.addTilesetImage("lvl1_cave", "caveTiles");
-<<<<<<< HEAD
-    const bg = map.createStaticLayer("Background_Walls(non-colide)", tileset);
-    const wallsLayer = map.createStaticLayer("Walls", tileset);
-=======
     map.createLayer("Background_Walls(non-colide)", tileset);
     const wallsLayer = map.createLayer("Walls", tileset);
->>>>>>> cf2dbe48f250463abc2ee4bfbda402323918a92a
     wallsLayer.setCollisionByProperty({ collides: true });
 
     //Renders main character
@@ -141,37 +117,11 @@ export default class Level1 extends Phaser.Scene {
   
 
   update() {
-<<<<<<< HEAD
-    //Changed new to use velocity instead of changing location so that he hits walls
-    const speed = 150;
-    if (gameState.cursors.left.isDown) {
-      NeoMoves();
-      gameState.Neo.setVelocity(-speed, 0);
-      // gameState.graphics.x -= 3;
-    } else if (gameState.cursors.right.isDown) {
-      gameState.Neo.setVelocity(speed, 0);
-      NeoMoves();
-      // gameState.graphics.x += 3;
-    } else if (gameState.cursors.up.isDown) {
-      gameState.Neo.setVelocity(0, -speed);
-      NeoMoves();
-      // gameState.graphics.y -= 3;
-    } else if (gameState.cursors.down.isDown) {
-      gameState.Neo.setVelocity(0, speed);
-      NeoMoves();
-      // gameState.graphics.y += 3;
-
-      //Else to stop movement when no longer pressing an arrow key
-    } else {
-      gameState.Neo.setVelocity(0, 0);
-
-=======
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {
       this.scene.stop('Level1');
       this.scene.start('Level2');
->>>>>>> cf2dbe48f250463abc2ee4bfbda402323918a92a
     }
 
 
@@ -184,9 +134,4 @@ export default class Level1 extends Phaser.Scene {
   }
 
   }
-<<<<<<< HEAD
-  
-
-=======
->>>>>>> cf2dbe48f250463abc2ee4bfbda402323918a92a
 }
