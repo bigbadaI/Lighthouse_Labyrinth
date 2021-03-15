@@ -62,6 +62,7 @@ export default class playGame extends Phaser.Scene {
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
     gameState.shiftAvailable = true;
+    gameState.shakeAvailable = false;
     gameState.currentState = 0;
     gameState.paused = false;
     
@@ -189,10 +190,12 @@ export default class playGame extends Phaser.Scene {
           removeShift();
         }
         gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
+        gameState.shake ? this.shake() : null;
+        gameState.shake = false;
         //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
         if (gameState.currentState === 2) {
-          this.shake();
           gameState.currentState = 0;
+          gameState.shake = true;
         } else {
           gameState.currentState++;
         }
