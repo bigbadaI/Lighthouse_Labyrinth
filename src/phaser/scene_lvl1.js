@@ -9,12 +9,8 @@ export default class Level1 extends Phaser.Scene {
 
   // 
   create() {
-<<<<<<< HEAD
     // music = this.sound.add('caveMusic', {loop: true});
     // music.play();
-=======
-    console.log("does this show up either?")
->>>>>>> master
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -55,10 +51,6 @@ export default class Level1 extends Phaser.Scene {
 
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
-<<<<<<< HEAD
-      
-    
-=======
 
     //lighting
     gameState.spotlight = this.make.sprite({
@@ -123,7 +115,6 @@ export default class Level1 extends Phaser.Scene {
     // }
   
     //this.createEnergy();
->>>>>>> master
   }
 
   
