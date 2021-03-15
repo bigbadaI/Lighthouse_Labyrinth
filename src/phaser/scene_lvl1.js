@@ -14,6 +14,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
+    // music = this.sound.add('caveMusic', {loop: true});
+    // music.play();
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
