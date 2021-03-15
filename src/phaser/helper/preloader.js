@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import NeoImg from "../../assets/Neo.png";
+import mask from "../../assets/mask1.png"
 import caveTiles from "../../assets/tiles/mainlev_build.png";
 import LVL1 from "../../assets/tiles/lvl1.json"
 const gameState = {};
@@ -18,6 +19,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("LVL1", LVL1);
     this.load.image("BG1", BG1)
     this.load.image("BG2")
+    this.load.image("energyBall", NeoImg);
+    this.load.image("mask", mask)
   }
 
   create() {
