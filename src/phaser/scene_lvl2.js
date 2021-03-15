@@ -33,7 +33,7 @@ export default class Level2 extends Phaser.Scene {
     );
 
     //Just dummy variable to load the differing layers on level 2. True is normal and false is infa-red
-    let cool = true
+    let cool = false
     const map = this.make.tilemap({ key: "LVL2" });
     if (cool) {
       const tileset = map.addTilesetImage("cave_lvl2", "caveTiles");

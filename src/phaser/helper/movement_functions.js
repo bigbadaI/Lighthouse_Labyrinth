@@ -11,17 +11,30 @@ const NeoMovment = function(gameState) {
     if (DOWN) MOVE(-speed, speed);
     else if (UP) MOVE(-speed, -speed);
     else MOVE(-speed, 0);
+    NeoMoves(gameState);
   } else if (RIGHT) {
     if (DOWN) MOVE(speed, speed);
     else if (UP) MOVE(speed, -speed);
     else MOVE(speed, 0);
-  } else if (UP) MOVE(0, -speed);
-  else if (DOWN) MOVE(0, speed);
+    NeoMoves(gameState);
+  } else if (UP) {
+    MOVE(0, -speed);
+    NeoMoves(gameState);
+  } else if (DOWN) {
+    MOVE(0, speed);
+    NeoMoves(gameState);;
+  }
   //Else to stop movement when no longer pressing an arrow key
   else {
     MOVE(0, 0);
   }
+
 };
+function NeoMoves(gameState) {
+  console.log('spotlight interval runs');
+  gameState.spotlight.x = gameState.Neo.x;
+  gameState.spotlight.y = gameState.Neo.y;
+}
 module.exports = {
   NeoMovment,
 };

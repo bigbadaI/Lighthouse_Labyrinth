@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { NeoMovment } from "./helper/movement_functions";
+import { NeoMovment, createNeo } from "./helper/movement_functions";
 const gameState = {};
 
 export default class Level1 extends Phaser.Scene {
@@ -45,13 +45,17 @@ export default class Level1 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 3200, 1400)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
+
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
+      
+    
   }
 
   update() {
+    
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {
