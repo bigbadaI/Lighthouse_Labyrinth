@@ -182,6 +182,7 @@ export default class playGame extends Phaser.Scene {
           removeShift();
         }
         gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(0.2);
+        //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet mask
         gameState.currentState === 2 ? gameState.currentState = 0 : gameState.currentState++;
       }
     }
