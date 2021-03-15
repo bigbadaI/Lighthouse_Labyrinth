@@ -23,6 +23,8 @@ export default class playGame extends Phaser.Scene {
     this.load.tilemapTiledJSON("map_example", Map_Example);
     this.load.image("platform", platform)
     this.load.image('mask', 'src/assets/mask1.png');
+    this.load.image('infraredMask', 'src/assets/redTint.png');
+    this.load.image('ultravioletMask', 'src/assets/purpleTint.png');
     this.load.image('ultraviolet', ultraviolet);
     this.load.image('infrared', infrared);
     this.load.image('neoVision', neoVision);
@@ -35,6 +37,7 @@ export default class playGame extends Phaser.Scene {
   }
 
   create() {
+    
     //Creates the background and wall layers for example map
     const map = this.make.tilemap({ key: "map_example" });
     const tileset = map.addTilesetImage("cave", "caveTiles");
@@ -53,6 +56,9 @@ export default class playGame extends Phaser.Scene {
     // });
 
     gameState.Neo = this.physics.add.sprite(100, 50, "Neo").setScale(0.05);
+
+    this.cameras.main.setBounds(0, 0, 400, 250)
+    this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
     
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -110,9 +116,7 @@ export default class playGame extends Phaser.Scene {
   }
 
   shake() {
-    console.log("shake");
-    this.cameras.main.shake(0.05, 500);
-    // this.cameras.main.shake.isRunning
+    this.cameras.main.shake(240, 0.01, false);
   }
 
   update() {
@@ -193,6 +197,7 @@ export default class playGame extends Phaser.Scene {
         gameState.shake ? this.shake() : null;
         gameState.shake = false;
         //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
+        
         if (gameState.currentState === 2) {
           gameState.currentState = 0;
           gameState.shake = true;
