@@ -41,12 +41,12 @@ export default class Level2 extends Phaser.Scene {
       wallsLayer1.setCollisionByProperty({ collides: true });
       const wallsLayer2 = map.createLayer("Walls_2", tileset);
       wallsLayer2.setCollisionByProperty({ collides: true });
-      const debugGraphics = this.add.graphics().setAlpha(0.7);
-      wallsLayer1.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-      });
+      // const debugGraphics = this.add.graphics().setAlpha(0.7);
+      // wallsLayer1.renderDebug(debugGraphics, {
+      // tileColor: null,
+      // collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
+      // faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+      // });
       this.physics.add.collider(gameState.Neo, wallsLayer1);
       this.physics.add.collider(gameState.Neo, wallsLayer2)
     } else {
