@@ -1,10 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
-<<<<<<< HEAD
-=======
 import { parallaxBackground } from "./helper/backgrounds";
 
->>>>>>> emitter
 const gameState = {};
 
 export default class Level1 extends Phaser.Scene {
@@ -46,11 +43,8 @@ export default class Level1 extends Phaser.Scene {
       gameState.Neo.width * 0.5,
       gameState.Neo.height * 0.5
     );
-<<<<<<< HEAD
 
     //camera bound to Neo and set ranges for best viewing
-=======
->>>>>>> emitter
     this.cameras.main.setBounds(0, 0, 3200, 1400)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
@@ -136,7 +130,6 @@ export default class Level1 extends Phaser.Scene {
   
 
   update() {
-<<<<<<< HEAD
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {
@@ -154,8 +147,4 @@ export default class Level1 extends Phaser.Scene {
   }
 
   }
-=======
-    NeoMovment(gameState)
-  }
->>>>>>> emitter
 }
