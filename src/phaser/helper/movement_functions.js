@@ -1,4 +1,4 @@
-// import removeShift from "./colour_shift";
+import { removeShift } from "./colour_shift";
 
 const NeoMovment = function(gameState) {
   const LEFT = gameState.cursors.left.isDown;
@@ -12,26 +12,36 @@ const NeoMovment = function(gameState) {
   };
   const speed = 125;
   if (LEFT) {
+    removeShift(gameState);
     if (DOWN) {
-      // removeShift(gameState);
+      removeShift(gameState);
       MOVE(-speed, speed);
     } 
     else if (UP) {
-      // removeShift(gameState);
+      removeShift(gameState);
       MOVE(-speed, -speed);
     } 
     else {
-      // removeShift(gameState);
+      removeShift(gameState);
       MOVE(-speed, 0);
     } 
   } else if (RIGHT) {
-    // removeShift(gameState);
-    if (DOWN) MOVE(speed, speed);
-    else if (UP) MOVE(speed, -speed);
+    removeShift(gameState);
+    if (DOWN) {
+      removeShift(gameState);
+      MOVE(speed, speed);
+    } 
+    else if (UP) {
+      removeShift(gameState);
+      MOVE(speed, -speed);
+    } 
     else MOVE(speed, 0);
-  } else if (UP) MOVE(0, -speed);
+  } else if (UP) {
+    removeShift(gameState);
+    MOVE(0, -speed);
+  } 
   else if (DOWN) {
-    // removeShift(gameState);
+    removeShift(gameState);
     MOVE(0, speed);
   }
   //Else to stop movement when no longer pressing an arrow key
@@ -39,7 +49,8 @@ const NeoMovment = function(gameState) {
     MOVE(0, 0);
   }
 };
-module.exports = {
+
+export {
   NeoMovment
 };
 
