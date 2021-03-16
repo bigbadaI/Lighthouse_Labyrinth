@@ -8,26 +8,27 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    // music = this.sound.add('caveMusic', {loop: true});
-    // music.play();
+    
     //Creates the Parallax Background
-    const width = this.scale.width;
-    const height = this.scale.height;
-    this.add.image(0, height, "BG1").setOrigin(0, 1).setScrollFactor(0.25);
-    this.add.image(width, height, "BG1").setOrigin(0, 1).setScrollFactor(0.25);
-    this.add
-      .image(0, height + height, "BG1")
-      .setOrigin(0, 1)
-      .setScrollFactor(0.25);
-    this.add
-      .image(width, height + height, "BG1")
-      .setOrigin(0, 1)
-      .setScrollFactor(0.25);
-
+    const width = this.scale.width
+    const height = this.scale.height
+    const bgOne = this.add.image(0, height, 'BG1')
+    .setOrigin(0, 1)
+    .setScrollFactor(0.25)
+    const bgTwo = this.add.image(width, height, 'BG1')
+    .setOrigin(0, 1)
+    .setScrollFactor(0.25)
+    const bgThree = this.add.image(0, height + height, 'BG1')
+    .setOrigin(0, 1)
+    .setScrollFactor(0.25)
+    const bgFour = this.add.image(width, height + height, 'BG1')
+    .setOrigin(0, 1)
+    .setScrollFactor(0.25)
+    
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
     const tileset = map.addTilesetImage("lvl1_cave", "caveTiles");
-    const bg = map.createLayer("Background_Walls(non-colide)", tileset);
+    const bgWalls = map.createLayer("Background_Walls(non-colide)", tileset);
     const wallsLayer = map.createLayer("Walls", tileset);
     wallsLayer.setCollisionByProperty({ collides: true });
 
@@ -48,6 +49,8 @@ export default class Level1 extends Phaser.Scene {
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
 
+    
+
     //lighting
     //this creates a spotlight
     gameState.spotlight = this.make.sprite({
@@ -59,11 +62,12 @@ export default class Level1 extends Phaser.Scene {
     });
 
     //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(
-      this,
-      gameState.spotlight
-    );
+    bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
     //this animates the gameState.spotlight to flicker
     this.tweens.add({
@@ -84,44 +88,94 @@ export default class Level1 extends Phaser.Scene {
     const curveArr = [50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264,];
     const curveArr2 = [ 100, 350, 214, 296, 324, 392, 462, 307, 572, 391, 714, 314, 418, 515, 420, 608, 246, 635, 462, 307, 572, 391, 714, 314,];
     const curve = new Phaser.Curves.Spline(curveArr);
-    //const mappedCurve = curveArr.map(x => x * Math.random())
 
     //const particleSpeed = Math.floor(Math.random() * 500) + 270
     const particles = this.add.particles("energyBall");
 
     //I want to make 3 different energy functions, for 3 different point values
     //then I can loop over the function to create them? or try the method below this...
+    const highEnergy = {quantity: 350}
+    const medEnergy = {quantity: 425}
+    const lowEnergy = {quantity: 500}
+    const randomX = Math.floor(Math.random() * 100)
+    const randomY = Math.floor(Math.random() * 100)
+    const firstEnergy = {x: 0, y: -100}
+    const secondEnergy = {x: 0, y: 50}
+    const thirdEnergy = {x: 0, y: 200}
 
-    const createEnergy = particles.createEmitter({
+  const createEnergy = function(particleType, startPoint) {
+    particles.createEmitter({
       frame: { cycle: false },
       scale: { start: 0.04, end: 0 },
-      blendMode: "ADD",
-      emitZone: { type: "edge", source: curve, quantity: 275, yoyo: false },
-      x: 50,
-      y: 50,
+      blendMode: 'ADD',
+      emitZone: { type: 'edge', source: curve, quantity: particleType.quantity, yoyo: false },
+      x: startPoint.x,
+      y: startPoint.y,
+      frequency: 0
     });
+  }
 
-    //createEnergy()
-    // createEnergy()
-    // createEnergy()
-    //createEnergy() {
-    //   gameState.particles = this.add.particles('energyBall');
+  const hitTest = {
+    contains: function (x,y) {
+    
+      const hit = gameState.Neo.body.hitTest(x,y);
+      if (hit) {
+        console.log('you got one!')
+        energyCreator.explode()
+        //createEnergy3.pause()
+      }
+      return hit;
+    }
+  }
 
-    //   gameState.emitter = gameState.particles.createEmitter({
-    //     x: {min: 0, max: config.width * 2 },
-    //     y: -5,
-    //     lifespan: 2000,
-    //     speedX: { min:-5, max: -200 },
-    //     speedY: { min: 200, max: 400 },
-    //     scale: { start: 0.6, end: 0 },
-    //     quantity: 10,
-    //     blendMode: 'ADD'
-    //   })
+  //const particleSpeed = Math.floor(Math.random() * 500) + 270
+  const particles = this.add.particles('energyBall');
+  
 
-    //   gameState.emitter.setScrollFactor(0);
-    // }
+  const createEnergy2 = function(particleType, startPoint) {
+    particles.createEmitter({
+      frame: { cycle: false },
+      scale: { start: 0.04, end: 0 },
+      blendMode: 'ADD',
+      emitZone: { type: 'edge', source:curve, quantity: particleType.quantity, yoyo: false },
+      x: startPoint.x,
+      y: startPoint.y,
+      deathZone: {type: 'onEnter', source: hitTest}
+    });
+  }
+    
+    
 
-    //this.createEnergy();
+  const createEnergy3 = function(particleType, startPoint) {
+    particles.createEmitter({
+      frame: { cycle: false },
+      scale: { start: 0.04, end: 0 },
+      blendMode: 'ADD',
+      emitZone: { type: 'edge', source:curve, quantity: particleType.quantity, yoyo: false },
+      x: startPoint.x,
+      y: startPoint.y,
+      quantity: 1,
+      deathZone: { type: 'onEnter', source: hitTest }
+      
+    });
+  }
+
+
+    // createEnergy3(lowEnergy, firstEnergy)
+    // createEnergy3(medEnergy, secondEnergy)
+    // createEnergy3(highEnergy, thirdEnergy)
+  const energyCreator = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 10,
+    y: 50,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest }
+    
+});
+    
   }
 
   update() {
