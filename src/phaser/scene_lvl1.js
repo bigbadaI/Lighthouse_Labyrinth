@@ -83,22 +83,17 @@ export default class Level1 extends Phaser.Scene {
         yoyo: true
     });
     
-
-    //energy emitter
-      //still need to figure out:
-        //stop looping the particle...
-        //generate multiple particles, or one/two that get reused
-        //have particles start/end follow map, or go whole length of map
-          //figured out x/y starting positions, can randomize, but not follow camera yet
     const curveArr = [ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]
-    const curveArr2 = [ 100, 350, 214, 296, 324, 392, 462, 307, 572, 391, 714, 314, 418, 515, 420, 608, 246, 635, 462, 307, 572, 391, 714, 314 ]
     const curve = new Phaser.Curves.Spline(curveArr);
 
+<<<<<<< HEAD
     
 
 
     //I want to make 3 different energy functions, for 3 different point values
     //then I can loop over the function to create them? or try the method below this...
+=======
+>>>>>>> a335295670dffacbca97655a272a0c3741761196
     const highEnergy = {quantity: 350}
     const medEnergy = {quantity: 425}
     const lowEnergy = {quantity: 500}
@@ -108,6 +103,7 @@ export default class Level1 extends Phaser.Scene {
     const secondEnergy = {x: 0, y: 50}
     const thirdEnergy = {x: 0, y: 200}
 
+<<<<<<< HEAD
   const createEnergy = function(particleType, startPoint) {
     particles.createEmitter({
       frame: { cycle: false },
@@ -181,6 +177,36 @@ export default class Level1 extends Phaser.Scene {
     
 });
     
+=======
+  //const particleSpeed = Math.floor(Math.random() * 500) + 270
+  const particles = this.add.particles('energyBall');
+
+  const hitTest = {
+    contains: function (x,y) {
+    
+      const hit = gameState.Neo.body.hitTest(x,y);
+      if (hit) {
+        console.log('you got one!')
+        energyCreator.explode()
+        //createEnergy3.pause()
+      }
+      return hit;
+    }
+  }
+
+  const energyCreator = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 10,
+    y: 50,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest }
+    
+});
+    
+>>>>>>> a335295670dffacbca97655a272a0c3741761196
   }
 
   
