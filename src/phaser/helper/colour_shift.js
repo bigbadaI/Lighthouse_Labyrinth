@@ -28,7 +28,6 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
       }
       removeOverlay(gameState);
       gameState.shiftState = level.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
-      gameState.viewScreen.add(gameState.shiftState);
       gameState.shake ? shake(level) : null;
       gameState.shake = false;
       //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
@@ -49,6 +48,9 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
         removeOverlay(gameState);
         gameState.Neo.setFrame(gameState.currentState);
         gameState.currentState++;
+      }
+      if (gameState.overlay) {
+        gameState.overlay.setScrollFactor(0);
       }
     }
   }

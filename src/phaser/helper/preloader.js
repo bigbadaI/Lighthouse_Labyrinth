@@ -11,8 +11,9 @@ import caveTiles from "../../assets/tiles/mainlev_build.png";
 import LVL1 from "../../assets/tiles/lvl1.json"
 import LVL2 from "../../assets/tiles/lvl2.json"
 import BG1 from "../../assets/backgrounds/background3.png"
-const gameState = {};
 import mask from "../../assets/mask1.png"
+const gameState = {};
+
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
