@@ -96,85 +96,61 @@ export default class Level1 extends Phaser.Scene {
     const secondEnergy = {x: 0, y: 50}
     const thirdEnergy = {x: 0, y: 200}
 
-  //const particleSpeed = Math.floor(Math.random() * 500) + 270
-  const particles = this.add.particles('energyBall');
+    //const particleSpeed = Math.floor(Math.random() * 500) + 270
+    const particles = this.add.particles('energyBall');
 
-  const hitTest = {
-    contains: function (x,y) {
+    //first sets the energy for this scene, second saves to gameState for following the player through the game
+    let energy = 100
+    gameState.energy = 100
+    gameState.particlesCollected = 0
     
-      const hit = gameState.Neo.body.hitTest(x,y);
-      if (hit) {
-        console.log('you got one!')
-        energyCreator.explode()
-        //createEnergy3.pause()
-        bar.animateToFill(0.5)
+
+    //defines what happens when you collide with a particle
+    const hitTest = {
+      contains: function (x,y) {
+    
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator.explode()
+          //createEnergy3.pause()
+          gameState.energy -= 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
       }
-      return hit;
     }
-  }
 
-  const energyCreator = particles.createEmitter({
-    frame: { cycle: false },
-    scale: { start: 0.04, end: 0 },
-    blendMode: 'ADD',
-    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
-    x: 10,
-    y: 50,
-    quantity: 1,
-    deathZone: { type: 'onEnter', source: hitTest }
-    
-});
+    const energyCreator = particles.createEmitter({
+      frame: { cycle: false },
+      scale: { start: 0.04, end: 0 },
+      blendMode: 'ADD',
+      emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+      x: 10,
+      y: 50,
+      quantity: 1,
+      deathZone: { type: 'onEnter', source: hitTest }
+      
+  });
     
     //energy bar
     this.fullWidth = 300
     const energyX = 50
     const energyY = 50
-    // const leftShadowCap = this.add.image(energyX, energyY, 'left-cap-shadow').setOrigin(0, 0.5)
-    // const middleShadowCap = this.add.image(leftShadowCap.energyX + leftShadowCap.width, energyY, 'middle-shadow').setOrigin(0, 0.5)
-    // middleShadowCap.displayWidth = this.fullWidth
-    // this.add.image(middleShadowCap.energyX + middleShadowCap.displayWidth, energyY, 'right-cap-shadow').setOrigin(0, 0.5)
-    // this.leftCap = this.add.image(energyX, energyY, 'left-capW').setOrigin(0, 0.5)
-	  // this.middle = this.add.image(this.leftCap.energyX + this.leftCap.width, energyY, 'middleW').setOrigin(0, 0.5)
-	  // this.rightCap = this.add.image(this.middle.energyX + this.middle.displayWidth, energyY, 'right-capW').setOrigin(0, 0.5)
-	  // this.setMeterPercentage(1)
-    // this.setMeterPercentageAnimated(0)
 
-  const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
-    .withLeftCap(this.add.image(0,0, 'left-capW'))
-    .withMiddle(this.add.image(0,0, 'middleW'))
-    .withRightCap(this.add.image(0,0, 'right-capW'))
-    .layout()
-
+    const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+      .withLeftCap(this.add.image(0,0, 'left-capW'))
+      .withMiddle(this.add.image(0,0, 'middleW'))
+      .withRightCap(this.add.image(0,0, 'right-capW'))
+      .layout()
 
   }
 
-  // setMeterPercentage(percent)
-  // {
-  //   const width = this.fullWidth * percent
-  //   this.middle.displayWidth = width
-  //   this.rightCap.x = this.middle.x + this.middle.displayWidth
-  // }
-
-  // setMeterPercentageAnimated(percent, duration = 1000)
-  //   {
-  //     const width = this.fullWidth * percent
-
-  //     this.tweens.add({
-  //       targets: this.middle,
-  //       displayWidth: width,
-  //       duration,
-  //       ease: Phaser.Math.Easing.Sine.Out,
-  //       onUpdate: () => {
-  //         this.rightCap.x = this.middle.x + this.middle.displayWidth
-
-  //         this.leftCap.visible = this.middle.displayWidth > 0
-  //         this.middle.visible = this.middle.displayWidth > 0
-  //         this.rightCap.visible = this.middle.displayWidth > 0
-	// 	    }
-	//     })
-  //   }
-
   update() {
+    //console.log(gameState.energy)
+    //this.add.text(100,100, `energy: ${gameState.energy}`)
+
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {

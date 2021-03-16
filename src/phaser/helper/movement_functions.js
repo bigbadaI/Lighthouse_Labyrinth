@@ -8,7 +8,7 @@ const NeoMovment = function(gameState) {
     gameState.spotlight.x = gameState.Neo.x;
     gameState.spotlight.y = gameState.Neo.y;
   };
-  const speed = 125;
+  const speed = 300;
   if (LEFT) {
     if (DOWN) MOVE(-speed, speed);
     else if (UP) MOVE(-speed, -speed);
