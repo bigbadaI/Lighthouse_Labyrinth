@@ -1,9 +1,14 @@
 import Phaser from "phaser";
 import NeoImg from "../assets/Neo.png";
+import PurpNeoImg from "../assets/purpNeo.png";
+import RedNeoImg from "../assets/redNeo.png";
+import NeoSpriteSheet from "../assets/NeoSpriteSheet.png";
 import pause from "../assets/pause_button.png"
 import infrared from "../assets/colourSelector/NeoInfrared.png";
 import ultraviolet from "../assets/colourSelector/NeoUltraviolet.png";
 import neoVision from "../assets/colourSelector/NeoVision.png";
+import redOverlay from "../assets/crimsonOverlay.png";
+import purpOverlay from "../assets/purpOverlay.png";
 import caveTiles from "../assets/tiles/mainlev_build.png";
 import Map_Example from "../assets/tiles/map_test.json";
 import platform from "../assets/platform.png"
@@ -18,16 +23,27 @@ export default class playGame extends Phaser.Scene {
   
   preload() {
     this.load.crossOrigin = "anonymous";
-    this.load.image("Neo", NeoImg);
+    //Neo images
+    this.load.spritesheet("Neo", NeoSpriteSheet, {
+      frameWidth: 512,
+      frameHeight: 512
+      });
+    // const Neo = [0, 1, 2];
+    // let current = 0;
+    // let frameCounter = 0;
+    // Neo[1] = this.load.image("Neo", NeoImg);
+    // Neo[0] = this.load.image("PurpNeo", PurpNeoImg);
+    // Neo[2] = this.load.image("RedNeo", RedNeoImg);
     this.load.image("caveTiles", caveTiles);
     this.load.tilemapTiledJSON("map_example", Map_Example);
     this.load.image("platform", platform)
     this.load.image('mask', 'src/assets/mask1.png');
-    this.load.image('infraredMask', 'src/assets/redTint.png');
-    this.load.image('ultravioletMask', 'src/assets/purpleTint.png');
+    //shifting colours
     this.load.image('ultraviolet', ultraviolet);
     this.load.image('infrared', infrared);
     this.load.image('neoVision', neoVision);
+    this.load.image('purpOverlay', purpOverlay);
+    this.load.image('redOverlay', redOverlay);
     this.load.image('pause', pause);
   //   this.load.scenePlugin({
   //     key: "IlluminatedJS",
@@ -43,19 +59,20 @@ export default class playGame extends Phaser.Scene {
     const tileset = map.addTilesetImage("cave", "caveTiles");
     const bg = map.createStaticLayer("Background_test", tileset);//bglayer
     const wallsLayer = map.createStaticLayer("Walls", tileset);
-    
     wallsLayer.setCollisionByProperty({ collides: true });//why does this set collision and not the collider below?
     //Debug to show collision outlines in the tiles
     const debugGraphics = this.add.graphics().setAlpha(0.7);
-
+    
     //commented out the yellow wall tire layer, seems like it's only for visualizing the walls?
     // wallsLayer.renderDebug(debugGraphics, {
     //   tileColor: null,
     //   collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     // });
+   
 
     gameState.Neo = this.physics.add.sprite(100, 50, "Neo").setScale(0.05);
+    gameState.Neo.setFrame(1);
 
     this.cameras.main.setBounds(0, 0, 400, 250)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
@@ -68,6 +85,7 @@ export default class playGame extends Phaser.Scene {
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
     gameState.shiftAvailable = true;
+    gameState.overylay;
     gameState.shakeAvailable = false;
     gameState.currentState = 0;
     gameState.paused = false;
@@ -144,11 +162,14 @@ export default class playGame extends Phaser.Scene {
     
     //Changed new to use velocity instead of changing location so that he hits walls
     const speed = 50;
+
     function removeShift () {
       if (gameState.shiftState) {
         gameState.shiftState.destroy();
+        
       }
     } 
+
     if (gameState.cursors.left.isDown) {
       removeShift();
       if (gameState.cursors.up.isDown) {
@@ -187,27 +208,45 @@ export default class playGame extends Phaser.Scene {
       gameState.Neo.setVelocity(0,0);
     }
 
+    function removeOverlay() {
+      if (gameState.overlay) {
+        gameState.overlay.destroy();
+        console.log("CLEAR");
+      }
+    }
+
     if (gameState.shiftAvailable) {
       if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
         const shiftStates = ["ultraviolet", "neoVision", "infrared"];
         if (gameState.shiftState) {
           removeShift();
         }
+        removeOverlay();
         gameState.shiftState = this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
         gameState.shake ? this.shake() : null;
         gameState.shake = false;
         //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
-        
         if (gameState.currentState === 2) {
+          //infrared
           gameState.currentState = 0;
           gameState.shake = true;
+          gameState.overlay = this.add.image(300, 225, 'redOverlay');
+          gameState.Neo.setFrame(2);
+        } else if (gameState.currentState === 0) {
+          //ultraviolet
+          gameState.currentState++;
+          gameState.overlay = this.add.image(300, 225, 'purpOverlay');
+          gameState.Neo.setFrame(0);
         } else {
+          //neoVision
+          removeOverlay();
+          gameState.Neo.setFrame(1);
           gameState.currentState++;
         }
       }
     }
 
-  
+    
     function NeoMoves() {
         console.log('spotlight interval runs');
         gameState.spotlight.x = gameState.Neo.x;
