@@ -84,10 +84,6 @@ export default class playGame extends Phaser.Scene {
     bg.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
-    
-
-    
-
     this.tweens.add({
         targets: gameState.spotlight,
         alpha: 0,

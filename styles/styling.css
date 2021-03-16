@@ -1,5 +1,26 @@
 body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+img {
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  opacity: 1;
+  z-index: -1;
+  filter:brightness(25%);
+}
+
+
+.main-body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  z-index: 9;
 } 
+h1 {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(90, 90, 25);
+  font-size: 2.5em;
+}

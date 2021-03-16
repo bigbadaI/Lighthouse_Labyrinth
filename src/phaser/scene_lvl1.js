@@ -9,8 +9,6 @@ export default class Level1 extends Phaser.Scene {
     super({ key: 'Level1' });
   }
     
-
-  // 
   create() {
     
     //Creates the Parallax Background
