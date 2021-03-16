@@ -9,10 +9,6 @@ import LVL2 from "./phaser/scene_lvl2"
 import Preloader from "./phaser/helper/preloader";
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
