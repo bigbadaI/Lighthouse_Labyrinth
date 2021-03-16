@@ -50,9 +50,9 @@ export default class Level1 extends Phaser.Scene {
     //camera bound to Neo and set ranges for best viewing
     gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
     gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
-    gameState.viewScreen = this.add.container(gameState.Neo.x, gameState.Neo.y);
+    gameState.viewScreen = this.add.container(300, 250);
     
-    gameState.scoreText = this.add.text(100, 100, "SCORE: 0", {fontSize: '56px', color: '#fff'});
+    gameState.scoreText = this.add.text(0, 0, "SCORE: 0", {fontSize: '56px', color: '#fff'});
     gameState.viewScreen.add(gameState.scoreText);
 
     this.tweens.add({
@@ -153,8 +153,10 @@ export default class Level1 extends Phaser.Scene {
     pause(gameState);
     NeoMovment(gameState);
     applyColourAnimations(gameState, this.scene.scene, shiftStates);
-    gameState.scoreText.x = gameState.Neo.x; 
-    gameState.scoreText.setFill()
+    console.log(gameState.Neo.body.position.x);
+
+    
+    // gameState.scoreText.setFill("#ffffff")
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.stop('Level1');
@@ -163,6 +165,8 @@ export default class Level1 extends Phaser.Scene {
 
     function NeoMoves() {
       console.log('spotlight interval runs');
+      gameState.scoreText.x = gameState.Neo.body.position.x; 
+      gameState.scoreText.y = gameState.Neo.body.position.y;
       gameState.spotlight.x = gameState.Neo.x;
       gameState.spotlight.y = gameState.Neo.y;
       gameState.shiftState.x = gameState.Neo.x;
