@@ -8,7 +8,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    
+    console.log(this)
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -61,13 +61,15 @@ export default class Level1 extends Phaser.Scene {
       scale: 2,
     });
 
-    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
+    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight  
+    
     bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    console.log(gameState.spotlight)
 
     //this animates the gameState.spotlight to flicker
     this.tweens.add({
@@ -129,7 +131,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   //const particleSpeed = Math.floor(Math.random() * 500) + 270
-  const particles = this.add.particles('energyBall');
+  // const particles = this.add.particles('energyBall');
   
 
   const createEnergy2 = function(particleType, startPoint) {

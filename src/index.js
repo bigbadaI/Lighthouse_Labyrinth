@@ -7,12 +7,8 @@ import scene2 from "./phaser/scene2";
 import LVL1 from "./phaser/scene_lvl1";
 import LVL2 from "./phaser/scene_lvl2"
 import Preloader from "./phaser/helper/preloader";
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 
-console.log("does this show up?")
 export const config = {
   type: Phaser.AUTO,
   parent: "phaser",
