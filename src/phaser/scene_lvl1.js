@@ -135,10 +135,11 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update() {
+    
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
-    applyColourAnimations(gameState, Level1, shiftStates);
+    applyColourAnimations(gameState, this.scene.scene, shiftStates);
 
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {

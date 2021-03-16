@@ -1,11 +1,8 @@
 import Phaser from "phaser";
-import NeoSpriteSheet from "../../assets/NeoSpriteSheet.png";
-import pause from "../../assets/pause_button.png"
-import infrared from "../../assets/colourSelector/NeoInfrared.png";
-import ultraviolet from "../../assets/colourSelector/NeoUltraviolet.png";
-import neoVision from "../../assets/colourSelector/NeoVision.png";
-import redOverlay from "../../assets/crimsonOverlay.png";
-import purpOverlay from "../../assets/purpOverlay.png";
+
+const shake = function(level) {
+  level.cameras.main.shake(240, 0.01, false);
+}
 
 const removeShift = function(gameState) {
   if (gameState.shiftState) {
@@ -26,34 +23,33 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
   if (gameState.shiftAvailable) {
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
       console.log("shift");
-      // const shiftStates = [ultraviolet, neoVision, infrared];
       if (gameState.shiftState) {
         removeShift(gameState);
       }
       removeOverlay(gameState);
-      console.log("Neo:", gameState.Neo.x, gameState.Neo.y);
-      console.log("shift states:", shiftStates);
+     
       console.log("current:", gameState.currentState);
-      console.log(level.this);
-      gameState.shiftState = level.this.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
-      gameState.shake ? level.this.shake() : null;
+      
+      gameState.shiftState = level.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
+      gameState.shake ? shake(level) : null;
       gameState.shake = false;
       //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
       if (gameState.currentState === 2) {
         //infrared
-        gameState.currentState = 0;
         gameState.shake = true;
-        gameState.overlay = level.this.add.image(300, 225, redOverlay);
-        gameState.Neo.setFrame(currentState);
+        gameState.overlay = level.add.image(300, 225, "redOverlay");
+        gameState.Neo.setFrame(gameState.currentState);
+        gameState.currentState = 0;
       } else if (gameState.currentState === 0) {
         //ultraviolet
+        gameState.overlay = level.add.image(300, 225, "purpOverlay");
+        // console.log(purpOverlay);
+        gameState.Neo.setFrame(gameState.currentState);
         gameState.currentState++;
-        gameState.overlay = level.this.add.image(300, 225, purpOverlay);
-        gameState.Neo.setFrame(currentState);
       } else {
         //neoVision
         removeOverlay(gameState);
-        gameState.Neo.setFrame(currentState);
+        gameState.Neo.setFrame(gameState.currentState);
         gameState.currentState++;
       }
     }
