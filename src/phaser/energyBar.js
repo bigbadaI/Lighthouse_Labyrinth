@@ -1,7 +1,8 @@
 export default class EnergyBar
 {
-  constructor(x,y, width)
+  constructor(scene, x,y, width)
   {
+    this.scene = scene
     this.x = x
     this.y = y
     this.width = width
@@ -28,12 +29,47 @@ export default class EnergyBar
 
   layout() 
   {
+    if (this.middle)
+    {
+      this.middle.displayWidth = this.width
+    }
+
+    
+    this.layoutSegments()
+
+    return this
+  }
+
+
+  animateToFill(fill, duration = 1000)
+  {
+    if(!this.middle)
+    {
+      return
+    }
+
+    const percent = Math.max(0, Math.min(1, fill))
+
+    this.scene.tweens.add({
+      targets: this.middle,
+      displayWidth: this.width * percent,
+      duration,
+      ease: Phaser.Math.Easing.Sine.Out,
+      onUpdate: () => {
+        this.layoutSegments()
+      }
+
+
+    }
+    )
+  }
+
+  layoutSegments()
+  {
     if (!this.leftCap || !this.middle || !this.rightCap)
     {
       return this
     }
-
-    this.middle.displayWidth = this.width
     
     this.leftCap.x = this.x
     this.leftCap.y = this.y
@@ -44,4 +80,5 @@ export default class EnergyBar
     this.rightCap.x = this.middle.x + this.middle.displayWidth
     this.rightCap.y = this.middle.y
   }
+
 }

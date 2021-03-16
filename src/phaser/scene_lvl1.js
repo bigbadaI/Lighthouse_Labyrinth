@@ -107,6 +107,7 @@ export default class Level1 extends Phaser.Scene {
         console.log('you got one!')
         energyCreator.explode()
         //createEnergy3.pause()
+        bar.animateToFill(0.5)
       }
       return hit;
     }
@@ -138,7 +139,7 @@ export default class Level1 extends Phaser.Scene {
 	  // this.setMeterPercentage(1)
     // this.setMeterPercentageAnimated(0)
 
-  const bar = new EnergyBar(energyX,energyY,this.fullWidth)
+  const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
     .withLeftCap(this.add.image(0,0, 'left-capW'))
     .withMiddle(this.add.image(0,0, 'middleW'))
     .withRightCap(this.add.image(0,0, 'right-capW'))
