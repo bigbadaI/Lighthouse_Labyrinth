@@ -1,6 +1,9 @@
 import Phaser from "phaser";
 import NeoImg from "../../assets/Neo.png";
 import caveTiles from "../../assets/tiles/mainlev_build.png";
+import danger1 from "../../assets/damage-overlay.png";
+// import danger2 from "../../assets/extremeWarning.png";
+import impact from "../../assets/onImpact.png";
 import LVL1 from "../../assets/tiles/lvl1.json"
 import LVL2 from "../../assets/tiles/lvl2.json"
 import BG1 from "../../assets/backgrounds/background3.png"
@@ -22,6 +25,9 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("BG2")
     this.load.image("energyBall", NeoImg);
     this.load.image("mask", mask)
+    this.load.image("danger1", danger1);
+    // this.load.image("danger2", danger2);
+    this.load.image("impact", impact);
   }
 
   create() {

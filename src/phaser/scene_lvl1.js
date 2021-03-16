@@ -1,5 +1,6 @@
-import Phaser from "phaser";
+import Phaser, { Game } from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
+import { config } from "../index";
 import { parallaxBackground } from "./helper/backgrounds";
 
 const gameState = {};
@@ -12,6 +13,22 @@ export default class Level1 extends Phaser.Scene {
 
   // 
   create() {
+    // var time = Math.floor(game.time.totalElapsedSeconds() );
+    // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
+    // console.log(config.timer);
+    // function createTimer() {
+    //   this.timeLabel = this.game.add.text(this.game.world.centerX, 100, "00:00", {font: "100px Arial", fill: "#fff"}); 
+    //   this.timeLabel.anchor.setTo(0.5, 0);
+    //   this.timeLabel.align = 'center';
+    // }
+    // this.startTime = new Date();
+	  // this.totalTime = 120;
+	  // this.timeElapsed = 0;
+	  // this.createTimer();
+	  // this.gameTimer = game.time.events.loop(100, function(){
+		// this.updateTimer();
+    // });
+  
     
     //Creates the Parallax Background
     const width = this.scale.width
@@ -120,14 +137,27 @@ export default class Level1 extends Phaser.Scene {
     y: 50,
     quantity: 1,
     deathZone: { type: 'onEnter', source: hitTest }
-    
-});
-    
+  });
+  
+  // gameState.d = this.add.sprite(gameState.Neo.x, gameState.Neo.y, "danger2");
+  gameState.timer = this.time.addEvent({
+    delay: 150000, //2.5 minutes
+    paused: false
+  });
+
+  gameState.text = this.add.text(gameState.Neo.x, gameState.Neo.y, '', { fill: "#ffffff", font: 'bold 14px system-ui'})
+    // .setShadow(2, 2, 0xFF0000, 8);
   }
 
   
 
   update() {
+    gameState.text
+    .setFill("#ffffff")
+    .setText(gameState.timer.getRemainingSeconds().toFixed(1));
+    // .setFill(timer.paused ? cssColors.yellow : cssColors.aqua)
+    
+
      NeoMovment(gameState)
      //Conditional to load Level 2
      if (gameState.Neo.y > 1375) {
@@ -135,14 +165,14 @@ export default class Level1 extends Phaser.Scene {
       this.scene.start('Level2');
     }
 
-
-
     function NeoMoves() {
+      gameState.d ? gameState.d.destroy() : console.log("doesn't destroy");
       console.log('spotlight interval runs');
       gameState.spotlight.x = gameState.Neo.x;
-      gameState.spotlight.y = gameState.Neo.y;
-    
-  }
+      gameState.spotlight.y = gameState.Neo.y; 
+      gameState.d.x = gameState.Neo.x;
+      gameState.d.y = gameState.Neo.y
+    }
 
   }
 }
