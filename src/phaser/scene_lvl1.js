@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { parallaxBackground } from "./helper/backgrounds";
+import EnergyBar from "./energyBar"
 
 const gameState = {};
 
@@ -123,9 +124,54 @@ export default class Level1 extends Phaser.Scene {
     
 });
     
+    //energy bar
+    this.fullWidth = 300
+    const energyX = 50
+    const energyY = 50
+    // const leftShadowCap = this.add.image(energyX, energyY, 'left-cap-shadow').setOrigin(0, 0.5)
+    // const middleShadowCap = this.add.image(leftShadowCap.energyX + leftShadowCap.width, energyY, 'middle-shadow').setOrigin(0, 0.5)
+    // middleShadowCap.displayWidth = this.fullWidth
+    // this.add.image(middleShadowCap.energyX + middleShadowCap.displayWidth, energyY, 'right-cap-shadow').setOrigin(0, 0.5)
+    // this.leftCap = this.add.image(energyX, energyY, 'left-capW').setOrigin(0, 0.5)
+	  // this.middle = this.add.image(this.leftCap.energyX + this.leftCap.width, energyY, 'middleW').setOrigin(0, 0.5)
+	  // this.rightCap = this.add.image(this.middle.energyX + this.middle.displayWidth, energyY, 'right-capW').setOrigin(0, 0.5)
+	  // this.setMeterPercentage(1)
+    // this.setMeterPercentageAnimated(0)
+
+  const bar = new EnergyBar(energyX,energyY,this.fullWidth)
+    .withLeftCap(this.add.image(0,0, 'left-capW'))
+    .withMiddle(this.add.image(0,0, 'middleW'))
+    .withRightCap(this.add.image(0,0, 'right-capW'))
+    .layout()
+
+
   }
 
-  
+  // setMeterPercentage(percent)
+  // {
+  //   const width = this.fullWidth * percent
+  //   this.middle.displayWidth = width
+  //   this.rightCap.x = this.middle.x + this.middle.displayWidth
+  // }
+
+  // setMeterPercentageAnimated(percent, duration = 1000)
+  //   {
+  //     const width = this.fullWidth * percent
+
+  //     this.tweens.add({
+  //       targets: this.middle,
+  //       displayWidth: width,
+  //       duration,
+  //       ease: Phaser.Math.Easing.Sine.Out,
+  //       onUpdate: () => {
+  //         this.rightCap.x = this.middle.x + this.middle.displayWidth
+
+  //         this.leftCap.visible = this.middle.displayWidth > 0
+  //         this.middle.visible = this.middle.displayWidth > 0
+  //         this.rightCap.visible = this.middle.displayWidth > 0
+	// 	    }
+	//     })
+  //   }
 
   update() {
      NeoMovment(gameState)
