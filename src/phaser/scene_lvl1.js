@@ -1,6 +1,9 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
+import { pause } from "./helper/pause_functions";
+import { applyColourAnimations } from "./helper/colour_shift";
 import { parallaxBackground } from "./helper/backgrounds";
+
 
 const gameState = {};
 
@@ -9,7 +12,6 @@ export default class Level1 extends Phaser.Scene {
     super({ key: 'Level1' });
   }
     
-
   // 
   create() {
     console.log("does this show up either?")
@@ -38,6 +40,7 @@ export default class Level1 extends Phaser.Scene {
 
     //Renders main character
     gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
+    gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
@@ -49,7 +52,12 @@ export default class Level1 extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
-
+    gameState.shiftAvailable = true;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 0;
+    gameState.paused = false;
+   
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer);
 
@@ -77,7 +85,6 @@ export default class Level1 extends Phaser.Scene {
         yoyo: true
     });
     
-
     //energy emitter
       //still need to figure out:
         //stop looping the particle...
@@ -127,24 +134,22 @@ export default class Level1 extends Phaser.Scene {
     //this.createEnergy();
   }
 
-  
-
   update() {
-     NeoMovment(gameState)
-     //Conditional to load Level 2
-     if (gameState.Neo.y > 1375) {
+    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
+    pause(gameState);
+    NeoMovment(gameState);
+    applyColourAnimations(gameState, Level1, shiftStates);
+
+    //Conditional to load Level 2
+    if (gameState.Neo.y > 1375) {
       this.scene.stop('Level1');
       this.scene.start('Level2');
     }
-
-
 
     function NeoMoves() {
       console.log('spotlight interval runs');
       gameState.spotlight.x = gameState.Neo.x;
       gameState.spotlight.y = gameState.Neo.y;
-    
-  }
-
+    }
   }
 }

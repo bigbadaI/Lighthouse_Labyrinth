@@ -1,7 +1,4 @@
 import Phaser from "phaser";
-import NeoImg from "../assets/Neo.png";
-import PurpNeoImg from "../assets/purpNeo.png";
-import RedNeoImg from "../assets/redNeo.png";
 import NeoSpriteSheet from "../assets/NeoSpriteSheet.png";
 import pause from "../assets/pause_button.png"
 import infrared from "../assets/colourSelector/NeoInfrared.png";
@@ -23,21 +20,17 @@ export default class playGame extends Phaser.Scene {
   
   preload() {
     this.load.crossOrigin = "anonymous";
-    //Neo images
+    //Neo images in spritesheet
     this.load.spritesheet("Neo", NeoSpriteSheet, {
       frameWidth: 512,
       frameHeight: 512
       });
-    // const Neo = [0, 1, 2];
-    // let current = 0;
-    // let frameCounter = 0;
-    // Neo[1] = this.load.image("Neo", NeoImg);
-    // Neo[0] = this.load.image("PurpNeo", PurpNeoImg);
-    // Neo[2] = this.load.image("RedNeo", RedNeoImg);
+   
     this.load.image("caveTiles", caveTiles);
     this.load.tilemapTiledJSON("map_example", Map_Example);
     this.load.image("platform", platform)
     this.load.image('mask', 'src/assets/mask1.png');
+    
     //shifting colours
     this.load.image('ultraviolet', ultraviolet);
     this.load.image('infrared', infrared);
@@ -251,7 +244,7 @@ export default class playGame extends Phaser.Scene {
         console.log('spotlight interval runs');
         gameState.spotlight.x = gameState.Neo.x;
         gameState.spotlight.y = gameState.Neo.y;
-    }
+     }
 
   }
 
