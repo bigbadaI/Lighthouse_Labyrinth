@@ -27,10 +27,8 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
         removeShift(gameState);
       }
       removeOverlay(gameState);
-     
-      console.log("current:", gameState.currentState);
-      
       gameState.shiftState = level.add.image(gameState.Neo.x, gameState.Neo.y + 1, shiftStates[gameState.currentState]).setScale(1);
+      gameState.viewScreen.add(gameState.shiftState);
       gameState.shake ? shake(level) : null;
       gameState.shake = false;
       //implement conditionals for mask...before state is changes...if current === 0 then ultraviolet
