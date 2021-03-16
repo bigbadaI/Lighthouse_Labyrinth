@@ -83,22 +83,9 @@ export default class Level1 extends Phaser.Scene {
         yoyo: true
     });
     
-
-    //energy emitter
-      //still need to figure out:
-        //stop looping the particle...
-        //generate multiple particles, or one/two that get reused
-        //have particles start/end follow map, or go whole length of map
-          //figured out x/y starting positions, can randomize, but not follow camera yet
     const curveArr = [ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]
-    const curveArr2 = [ 100, 350, 214, 296, 324, 392, 462, 307, 572, 391, 714, 314, 418, 515, 420, 608, 246, 635, 462, 307, 572, 391, 714, 314 ]
     const curve = new Phaser.Curves.Spline(curveArr);
 
-    
-
-
-    //I want to make 3 different energy functions, for 3 different point values
-    //then I can loop over the function to create them? or try the method below this...
     const highEnergy = {quantity: 350}
     const medEnergy = {quantity: 425}
     const lowEnergy = {quantity: 500}
@@ -108,17 +95,8 @@ export default class Level1 extends Phaser.Scene {
     const secondEnergy = {x: 0, y: 50}
     const thirdEnergy = {x: 0, y: 200}
 
-  const createEnergy = function(particleType, startPoint) {
-    particles.createEmitter({
-      frame: { cycle: false },
-      scale: { start: 0.04, end: 0 },
-      blendMode: 'ADD',
-      emitZone: { type: 'edge', source: curve, quantity: particleType.quantity, yoyo: false },
-      x: startPoint.x,
-      y: startPoint.y,
-      frequency: 0
-    });
-  }
+  //const particleSpeed = Math.floor(Math.random() * 500) + 270
+  const particles = this.add.particles('energyBall');
 
   const hitTest = {
     contains: function (x,y) {
@@ -133,42 +111,6 @@ export default class Level1 extends Phaser.Scene {
     }
   }
 
-  //const particleSpeed = Math.floor(Math.random() * 500) + 270
-  const particles = this.add.particles('energyBall');
-  
-
-  const createEnergy2 = function(particleType, startPoint) {
-    particles.createEmitter({
-      frame: { cycle: false },
-      scale: { start: 0.04, end: 0 },
-      blendMode: 'ADD',
-      emitZone: { type: 'edge', source:curve, quantity: particleType.quantity, yoyo: false },
-      x: startPoint.x,
-      y: startPoint.y,
-      deathZone: {type: 'onEnter', source: hitTest}
-    });
-  }
-    
-    
-
-  const createEnergy3 = function(particleType, startPoint) {
-    particles.createEmitter({
-      frame: { cycle: false },
-      scale: { start: 0.04, end: 0 },
-      blendMode: 'ADD',
-      emitZone: { type: 'edge', source:curve, quantity: particleType.quantity, yoyo: false },
-      x: startPoint.x,
-      y: startPoint.y,
-      quantity: 1,
-      deathZone: { type: 'onEnter', source: hitTest }
-      
-    });
-  }
-
-
-    // createEnergy3(lowEnergy, firstEnergy)
-    // createEnergy3(medEnergy, secondEnergy)
-    // createEnergy3(highEnergy, thirdEnergy)
   const energyCreator = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
