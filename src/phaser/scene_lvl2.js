@@ -89,6 +89,9 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
-     NeoMovment(gameState)
+    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
+    pause(gameState);
+    NeoMovment(gameState);
+    applyColourAnimations(gameState, this.scene.scene, shiftStates);
   }
 }

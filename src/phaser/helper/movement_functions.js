@@ -1,3 +1,11 @@
+import { removeShift } from "./colour_shift";
+
+function NeoMoves(gameState) {
+  console.log('spotlight interval runs');
+  gameState.spotlight.x = gameState.Neo.x;
+  gameState.spotlight.y = gameState.Neo.y;
+}
+
 const NeoMovment = function(gameState) {
   const LEFT = gameState.cursors.left.isDown;
   const RIGHT = gameState.cursors.right.isDown;
@@ -8,21 +16,45 @@ const NeoMovment = function(gameState) {
   };
   const speed = 300;
   if (LEFT) {
-    if (DOWN) MOVE(-speed, speed);
-    else if (UP) MOVE(-speed, -speed);
-    else MOVE(-speed, 0);
-    NeoMoves(gameState);
+    removeShift(gameState);
+    if (DOWN) {
+      removeShift(gameState);
+      MOVE(-speed, speed);
+      NeoMoves(gameState);
+    } 
+    else if (UP) {
+      removeShift(gameState);
+      MOVE(-speed, -speed);
+      NeoMoves(gameState);
+    } 
+    else {
+      removeShift(gameState);
+      MOVE(-speed, 0);
+      NeoMoves(gameState);
+    } 
   } else if (RIGHT) {
-    if (DOWN) MOVE(speed, speed);
-    else if (UP) MOVE(speed, -speed);
+    removeShift(gameState);
+    if (DOWN) {
+      removeShift(gameState);
+      MOVE(speed, speed);
+      NeoMoves(gameState);
+    } 
+    else if (UP) {
+      removeShift(gameState);
+      MOVE(speed, -speed);
+      NeoMoves(gameState);
+    } 
     else MOVE(speed, 0);
     NeoMoves(gameState);
   } else if (UP) {
+    removeShift(gameState);
     MOVE(0, -speed);
     NeoMoves(gameState);
-  } else if (DOWN) {
+  } 
+  else if (DOWN) {
+    removeShift(gameState);
     MOVE(0, speed);
-    NeoMoves(gameState);;
+    NeoMoves(gameState);
   }
   //Else to stop movement when no longer pressing an arrow key
   else {
@@ -30,11 +62,10 @@ const NeoMovment = function(gameState) {
   }
 
 };
-function NeoMoves(gameState) {
-  console.log('spotlight interval runs');
-  gameState.spotlight.x = gameState.Neo.x;
-  gameState.spotlight.y = gameState.Neo.y;
+
+
+export {
+  NeoMovment
 }
-module.exports = {
-  NeoMovment,
-};
+
+
