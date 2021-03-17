@@ -33,7 +33,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("BG1", BG1)
     this.load.image("BG2")
     this.load.image("energyBall", NeoSpriteSheet[1]);
-    this.load.image("mask", mask)
+    this.load.image("mask", mask);
     //shifting colour images
     this.load.image('ultraviolet', ultraviolet);
     this.load.image('infrared', infrared);
@@ -41,6 +41,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('purpOverlay', purpOverlay);
     this.load.image('redOverlay', redOverlay);
     this.load.image('pause', pause);
+    
   }
 
   create() {

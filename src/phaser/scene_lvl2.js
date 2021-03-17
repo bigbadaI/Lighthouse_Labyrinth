@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
+import { pause } from "./helper/pause_functions";
+import { applyColourAnimations } from "./helper/colour_shift";
 const gameState = {};
 
 export default class Level2 extends Phaser.Scene {
@@ -85,7 +87,12 @@ export default class Level2 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
-    gameState.cursors = this.input.keyboard.createCursorKeys();  
+    gameState.cursors = this.input.keyboard.createCursorKeys(); 
+    gameState.shiftAvailable = true;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 0;
+    gameState.paused = false; 
   }
 
   update() {
