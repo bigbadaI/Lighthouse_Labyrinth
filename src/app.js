@@ -1,7 +1,7 @@
 import React from "react";
-import {BrowseRouter as Router, Link, Route, Switch} from "react-router-dom";
-import Leaderboard from './LeaderBoard';
-import Game from 'Game';
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import LeaderBoard from './components/LeaderBoard';
+
 
 
 export default class App extends React.Component {
@@ -30,11 +30,11 @@ export default class App extends React.Component {
         <Router forceRefresh={true}>
           <div>
             <Link to="/game">Game</Link><br/>
-            <Link to="/leaderboard"></Link><br/>
+            <Link to="/leaderboard">LeaderBoard</Link><br/>
           </div>
           <Switch>
-            <Route path="/game" component={Game} />
-            <Route path="/leaderboard" component={Leaderboard}/>
+           
+            <Route path="/leaderboard" component={LeaderBoard}/>
           </Switch>
         </Router>
           <div>
