@@ -75,6 +75,15 @@ export default class Level1 extends Phaser.Scene {
       this.cameras.main.shake(100, .01)
       gameState.energy -= 0.25
       bar.animateToFill(gameState.energy/100)
+      if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
+        const askForName = this.add.dom(100,150).setScrollFactor(0)
+        askForName
+        //should music stop? or particles? how do you restart the game? display score? what is score made of...?
+
+      }
     });
 
 

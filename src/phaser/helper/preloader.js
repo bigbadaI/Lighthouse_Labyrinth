@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 //sprite sheet replace Neo image
 import NeoSpriteSheet from "../../assets/NeoSpriteSheet.png";
+import plainNeo from "../../assets/Neo.png"
 import pause from "../../assets/pause_button.png";
 import infrared from "../../assets/colourSelector/NeoInfrared.png";
 import ultraviolet from "../../assets/colourSelector/NeoUltraviolet.png";
@@ -41,7 +42,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("LVL2", LVL2);
     this.load.image("BG1", BG1);
     this.load.image("BG2");
-    this.load.image("energyBall", NeoSpriteSheet[1]);
+    this.load.image("energyBall", plainNeo);
     this.load.image("mask", mask);
     this.load.image('left-capW', leftCapW);
 	  this.load.image('middleW', middleW);
