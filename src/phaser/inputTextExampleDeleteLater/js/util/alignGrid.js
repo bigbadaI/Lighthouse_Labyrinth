@@ -1,4 +1,7 @@
-class AlignGrid {
+import game from "../../../../index"
+import config from "../../../../index"
+
+export default class AlignGrid {
     constructor(config) {
         this.config = config;
         if (!config.scene) {

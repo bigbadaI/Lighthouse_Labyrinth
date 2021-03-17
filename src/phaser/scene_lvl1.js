@@ -4,6 +4,10 @@ import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import { parallaxBackground } from "./helper/backgrounds";
 import EnergyBar from "./energyBar"
+import FormUtil from "../phaser/inputTextExampleDeleteLater/js/util/formUtil"
+import alignGrid from "../phaser/inputTextExampleDeleteLater/js/util/alignGrid"
+import align from "../phaser/inputTextExampleDeleteLater/js/util/align"
+
 
 
 const gameState = {};
@@ -79,9 +83,17 @@ export default class Level1 extends Phaser.Scene {
       {
         this.physics.pause()
         this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
-        const askForName = this.add.dom(100,150).setScrollFactor(0)
-        askForName
+        
         //should music stop? or particles? how do you restart the game? display score? what is score made of...?
+        //death form input
+        this.formUtil = new FormUtil ({
+          scene: this,
+          rows: 11,
+          cols: 11
+        })
+        this.formUtil.showNumbers();
+
+
 
       }
     });

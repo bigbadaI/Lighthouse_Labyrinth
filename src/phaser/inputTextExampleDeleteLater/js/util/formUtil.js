@@ -1,4 +1,6 @@
-class FormUtil {
+import AlignGrid from './alignGrid'
+
+export default class FormUtil {
     constructor(config) {
         //super();
         this.scene = config.scene;
