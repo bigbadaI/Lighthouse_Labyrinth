@@ -45,11 +45,11 @@ export default class Level1 extends Phaser.Scene {
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
       gameState.Neo.height * 0.5
-      );
+    );
       
       //camera bound to Neo and set ranges for best viewing
-      gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
-      gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
+    gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
+    gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
       
       // this.tweens.add({
       //       targets: gameState.viewScreen,
@@ -61,11 +61,11 @@ export default class Level1 extends Phaser.Scene {
       //       repeat: -1
       //   });
         
-        gameState.cursors = this.input.keyboard.createCursorKeys();
-        gameState.shiftAvailable = false;
-        gameState.overylay;
-        gameState.shakeAvailable = false;
-        gameState.currentState = 0;
+    gameState.cursors = this.input.keyboard.createCursorKeys();
+    gameState.shiftAvailable = false;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 0;
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer

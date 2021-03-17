@@ -69,8 +69,18 @@ export default class Level2 extends Phaser.Scene {
     bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer1.setCollisionByProperty({ collides: true });
     wallsLayer2.setCollisionByProperty({ collides: true });
-    this.physics.add.collider(gameState.Neo, wallsLayer1);
-    this.physics.add.collider(gameState.Neo, wallsLayer2)
+    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      // gameState.energy -= 0.25
+      // bar.animateToFill(gameState.energy/100)
+    });
+    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      // gameState.energy -= 0.25
+      // bar.animateToFill(gameState.energy/100)
+    });
 
     //Renders and fades in and out the spotlight
     this.tweens.add({
@@ -95,6 +105,20 @@ export default class Level2 extends Phaser.Scene {
     gameState.currentState = 0;
     gameState.paused = false; 
 
+    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
+
+    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
+
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
       key: 'rotate',
@@ -118,7 +142,6 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
-    console.log(gameState.Neo.x, gameState.Neo.y);
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
@@ -129,5 +152,6 @@ export default class Level2 extends Phaser.Scene {
       this.scene.sleep('Level2');
       this.scene.run('Level1');
       gameState.Neo.y = 25
-    }}
+    }
+  }
 }
