@@ -11,6 +11,9 @@ module.exports = {
 		path: path.resolve("dist"),
 		filename: "index_bundle.js",
 	},
+	node: {
+		fs: 'empty'
+	},
 	module: {
 		rules: [
 			{
