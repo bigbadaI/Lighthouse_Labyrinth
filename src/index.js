@@ -25,7 +25,13 @@ export const config = {
     }
   },
 
+<<<<<<< HEAD
   scene: [Starfield, Highscore, InputPanel, Preloader, StartScene, LVL1, LVL2],
+=======
+
+  scene: [Preloader, StartScene, LVL1, LVL2, playGame, scene2],
+
+>>>>>>> master
   scale: {
     zoom: 1.5
   }

@@ -20,7 +20,6 @@ const removeOverlay = function(gameState) {
 const applyColourAnimations = function(gameState, level, shiftStates) {
   if (gameState.shiftAvailable) {
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
-      
       if (gameState.shiftState) {
         removeShift(gameState);
       }
@@ -38,7 +37,6 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
       } else if (gameState.currentState === 0) {
         //ultraviolet
         gameState.overlay = level.add.image(300, 225, "purpOverlay");
-        // console.log(purpOverlay);
         gameState.Neo.setFrame(gameState.currentState);
         gameState.currentState++;
       } else {
