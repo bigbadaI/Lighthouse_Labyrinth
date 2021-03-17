@@ -99,16 +99,12 @@ export default class Level1 extends Phaser.Scene {
     //const particleSpeed = Math.floor(Math.random() * 500) + 270
     const particles = this.add.particles('energyBall');
 
-    //first sets the energy for this scene, second saves to gameState for following the player through the game
-    let energy = 100
-    gameState.energy = 100
-    gameState.particlesCollected = 0
     
-
+    
     //defines what happens when you collide with a particle
     const hitTest = {
       contains: function (x,y) {
-    
+        
         const hit = gameState.Neo.body.hitTest(x,y);
         if (hit) {
           console.log('you got one!')
@@ -121,7 +117,7 @@ export default class Level1 extends Phaser.Scene {
         return hit;
       }
     }
-
+    
     const energyCreator = particles.createEmitter({
       frame: { cycle: false },
       scale: { start: 0.04, end: 0 },
@@ -132,33 +128,30 @@ export default class Level1 extends Phaser.Scene {
       quantity: 1,
       deathZone: { type: 'onEnter', source: hitTest }
       
-  });
+    });
     
     //energy bar
     this.fullWidth = 300
     const energyX = 50
     const energyY = 50
-
+    
+    gameState.energy = 100
+    gameState.particlesCollected = 0
+    
     const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
-      .withLeftCap(this.add.image(0,0, 'left-capW'))
-      .withMiddle(this.add.image(0,0, 'middleW'))
-      .withRightCap(this.add.image(0,0, 'right-capW'))
-      .layout()
-
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .layout()
   }
-
+  
   update() {
-    //console.log(gameState.energy)
-    //this.add.text(100,100, `energy: ${gameState.energy}`)
-
-     NeoMovment(gameState)
+    NeoMovment(gameState)
      //Conditional to load Level 2
-     if (gameState.Neo.y > 1375) {
+    if (gameState.Neo.y > 1375) {
       this.scene.stop('Level1');
       this.scene.start('Level2');
     }
-
-
 
     function NeoMoves() {
       console.log('spotlight interval runs');
