@@ -16,13 +16,13 @@ export default class Level2 extends Phaser.Scene {
     const bg1 = this.add.image(0, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg2 = this.add.image(width, height, 'BG1')
+    const bg2 = this.add.image(width + 360, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg3 = this.add.image(0, height + height, 'BG1')
+    const bg3 = this.add.image(0, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg4 = this.add.image(width, height + height, 'BG1')
+    const bg4 = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
@@ -69,8 +69,18 @@ export default class Level2 extends Phaser.Scene {
     bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer1.setCollisionByProperty({ collides: true });
     wallsLayer2.setCollisionByProperty({ collides: true });
-    this.physics.add.collider(gameState.Neo, wallsLayer1);
-    this.physics.add.collider(gameState.Neo, wallsLayer2)
+    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      // gameState.energy -= 0.25
+      // bar.animateToFill(gameState.energy/100)
+    });
+    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      // gameState.energy -= 0.25
+      // bar.animateToFill(gameState.energy/100)
+    });
 
     //Renders and fades in and out the spotlight
     this.tweens.add({
@@ -95,6 +105,20 @@ export default class Level2 extends Phaser.Scene {
     gameState.currentState = 0;
     gameState.paused = false; 
     // this.heart = this.sound.add("heart");
+
+    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
+
+    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
 
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
@@ -149,6 +173,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.powerUp.angle += 1;
 
 
+
     if (gameState.timer) {
       //if shift is pressed then we can start timer
       gameState.text
@@ -190,5 +215,12 @@ export default class Level2 extends Phaser.Scene {
       //trigger game over
     }
     
+
+    if (gameState.Neo.y < 5) {
+      this.scene.sleep('Level2');
+      this.scene.run('Level1');
+      gameState.Neo.y = 25
+    }
+
   }
 }
