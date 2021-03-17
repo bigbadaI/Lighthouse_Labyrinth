@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-// import { removeShift } from "./colour_shift";
-
-function NeoMoves(gameState) {
-=======
 import { removeShift } from "./colour_shift";
 
 function NeoMoves(gameState) {
   console.log('spotlight interval runs');
->>>>>>> master
   gameState.spotlight.x = gameState.Neo.x;
   gameState.spotlight.y = gameState.Neo.y;
 }
