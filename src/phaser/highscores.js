@@ -54,6 +54,17 @@ export default class Highscore extends Phaser.Scene {
       //  Listen to events from the Input Panel scene
       panel.events.on('updateName', this.updateName, this);
       panel.events.on('submitName', this.submitName, this);
+      this.add.text(200, 50, "Click to start!", {
+        fill: "#ffffff",
+        fontSize: "20px",
+      });
+     
+      this.input.on("pointerdown", () => {
+        this.scene.stop("Highscores");
+        this.scene.stop("InputPanel")
+        this.scene.stop("Starfield")
+        this.scene.start("Preloader");
+      });
   }
 
   submitName ()
