@@ -59,7 +59,6 @@ export default class Level1 extends Phaser.Scene {
       bar.animateToFill(gameState.energy/100)
     });
 
-    
 
     //lighting
     //this creates a spotlight
