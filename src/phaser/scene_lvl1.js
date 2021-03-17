@@ -1,7 +1,11 @@
-import Phaser, { Game } from "phaser";
+import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { config } from "../index";
+import { pause } from "./helper/pause_functions";
+import { applyColourAnimations } from "./helper/colour_shift";
 import { parallaxBackground } from "./helper/backgrounds";
+import EnergyBar from "./energyBar"
+
 
 const gameState = {};
 
@@ -10,6 +14,7 @@ export default class Level1 extends Phaser.Scene {
     super({ key: 'Level1' });
   }
     
+  // 
   create() {
     // var time = Math.floor(game.time.totalElapsedSeconds() );
     // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
@@ -53,6 +58,7 @@ export default class Level1 extends Phaser.Scene {
 
     //Renders main character
     gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
+    gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
@@ -60,15 +66,24 @@ export default class Level1 extends Phaser.Scene {
     );
 
     //camera bound to Neo and set ranges for best viewing
-    this.cameras.main.setBounds(0, 0, 3200, 1400)
-    this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
+    gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
+    gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
-
+    gameState.shiftAvailable = false;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 0;
+    gameState.paused = false;
+   
     //Adds collision factors so far just new and wallsLayer
-    this.physics.add.collider(gameState.Neo, wallsLayer);
+    this.physics.add.collider(gameState.Neo, wallsLayer, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
 
-    
 
     //lighting
     //this creates a spotlight
@@ -110,22 +125,27 @@ export default class Level1 extends Phaser.Scene {
     const secondEnergy = {x: 0, y: 50}
     const thirdEnergy = {x: 0, y: 200}
 
-  //const particleSpeed = Math.floor(Math.random() * 500) + 270
-  const particles = this.add.particles('energyBall');
+    //const particleSpeed = Math.floor(Math.random() * 500) + 270
+    const particles = this.add.particles('energyBall');
 
-  const hitTest = {
-    contains: function (x,y) {
     
-      const hit = gameState.Neo.body.hitTest(x,y);
-      if (hit) {
-        console.log('you got one!')
-        energyCreator.explode()
-        //createEnergy3.pause()
+    
+    //defines what happens when you collide with a particle
+    const hitTest = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator.explode()
+          //createEnergy3.pause()
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
       }
-      return hit;
     }
-  }
-
   const energyCreator = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
@@ -136,41 +156,32 @@ export default class Level1 extends Phaser.Scene {
     quantity: 1,
     deathZone: { type: 'onEnter', source: hitTest }
   });
-  
-  // gameState.d = this.add.sprite(gameState.Neo.x, gameState.Neo.y, "danger2");
-  gameState.timer = this.time.addEvent({
-    delay: 150000, //2.5 minutes
-    paused: false
-  });
-
-  gameState.text = this.add.text(gameState.Neo.x, gameState.Neo.y, '', { fill: "#ffffff", font: 'bold 14px system-ui'})
-    // .setShadow(2, 2, 0xFF0000, 8);
+    
+    //energy bar
+    this.fullWidth = 300
+    const energyX = 50
+    const energyY = 50
+    
+    gameState.energy = 100
+    gameState.particlesCollected = 0
+    
+    const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .layout()
   }
 
-  
-
   update() {
-    gameState.text
-    .setFill("#ffffff")
-    .setText(gameState.timer.getRemainingSeconds().toFixed(1));
-    // .setFill(timer.paused ? cssColors.yellow : cssColors.aqua)
-    
+    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
+    pause(gameState);
+    NeoMovment(gameState);
+    applyColourAnimations(gameState, this.scene.scene, shiftStates);
 
-     NeoMovment(gameState)
-     //Conditional to load Level 2
-     if (gameState.Neo.y > 1375) {
+    //Conditional to load Level 2
+    if (gameState.Neo.y > 1375) {
       this.scene.stop('Level1');
       this.scene.start('Level2');
     }
-
-    function NeoMoves() {
-      gameState.d ? gameState.d.destroy() : console.log("doesn't destroy");
-      console.log('spotlight interval runs');
-      gameState.spotlight.x = gameState.Neo.x;
-      gameState.spotlight.y = gameState.Neo.y; 
-      gameState.d.x = gameState.Neo.x;
-      gameState.d.y = gameState.Neo.y
-    }
-
   }
 }

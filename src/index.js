@@ -22,7 +22,7 @@ export const config = {
     }
   },
 
-  scene: [Preloader, LVL1, LVL2, playGame, scene2],
+  scene: [Preloader,LVL2, LVL1, playGame, scene2],
   scale: {
     zoom: 1.5
   }
