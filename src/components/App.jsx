@@ -26,6 +26,7 @@ export default class App extends React.Component {
 		return (
 
 			<div style={{ textAlign: "center" }}>
+<<<<<<< HEAD
 				<h1>Hello World</h1>
         <Router forceRefresh={true}>
           <div>
@@ -43,6 +44,11 @@ export default class App extends React.Component {
 			    </div>
       </div>
 
+=======
+				<h1>Lighthouse Labrynith</h1>
+        <p className="App-intro">{this.state.apiResponse}</p>
+			</div>
+>>>>>>> master
 		);
 	}
 }
