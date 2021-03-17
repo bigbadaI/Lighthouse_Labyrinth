@@ -3,6 +3,7 @@ import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import { parallaxBackground } from "./helper/backgrounds";
+import EnergyBar from "./energyBar"
 
 
 const gameState = {};
@@ -69,9 +70,13 @@ export default class Level1 extends Phaser.Scene {
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer
-    this.physics.add.collider(gameState.Neo, wallsLayer);
+    this.physics.add.collider(gameState.Neo, wallsLayer, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
 
-    
 
     //lighting
     //this creates a spotlight
@@ -113,34 +118,53 @@ export default class Level1 extends Phaser.Scene {
     const secondEnergy = {x: 0, y: 50}
     const thirdEnergy = {x: 0, y: 200}
 
-  //const particleSpeed = Math.floor(Math.random() * 500) + 270
-  const particles = this.add.particles('energyBall');
+    //const particleSpeed = Math.floor(Math.random() * 500) + 270
+    const particles = this.add.particles('energyBall');
 
-  const hitTest = {
-    contains: function (x,y) {
     
-      const hit = gameState.Neo.body.hitTest(x,y);
-      if (hit) {
-        console.log('you got one!')
-        energyCreator.explode()
-        //createEnergy3.pause()
+    
+    //defines what happens when you collide with a particle
+    const hitTest = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator.explode()
+          //createEnergy3.pause()
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
       }
-      return hit;
     }
-  }
-
-  const energyCreator = particles.createEmitter({
-    frame: { cycle: false },
-    scale: { start: 0.04, end: 0 },
-    blendMode: 'ADD',
-    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
-    x: 10,
-    y: 50,
-    quantity: 1,
-    deathZone: { type: 'onEnter', source: hitTest }
     
-});
+    const energyCreator = particles.createEmitter({
+      frame: { cycle: false },
+      scale: { start: 0.04, end: 0 },
+      blendMode: 'ADD',
+      emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+      x: 10,
+      y: 50,
+      quantity: 1,
+      deathZone: { type: 'onEnter', source: hitTest }
+      
+    });
     
+    //energy bar
+    this.fullWidth = 300
+    const energyX = 50
+    const energyY = 50
+    
+    gameState.energy = 100
+    gameState.particlesCollected = 0
+    
+    const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .layout()
   }
 
   update() {
