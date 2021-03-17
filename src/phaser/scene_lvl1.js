@@ -21,13 +21,13 @@ export default class Level1 extends Phaser.Scene {
     const bgOne = this.add.image(0, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bgTwo = this.add.image(width, height, 'BG1')
+    const bgTwo = this.add.image(width + 360, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bgThree = this.add.image(0, height + height, 'BG1')
+    const bgThree = this.add.image(0, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bgFour = this.add.image(width, height + height, 'BG1')
+    const bgFour = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
     
@@ -37,7 +37,7 @@ export default class Level1 extends Phaser.Scene {
     const bgWalls = map.createLayer("Background_Walls(non-colide)", tileset);
     const wallsLayer = map.createLayer("Walls", tileset);
     wallsLayer.setCollisionByProperty({ collides: true });
-
+    
     //Renders main character
     gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
@@ -45,27 +45,27 @@ export default class Level1 extends Phaser.Scene {
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
       gameState.Neo.height * 0.5
-    );
-
-    //camera bound to Neo and set ranges for best viewing
-    gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
-    gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
-  
-    // this.tweens.add({
-    //     targets: gameState.viewScreen,
-    //     x: gameState.viewScreen.x + gameState.Neo.x,
-    //     ease: 'Linear',
-    //     duration: 1,
-    //     delay: 1,
-    //     yoyo: false,
-    //     repeat: -1
-    // });
-
-    gameState.cursors = this.input.keyboard.createCursorKeys();
-    gameState.shiftAvailable = false;
-    gameState.overylay;
-    gameState.shakeAvailable = false;
-    gameState.currentState = 0;
+      );
+      
+      //camera bound to Neo and set ranges for best viewing
+      gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
+      gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
+      
+      // this.tweens.add({
+      //       targets: gameState.viewScreen,
+      //       x: gameState.viewScreen.x + gameState.Neo.x,
+      //       ease: 'Linear',
+      //       duration: 1,
+      //       delay: 1,
+      //       yoyo: false,
+      //       repeat: -1
+      //   });
+        
+        gameState.cursors = this.input.keyboard.createCursorKeys();
+        gameState.shiftAvailable = false;
+        gameState.overylay;
+        gameState.shakeAvailable = false;
+        gameState.currentState = 0;
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer
@@ -88,12 +88,12 @@ export default class Level1 extends Phaser.Scene {
     });
 
     //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
     //this animates the gameState.spotlight to flicker
     this.tweens.add({
@@ -174,8 +174,9 @@ export default class Level1 extends Phaser.Scene {
 
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
-      this.scene.stop('Level1');
-      this.scene.start('Level2');
+      this.scene.sleep('Level1');
+      this.scene.run('Level2');
+      gameState.Neo.y = 1360
     }
   }
 }

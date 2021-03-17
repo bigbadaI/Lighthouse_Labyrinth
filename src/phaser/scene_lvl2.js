@@ -16,13 +16,13 @@ export default class Level2 extends Phaser.Scene {
     const bg1 = this.add.image(0, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg2 = this.add.image(width, height, 'BG1')
+    const bg2 = this.add.image(width + 360, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg3 = this.add.image(0, height + height, 'BG1')
+    const bg3 = this.add.image(0, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    const bg4 = this.add.image(width, height + height, 'BG1')
+    const bg4 = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
@@ -125,5 +125,9 @@ export default class Level2 extends Phaser.Scene {
     applyColourAnimations(gameState, this.scene.scene, shiftStates);
     //rotates shift powerup sprite
     gameState.powerUp.angle += 1;
-  }
+    if (gameState.Neo.y < 5) {
+      this.scene.sleep('Level2');
+      this.scene.run('Level1');
+      gameState.Neo.y = 25
+    }}
 }
