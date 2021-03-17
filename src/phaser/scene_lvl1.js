@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
+import { config } from "../index";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import { parallaxBackground } from "./helper/backgrounds";
@@ -15,6 +16,23 @@ export default class Level1 extends Phaser.Scene {
     
   // 
   create() {
+    // var time = Math.floor(game.time.totalElapsedSeconds() );
+    // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
+    // console.log(config.timer);
+    // function createTimer() {
+    //   this.timeLabel = this.game.add.text(this.game.world.centerX, 100, "00:00", {font: "100px Arial", fill: "#fff"}); 
+    //   this.timeLabel.anchor.setTo(0.5, 0);
+    //   this.timeLabel.align = 'center';
+    // }
+    // this.startTime = new Date();
+	  // this.totalTime = 120;
+	  // this.timeElapsed = 0;
+	  // this.createTimer();
+	  // this.gameTimer = game.time.events.loop(100, function(){
+		// this.updateTimer();
+    // });
+  
+    
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -50,17 +68,7 @@ export default class Level1 extends Phaser.Scene {
       //camera bound to Neo and set ranges for best viewing
     gameState.camBounds = this.cameras.main.setBounds(0, 0, 3200, 1400);
     gameState.camFollow = this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5);
-      
-      // this.tweens.add({
-      //       targets: gameState.viewScreen,
-      //       x: gameState.viewScreen.x + gameState.Neo.x,
-      //       ease: 'Linear',
-      //       duration: 1,
-      //       delay: 1,
-      //       yoyo: false,
-      //       repeat: -1
-      //   });
-        
+
     gameState.cursors = this.input.keyboard.createCursorKeys();
     gameState.shiftAvailable = false;
     gameState.overylay;
@@ -70,10 +78,15 @@ export default class Level1 extends Phaser.Scene {
    
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
-      console.log('you hit a wall!')
-      this.cameras.main.shake(100, .01)
-      gameState.energy -= 0.25
-      bar.animateToFill(gameState.energy/100)
+      console.log('you hit a wall!');
+      this.cameras.main.shake(100, .01);
+      gameState.energy -= 0.25;
+      bar.animateToFill(gameState.energy/100);
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
     });
 
 
@@ -138,18 +151,16 @@ export default class Level1 extends Phaser.Scene {
         return hit;
       }
     }
-    
-    const energyCreator = particles.createEmitter({
-      frame: { cycle: false },
-      scale: { start: 0.04, end: 0 },
-      blendMode: 'ADD',
-      emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
-      x: 10,
-      y: 50,
-      quantity: 1,
-      deathZone: { type: 'onEnter', source: hitTest }
-      
-    });
+  const energyCreator = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 10,
+    y: 50,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest }
+  });
     
     //energy bar
     this.fullWidth = 300

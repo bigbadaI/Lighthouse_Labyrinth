@@ -23,7 +23,9 @@ export const config = {
     }
   },
 
+
   scene: [Preloader, StartScene, LVL1, LVL2, playGame, scene2],
+
   scale: {
     zoom: 1.5
   }
