@@ -94,6 +94,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.shakeAvailable = false;
     gameState.currentState = 0;
     gameState.paused = false; 
+    // this.heart = this.sound.add("heart");
 
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
@@ -109,31 +110,34 @@ export default class Level2 extends Phaser.Scene {
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
       // gameState.powerUp.destroy();
-      const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
-        fontSize: '15px', 
-        fill: '#FFFFFF', 
-        align: "center" 
-      });
-      setTimeout(() => {
-        info.destroy();
-      }, 10000)
-      gameState.shiftAvailable = true;
-      gameState.timer = this.time.addEvent({
-        delay: 150000, 
-        paused: false
-      });
-      console.log("this timer", this)
-      gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold 14px system-ui'});
-      gameState.text.setScrollFactor(0);
+      if (!this.collided) {
+        this.collided = true;
+        const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
+          fontSize: '15px', 
+          fill: '#FFFFFF', 
+          align: "center" 
+        });
+        setTimeout(() => {
+          info.destroy();
+        }, 10000)
+        gameState.shiftAvailable = true;
+        gameState.timer = this.time.addEvent({
+          delay: 45000, 
+          paused: false
+        });
+        gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold system-ui', fontSize: "14px"});
+        console.log(gameState.text.font);
+        gameState.text.setScrollFactor(0);
+      }
     });
 
     // timer only renders properly outside...?
-    gameState.timer = this.time.addEvent({
-      delay: 45000,
-      paused: false
-    });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold 14px system-ui'});
-    gameState.text.setScrollFactor(0);
+    // gameState.timer = this.time.addEvent({
+    //   delay: 45000,
+    //   paused: false
+    // });
+    // gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold system-ui'});
+    // gameState.text.setScrollFactor(0);
   }
 
   update() {
@@ -144,6 +148,7 @@ export default class Level2 extends Phaser.Scene {
     //rotates shift powerup sprite
     gameState.powerUp.angle += 1;
 
+
     if (gameState.timer) {
       //if shift is pressed then we can start timer
       gameState.text
@@ -152,12 +157,16 @@ export default class Level2 extends Phaser.Scene {
       gameState.timeLeft = gameState.timer.getRemainingSeconds();
     }
 
-    console.log(gameState.timeLeft);
+    // console.log(gameState.timeLeft);
     if (gameState.timeLeft <= 30 && gameState.timeLeft > 10) { //30 seconds left
       console.log("less than 30 secs");
       if (!gameState.danger) {
         gameState.danger = this.add.image(300, 225, "danger1");
+        //fix changing font
+        gameState.text.setFontSize(26);
+        console.log(gameState.text.font);
         gameState.danger.setScrollFactor(0);
+        // this.heart.play();
         setInterval(() => {
           this.cameras.main.shake(100, .01);
         },3000);
@@ -168,16 +177,18 @@ export default class Level2 extends Phaser.Scene {
       if (!gameState.dangerOverlay) {
         gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
         gameState.dangerOverlay.setScrollFactor(0);
+        clearInterval();
         setInterval(() => {
-          this.cameras.main.shake(100, .05);
+          this.cameras.main.shake(300, .02);
         },2000);
       }
     } else if (gameState.timeLeft <= 0) {
       console.log("out of time");
       gameState.danger.destroy();
       gameState.dangerOverlay.destroy();
+      clearInterval();
       //trigger game over
     }
-    // gameState.d = this.add.sprite(gameState.Neo.x, gameState.Neo.y, "danger2");
+    
   }
 }

@@ -10,7 +10,7 @@ import redOverlay from "../../assets/crimsonOverlay.png";
 import purpOverlay from "../../assets/purpOverlay.png";
 import caveTiles from "../../assets/tiles/mainlev_build.png";
 import danger1 from "../../assets/damage-overlay.png";
-// import danger2 from "../../assets/extremeWarning.png";
+import danger2 from "../../assets/warning1.png";
 import impact from "../../assets/onImpact.png";
 import LVL1 from "../../assets/tiles/lvl1.json"
 import LVL2 from "../../assets/tiles/lvl2.json"
@@ -26,6 +26,8 @@ import middleR from "../../assets/barHorizontal_red_mid.png";
 import leftCapShadow from "../../assets/barHorizontal_shadow_left.png";
 import rightCapShadow from "../../assets/barHorizontal_shadow_right.png";
 import middleShadow from "../../assets/barHorizontal_shadow_mid.png";
+// import heart from "../../assets/sounds/heartbeat.mp3";
+// import heartFF from "../../assets/sounds/heartbeat.mp3";
 const gameState = {};
 
 
@@ -71,6 +73,7 @@ export default class Preloader extends Phaser.Scene {
       frameHeight: 100,
       frameWidth: 100
     });
+    this.load.audio("heart", ["/LL/src/assets/sounds", "/LL/src/assets/sounds"]);
   }
 
   create() {

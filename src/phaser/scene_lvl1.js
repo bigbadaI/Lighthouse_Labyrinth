@@ -82,10 +82,11 @@ export default class Level1 extends Phaser.Scene {
       this.cameras.main.shake(100, .01);
       gameState.energy -= 0.25;
       bar.animateToFill(gameState.energy/100);
-      const ouch = this.add.image(gameState.Neo.x, gameState.Neo.y, "onImpact");
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
       setTimeout(() => {
         ouch.destroy();
-      }, 3000)
+      }, 2000)
     });
 
 
