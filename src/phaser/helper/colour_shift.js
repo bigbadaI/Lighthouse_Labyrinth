@@ -18,12 +18,9 @@ const removeOverlay = function(gameState) {
 }
 
 const applyColourAnimations = function(gameState, level, shiftStates) {
-  
-  console.log(gameState.shiftAvailable);
   if (gameState.shiftAvailable) {
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
       
-      console.log("shift");
       if (gameState.shiftState) {
         removeShift(gameState);
       }
