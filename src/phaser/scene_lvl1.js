@@ -15,7 +15,6 @@ export default class Level1 extends Phaser.Scene {
     
   // 
   create() {
-    
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -63,7 +62,7 @@ export default class Level1 extends Phaser.Scene {
     // });
 
     gameState.cursors = this.input.keyboard.createCursorKeys();
-    gameState.shiftAvailable = true;
+    gameState.shiftAvailable = false;
     gameState.overylay;
     gameState.shakeAvailable = false;
     gameState.currentState = 0;

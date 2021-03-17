@@ -8,6 +8,7 @@ import neoVision from "../../assets/colourSelector/NeoVision.png";
 import redOverlay from "../../assets/crimsonOverlay.png";
 import purpOverlay from "../../assets/purpOverlay.png";
 import caveTiles from "../../assets/tiles/mainlev_build.png";
+import shiftEnable from "../../assets/shiftEnablerSheet.png";
 import LVL1 from "../../assets/tiles/lvl1.json";
 import LVL2 from "../../assets/tiles/lvl2.json";
 import BG1 from "../../assets/backgrounds/background3.png";
@@ -59,7 +60,11 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('purpOverlay', purpOverlay);
     this.load.image('redOverlay', redOverlay);
     this.load.image('pause', pause);
-
+    this.load.spritesheet('shiftEnable', shiftEnable, {
+      frameHeight: 100,
+      frameWidth: 100
+    });
+    
   }
 
   create() {

@@ -241,7 +241,6 @@ export default class playGame extends Phaser.Scene {
 
     
     function NeoMoves() {
-        console.log('spotlight interval runs');
         gameState.spotlight.x = gameState.Neo.x;
         gameState.spotlight.y = gameState.Neo.y;
      }

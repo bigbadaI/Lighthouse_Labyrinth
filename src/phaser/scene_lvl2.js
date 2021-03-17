@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
+import { pause } from "./helper/pause_functions";
+import { applyColourAnimations } from "./helper/colour_shift";
 const gameState = {};
 
 export default class Level2 extends Phaser.Scene {
@@ -26,6 +28,7 @@ export default class Level2 extends Phaser.Scene {
 
     //Renders Neo
     gameState.Neo = this.physics.add.sprite(2800, 25, "Neo").setScale(0.09);
+    gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
@@ -85,13 +88,42 @@ export default class Level2 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
-    gameState.cursors = this.input.keyboard.createCursorKeys();  
+    gameState.cursors = this.input.keyboard.createCursorKeys(); 
+    gameState.shiftAvailable = false;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 0;
+    gameState.paused = false; 
+
+     //animation for cluster of energy that enables shift abilty for Neo
+     this.anims.create({
+      key: 'rotate',
+      frames: this.anims.generateFrameNumbers('shiftEnable', { frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }),
+      frameRate: 5,
+      repeat: -1,
+      yoyo: true
+  });
+    //defining sprite sheet and playing the animation
+    gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.5);
+    gameState.powerUp.play("rotate");
+
+    this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
+      // gameState.powerUp.destroy();
+      const info = this.add.text(301, 994, 'POWER UP! PRESS SHIFT', { fontSize: '15px', fill: '#FFFFFF' });
+      setTimeout(() => {
+        info.destroy();
+      }, 5000)
+      gameState.shiftAvailable = true;
+    });
   }
 
   update() {
+    console.log(gameState.Neo.x, gameState.Neo.y);
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
     applyColourAnimations(gameState, this.scene.scene, shiftStates);
+    //rotates shift powerup sprite
+    gameState.powerUp.angle += 1;
   }
 }
