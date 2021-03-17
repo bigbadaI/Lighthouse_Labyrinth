@@ -11,16 +11,16 @@ export default class Level2 extends Phaser.Scene {
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
-    this.add.image(0, height, 'BG1')
+    const bg1 = this.add.image(0, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    this.add.image(width, height, 'BG1')
+    const bg2 = this.add.image(width, height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    this.add.image(0, height + height, 'BG1')
+    const bg3 = this.add.image(0, height + height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
-    this.add.image(width, height + height, 'BG1')
+    const bg4 = this.add.image(width, height + height, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
@@ -32,29 +32,54 @@ export default class Level2 extends Phaser.Scene {
       gameState.Neo.height * 0.5
     );
 
+    //variables to store the rendered maps depending on color shift
+    let wallsLayer1 = ''
+    let wallsLayer2 = ''
     //Just dummy variable to load the differing layers on level 2. True is normal and false is infa-red
     let cool = true
     const map = this.make.tilemap({ key: "LVL2" });
     if (cool) {
+      //Renders normal level
       const tileset = map.addTilesetImage("cave_lvl2", "caveTiles");
-      const wallsLayer1 = map.createLayer("Walls_1", tileset);
-      wallsLayer1.setCollisionByProperty({ collides: true });
-      const wallsLayer2 = map.createLayer("Walls_2", tileset);
-      wallsLayer2.setCollisionByProperty({ collides: true });
-      // const debugGraphics = this.add.graphics().setAlpha(0.7);
-      // wallsLayer1.renderDebug(debugGraphics, {
-      // tileColor: null,
-      // collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-      // faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-      // });
-      this.physics.add.collider(gameState.Neo, wallsLayer1);
-      this.physics.add.collider(gameState.Neo, wallsLayer2)
+      wallsLayer1 = map.createLayer("Walls_1", tileset);
+      wallsLayer2 = map.createLayer("Walls_2", tileset);
     } else {
+      //Renders infaredMap
       const tileset = map.addTilesetImage("cave_lvl2", "caveTiles");
       const wallsLayer1 = map.createLayer("A_Layer_Walls", tileset);
-      wallsLayer1.setCollisionByProperty({ collides: true });
-      this.physics.add.collider(gameState.Neo, wallsLayer1);
     }
+
+    gameState.spotlight = this.make.sprite({
+      x: 2800,
+      y: 25,
+      key: "mask",
+      add: false,
+      scale: 2,
+    });
+
+    //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
+    wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    wallsLayer1.setCollisionByProperty({ collides: true });
+    wallsLayer2.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(gameState.Neo, wallsLayer1);
+    this.physics.add.collider(gameState.Neo, wallsLayer2)
+
+    //Renders and fades in and out the spotlight
+    this.tweens.add({
+      targets: gameState.spotlight,
+      alpha: 0,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+      loop: -1,
+      yoyo: true,
+    });
+
+    
     
     //Camera to follow Neo and set to level bounds
     this.cameras.main.setBounds(0, 0, 3200, 1600)
@@ -64,6 +89,9 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
-     NeoMovment(gameState)
+    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
+    pause(gameState);
+    NeoMovment(gameState);
+    applyColourAnimations(gameState, this.scene.scene, shiftStates);
   }
 }
