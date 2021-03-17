@@ -119,7 +119,7 @@ export default class Level2 extends Phaser.Scene {
       }, 10000)
       gameState.shiftAvailable = true;
       gameState.timer = this.time.addEvent({
-        delay: 150000, //2.5 minutes
+        delay: 150000, 
         paused: false
       });
       console.log("this timer", this)
@@ -127,13 +127,13 @@ export default class Level2 extends Phaser.Scene {
       gameState.text.setScrollFactor(0);
     });
 
-    //timer only renders properly outside...?
-    // gameState.timer = this.time.addEvent({
-    //   delay: 150000, //2.5 minutes
-    //   paused: false
-    // });
-    // gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold 14px system-ui'});
-    // gameState.text.setScrollFactor(0);
+    // timer only renders properly outside...?
+    gameState.timer = this.time.addEvent({
+      delay: 45000,
+      paused: false
+    });
+    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold 14px system-ui'});
+    gameState.text.setScrollFactor(0);
   }
 
   update() {
@@ -149,24 +149,33 @@ export default class Level2 extends Phaser.Scene {
       gameState.text
       .setFill("#ffffff")
       .setText(gameState.timer.getRemainingSeconds().toFixed(1));
+      gameState.timeLeft = gameState.timer.getRemainingSeconds();
     }
-    if (gameState.timer <= 30000) { //30 seconds left
-      console.log("ahhhh")
-      const danger = this.add.image(gameState.Neo.x, gameState.Neo.y, "danger1");
-      danger.setScrollFactor(0);
-      setInterval(() => {
-        this.cameras.main.shake(100, .01);
-      },5000);
+
+    console.log(gameState.timeLeft);
+    if (gameState.timeLeft <= 30 && gameState.timeLeft > 10) { //30 seconds left
+      console.log("less than 30 secs");
+      if (!gameState.danger) {
+        gameState.danger = this.add.image(300, 225, "danger1");
+        gameState.danger.setScrollFactor(0);
+        setInterval(() => {
+          this.cameras.main.shake(100, .01);
+        },3000);
+      }
       //add heartbeat and footstep sounds
-    } else if (gameState.timer <= 10000) { //10 seconds left
-      const dangerOverlay = this.add.image(gameState.Neo.x, gameState.Neo.y, "redOverlay");
-      danger.setScrollFactor(0);
-      setInterval(() => {
-        this.cameras.main.shake(100, .05);
-      },5000);
-    } else if (gameState.timer <= 0) {
-      danger.destroy();
-      dangerOverlay.destroy();
+    } else if (gameState.timeLeft <= 10 && gameState.timeLeft > 0) { //10 seconds left
+      console.log("less than 10 secs");
+      if (!gameState.dangerOverlay) {
+        gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
+        gameState.dangerOverlay.setScrollFactor(0);
+        setInterval(() => {
+          this.cameras.main.shake(100, .05);
+        },2000);
+      }
+    } else if (gameState.timeLeft <= 0) {
+      console.log("out of time");
+      gameState.danger.destroy();
+      gameState.dangerOverlay.destroy();
       //trigger game over
     }
     // gameState.d = this.add.sprite(gameState.Neo.x, gameState.Neo.y, "danger2");

@@ -78,10 +78,14 @@ export default class Level1 extends Phaser.Scene {
    
     //Adds collision factors so far just new and wallsLayer
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
-      console.log('you hit a wall!')
-      this.cameras.main.shake(100, .01)
-      gameState.energy -= 0.25
-      bar.animateToFill(gameState.energy/100)
+      console.log('you hit a wall!');
+      this.cameras.main.shake(100, .01);
+      gameState.energy -= 0.25;
+      bar.animateToFill(gameState.energy/100);
+      const ouch = this.add.image(gameState.Neo.x, gameState.Neo.y, "onImpact");
+      setTimeout(() => {
+        ouch.destroy();
+      }, 3000)
     });
 
 
