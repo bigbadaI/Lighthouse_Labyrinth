@@ -7,7 +7,7 @@ import EnergyBar from "./energyBar"
 import FormUtil from "../phaser/inputTextExampleDeleteLater/js/util/formUtil"
 import alignGrid from "../phaser/inputTextExampleDeleteLater/js/util/alignGrid"
 import align from "../phaser/inputTextExampleDeleteLater/js/util/align"
-
+import renderDeath from "./helper/renderDeath"
 
 
 const gameState = {};
@@ -83,15 +83,15 @@ export default class Level1 extends Phaser.Scene {
       {
         this.physics.pause()
         this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
-        
+        renderDeath();
         //should music stop? or particles? how do you restart the game? display score? what is score made of...?
         //death form input
-        this.formUtil = new FormUtil ({
-          scene: this,
-          rows: 11,
-          cols: 11
-        })
-        this.formUtil.showNumbers();
+        // this.formUtil = new FormUtil ({
+        //   scene: this,
+        //   rows: 11,
+        //   cols: 11
+        // })
+        // this.formUtil.showNumbers();
 
 
 

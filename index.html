@@ -12,13 +12,23 @@
 			<div id="root"></div>
 			<div id="phaser"></div>
 		</div>
+		<div id = "overlay">
+			<div id = "popUpContent"></div>
+			<% if (gameState.energy <= 0) { %>
+				<input type="text" id="myText" maxLength="4"/>
+				<textarea id="area51">YOU LOST, enter your name for all to see(if you made the leaderboard that is)</textarea>
+			<% } %>
+			
+	</div>
 		<audio autoplay loop id="myaudio" controls>
 			<source src="./src/assets/sounds/Cave_01.mp3" type="audio/mpeg"/>
 		</audio>
 		<script>
 			var audio = document.getElementById("myaudio");
 			audio.volume = 0.02;
+			
 		</script>
+		
 	</body>
 	
 </html>
