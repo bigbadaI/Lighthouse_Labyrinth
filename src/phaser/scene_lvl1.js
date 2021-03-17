@@ -52,7 +52,12 @@ export default class Level1 extends Phaser.Scene {
     gameState.cursors = this.input.keyboard.createCursorKeys();
 
     //Adds collision factors so far just new and wallsLayer
-    this.physics.add.collider(gameState.Neo, wallsLayer);
+    this.physics.add.collider(gameState.Neo, wallsLayer, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
+    });
 
     
 
@@ -110,7 +115,7 @@ export default class Level1 extends Phaser.Scene {
           console.log('you got one!')
           energyCreator.explode()
           //createEnergy3.pause()
-          gameState.energy -= 1
+          gameState.energy += 1
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
