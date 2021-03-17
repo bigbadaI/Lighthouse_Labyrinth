@@ -10,8 +10,6 @@ export default class Level1 extends Phaser.Scene {
     super({ key: 'Level1' });
   }
     
-
-  // 
   create() {
     // var time = Math.floor(game.time.totalElapsedSeconds() );
     // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
