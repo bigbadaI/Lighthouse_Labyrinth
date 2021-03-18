@@ -6,7 +6,7 @@ import arcadeXML from '../assets/arcade.xml';
 import arcadePNG from '../assets/arcade.png';
 const request = require('ajax-request')
 const highscoreObj = {}
-
+const points = {}
 
 export default class Highscore extends Phaser.Scene {
 
@@ -19,21 +19,28 @@ export default class Highscore extends Phaser.Scene {
       this.playerText;
   }
 
+  init(data){
+    console.log('init', data);
+    points.points = data.points
+  }
+  
   preload ()
   {
       this.load.image('block', block);
       this.load.image('rub', rub);
       this.load.image('end', end);
-
+      
       this.load.bitmapFont('arcade', arcadePNG, arcadeXML);
   }
 
   create ()
   {
+    
       // this.add.bitmapText(20, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
       // this.add.bitmapText(20, 310, 'arcade', '1ST   50000').setTint(0xff0000);
-
+      
       this.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
+      this.highScore = this.add.bitmapText(50, 360, 'arcade', `score:${points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining}` )
       highscoreObj.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
 
       //  Do this, otherwise this Scene will steal all keyboard input
