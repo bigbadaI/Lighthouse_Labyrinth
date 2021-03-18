@@ -6,7 +6,8 @@ import playGame from "./phaser/scene";
 import scene2 from "./phaser/scene2";
 import StartScene from "./phaser/start_scene"
 import LVL1 from "./phaser/scene_lvl1";
-import LVL2 from "./phaser/scene_lvl2"
+import LVL2 from "./phaser/scene_lvl2";
+import LVL2B from "./phaser/scene_lvl2B";
 import Preloader from "./phaser/helper/preloader";
 
 
@@ -24,7 +25,7 @@ export const config = {
   },
 
 
-  scene: [Preloader,StartScene, LVL1, LVL2, playGame, scene2],
+  scene: [Preloader,StartScene, LVL1, LVL2, LVL2B, playGame, scene2],
 
   scale: {
     zoom: 1.5

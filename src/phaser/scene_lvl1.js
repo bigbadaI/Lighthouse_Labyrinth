@@ -59,7 +59,7 @@ export default class Level1 extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
     
     //Renders main character
-    gameState.Neo = this.physics.add.sprite(300, 1300, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -194,7 +194,7 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.start('Level2', { backgroundmusic: gameState.backgroundMusic });
+      this.scene.start('Level2', { backgroundMusic: gameState.backgroundMusic });
       gameState.Neo.y = 1360
     }
 
