@@ -12,8 +12,6 @@ export default class Level2 extends Phaser.Scene {
   init(data){
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundmusic;
-    // this.imageID = data.id;
-    // this.imageFile = data.image;
   }
 
   create() {
@@ -34,6 +32,13 @@ export default class Level2 extends Phaser.Scene {
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
+    gameState.cursors = this.input.keyboard.createCursorKeys(); 
+    gameState.shiftAvailable = false;
+    gameState.overylay;
+    gameState.shakeAvailable = false;
+    gameState.currentState = 2; //neo is initially at index of 2
+    gameState.paused = false; 
+
     //Renders Neo
     gameState.Neo = this.physics.add.sprite(2800, 25, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
@@ -44,21 +49,19 @@ export default class Level2 extends Phaser.Scene {
     );
 
     //variables to store the rendered maps depending on color shift
-    let wallsLayer1 = ''
-    let wallsLayer2 = ''
+  
     //Just dummy variable to load the differing layers on level 2. True is normal and false is infa-red
-    let cool = true
-    const map = this.make.tilemap({ key: "LVL2" });
-    if (cool) {
+    
+    gameState.map = this.make.tilemap({ key: "LVL2" });
       //Renders normal level
-      const tileset = map.addTilesetImage("cave_lvl2", "caveTiles");
-      wallsLayer1 = map.createLayer("Walls_1", tileset);
-      wallsLayer2 = map.createLayer("Walls_2", tileset);
-    } else {
-      //Renders infaredMap
-      const tileset = map.addTilesetImage("cave_lvl2", "caveTiles");
-      const wallsLayer1 = map.createLayer("A_Layer_Walls", tileset);
-    }
+      const tileset = gameState.map.addTilesetImage("cave_lvl2", "caveTiles");
+      gameState.wallsLayer1 = gameState.map.createLayer("Walls_1", tileset);
+      gameState.wallsLayer2 = gameState.map.createLayer("Walls_2", tileset);
+      gameState.wallsLayer1.setCollisionByProperty({ collides: true });
+      gameState.wallsLayer2.setCollisionByProperty({ collides: true });
+      gameState.wallsLayer3 = gameState.map.createLayer("A_Layer_Walls", tileset);
+      gameState.wallsLayer3.setCollisionByProperty({ collides: true });
+  
 
     gameState.spotlight = this.make.sprite({
       x: 2800,
@@ -69,26 +72,67 @@ export default class Level2 extends Phaser.Scene {
     });
 
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
-    wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    gameState.wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    gameState.wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    gameState.wallsLayer3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    wallsLayer1.setCollisionByProperty({ collides: true });
-    wallsLayer2.setCollisionByProperty({ collides: true });
     
-    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+    gameState.boom = false;
+    this.physics.add.collider(gameState.Neo, gameState.wallsLayer1, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
       // gameState.energy -= 0.25
       // bar.animateToFill(gameState.energy/100)
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      if (!gameState.isPlaying)gameState.boom = true;
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
     });
-    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+    this.physics.add.collider(gameState.Neo, gameState.wallsLayer2, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
       // gameState.energy -= 0.25
       // bar.animateToFill(gameState.energy/100)
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      if (!gameState.isPlaying)gameState.boom = true;
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
+    });
+    this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
+      console.log('you hit a wall!')
+      this.cameras.main.shake(100, .01)
+      // gameState.energy -= 0.25
+      // bar.animateToFill(gameState.energy/100)
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      if (!gameState.isPlaying)gameState.boom = true;
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
+    });
+
+    const debugGraphics = this.add.graphics().setAlpha(0.7);
+    gameState.wallsLayer1.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
+     faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+   });
+    gameState.wallsLayer2.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
+    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+    gameState.wallsLayer3.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
+    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     });
 
     //Renders and fades in and out the spotlight
@@ -107,41 +151,34 @@ export default class Level2 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
-    gameState.cursors = this.input.keyboard.createCursorKeys(); 
-    gameState.shiftAvailable = false;
-    gameState.overylay;
-    gameState.shakeAvailable = false;
-    gameState.currentState = 0;
-    gameState.paused = false; 
-    // gameState.heart = this.sound.add("heart");
 
-    gameState.boom = false;
-    this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-      console.log('you hit a wall!')
-      this.cameras.main.shake(100, .01)
-      gameState.energy -= 0.25
-      bar.animateToFill(gameState.energy/100)
-      const ouch = this.add.image(300, 225, "impact");
-      ouch.setScrollFactor(0);
-      if (!gameState.isPlaying)gameState.boom = true;
-      gameState.boom = true;
-      setTimeout(() => {
-        ouch.destroy();
-      }, 2000)
-    });
+    // gameState.boom = false;
+    // this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
+    //   console.log('you hit a wall!')
+    //   this.cameras.main.shake(100, .01)
+    //   gameState.energy -= 0.25
+    //   bar.animateToFill(gameState.energy/100)
+    //   const ouch = this.add.image(300, 225, "impact");
+    //   ouch.setScrollFactor(0);
+    //   if (!gameState.isPlaying)gameState.boom = true;
+    //   gameState.boom = true;
+    //   setTimeout(() => {
+    //     ouch.destroy();
+    //   }, 2000)
+    // });
 
-    this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-      console.log('you hit a wall!')
-      this.cameras.main.shake(100, .01)
-      gameState.energy -= 0.25
-      bar.animateToFill(gameState.energy/100)
-      const ouch = this.add.image(300, 225, "impact");
-      ouch.setScrollFactor(0);
-      if (!gameState.isPlaying)gameState.boom = true;
-      setTimeout(() => {
-        ouch.destroy();
-      }, 2000)
-    });
+    // this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
+    //   console.log('you hit a wall!')
+    //   this.cameras.main.shake(100, .01)
+    //   gameState.energy -= 0.25
+    //   bar.animateToFill(gameState.energy/100)
+    //   const ouch = this.add.image(300, 225, "impact");
+    //   ouch.setScrollFactor(0);
+    //   if (!gameState.isPlaying)gameState.boom = true;
+    //   setTimeout(() => {
+    //     ouch.destroy();
+    //   }, 2000)
+    // });
 
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
@@ -180,6 +217,12 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
+    if (gameState.currentState === 1) {
+      gameState.wallsLayer3.setCollisionByProperty({ collides: true });
+      gameState.wallsLayer1.destroy();
+      gameState.wallsLayer2.destroy();
+    }
+
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
@@ -195,8 +238,7 @@ export default class Level2 extends Phaser.Scene {
       gameState.timeLeft = gameState.timer.getRemainingSeconds();
     }
 
-    // console.log(gameState.timeLeft);
-    if (gameState.timeLeft <= 30 && gameState.timeLeft > 10) { //30 seconds left
+    if (gameState.timeLeft <= 20 && gameState.timeLeft > 10) { //30 seconds left
       console.log("less than 30 secs");
       if (!gameState.danger) {
         gameState.danger = this.add.image(300, 225, "danger1");
@@ -204,8 +246,8 @@ export default class Level2 extends Phaser.Scene {
         gameState.text.setFontSize(26);
         console.log(gameState.text.font);
         gameState.danger.setScrollFactor(0);
-        gameState.heart = this.sound.add("heart", {volume: 2.0});
-        gameState.backgroundMusic.setVolume(0.004);
+        gameState.heart = this.sound.add("heart").play();
+        gameState.backgroundMusic.setVolume(0.01);
         setInterval(() => {
           this.cameras.main.shake(100, .01);
         },3000);
@@ -216,16 +258,14 @@ export default class Level2 extends Phaser.Scene {
       if (!gameState.dangerOverlay) {
         gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
         gameState.dangerOverlay.setScrollFactor(0);
-        gameState.heart.setRate(2.0);
         this.sound.add("breathe", {volume: 0.01}).play();
-        gameState.backgroundMusic.setRate(2.0)
+        gameState.backgroundMusic.setRate(2.0).setVolume(0.01);
         clearInterval();
         setInterval(() => {
           this.cameras.main.shake(300, .02);
         },2000);
       }
     } else if (gameState.timeLeft <= 0) {
-      console.log("out of time");
       gameState.danger.destroy();
       gameState.dangerOverlay.destroy();
       clearInterval();
