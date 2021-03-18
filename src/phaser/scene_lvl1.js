@@ -159,15 +159,59 @@ export default class Level1 extends Phaser.Scene {
     
     //defines what happens when you collide with a particle
     gameState.s = false;
-    const hitTest = {
+    const hitTest1 = {
       contains: function (x,y) {
         
         const hit = gameState.Neo.body.hitTest(x,y);
         if (hit) {
           console.log('you got one!')
-          energyCreator.explode()
+          energyCreator1.explode()
           gameState.s = true;
-          //createEnergy3.pause()
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest2 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator2.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest3 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator3.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest4 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator4.explode()
+          gameState.s = true;
           gameState.energy += 1
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
@@ -177,7 +221,7 @@ export default class Level1 extends Phaser.Scene {
     }
     
     
-  const energyCreator = particles.createEmitter({
+  const energyCreator1 = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
     blendMode: 'ADD',
@@ -185,7 +229,38 @@ export default class Level1 extends Phaser.Scene {
     x: 10,
     y: 50,
     quantity: 1,
-    deathZone: { type: 'onEnter', source: hitTest }
+    deathZone: { type: 'onEnter', source: hitTest1 }
+  });
+
+  const energyCreator2 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 775,
+    y: 13,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest2 }
+  });
+  const energyCreator3 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2475,
+    y: -80,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest3 }
+  });
+  const energyCreator4 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 1635,
+    y: 468,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest4 }
   });
     
     //energy bar
@@ -204,6 +279,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update() {
+    
     //Neo DEATH Statement
     if (gameState.energy <= 0)
       {

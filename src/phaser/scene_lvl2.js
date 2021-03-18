@@ -10,8 +10,6 @@ export default class Level2 extends Phaser.Scene {
     super({ key: 'Level2' });
   }
 
-
-
   init(data){
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
@@ -175,6 +173,114 @@ export default class Level2 extends Phaser.Scene {
       }
     });
 
+    const curveArr = [ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]
+    const curve = new Phaser.Curves.Spline(curveArr);
+    const particles = this.add.particles('energyBall');
+    gameState.s = false;
+    const hitTest1 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator1.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest2 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator2.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest3 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator3.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest4 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator4.explode()
+          gameState.s = true;
+          gameState.energy += 1
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    
+    
+  const energyCreator1 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2506,
+    y: 785,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest1 }
+  });
+
+  const energyCreator2 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2041,
+    y: 400,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest2 }
+  });
+  const energyCreator3 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 687,
+    y: 1195,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest3 }
+  });
+  const energyCreator4 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 157,
+    y: 279,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest4 }
+  });
+
         //energy bar
         this.fullWidth = 300
         const energyX = 50
@@ -193,6 +299,7 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
+    
     //Neo DEATH Statement
     if (gameState.energy <= 0)
       {
@@ -206,7 +313,10 @@ export default class Level2 extends Phaser.Scene {
   
     if (gameState.currentState === 1) {
       this.scene.sleep("Level2");
-      this.scene.start("Level2B", {backgroundMusic: gameState.backgroundMusic});
+      this.scene.start("Level2B", {
+        backgroundMusic: gameState.backgroundMusic,
+        energy: gameState.energy
+      });
     }
 
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];

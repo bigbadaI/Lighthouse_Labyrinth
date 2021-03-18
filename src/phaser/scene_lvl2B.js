@@ -3,15 +3,17 @@ import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import { gameState } from "./scene_lvl2";
+import EnergyBar from "./energyBar"
 
 export default class Level2B extends Phaser.Scene {
   constructor() {
     super({ key: 'Level2B' });
   }
 
-  init(data){
+  init(data) {
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
+    gameState.energy = data.energy
   }
 
   create() {
@@ -86,8 +88,8 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
@@ -107,6 +109,22 @@ export default class Level2B extends Phaser.Scene {
       yoyo: true,
     });
 
+    //energy bar
+    this.fullWidth = 300
+    const energyX = 50
+    const energyY = 50
+
+    gameState.particlesCollected = 0
+    //gameState.energy = 100
+
+    const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .layout()
+    // .animateToFill(gameState.energy/100)
+    //.reAnimateToFill(gameState.energy/100)
+
     
     
     //Camera to follow Neo and set to level bounds
@@ -118,6 +136,7 @@ export default class Level2B extends Phaser.Scene {
   }
 
   update() {
+    
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
