@@ -151,6 +151,7 @@ export default class Level2 extends Phaser.Scene {
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
       // gameState.powerUp.destroy();
+      this.collided = false
       if (!this.collided) {
         this.collided = true;
         const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
@@ -169,8 +170,8 @@ export default class Level2 extends Phaser.Scene {
   update() {
   
     if (gameState.currentState === 1) {
-      this.scene.remove("Level2");
-      this.scene.launch("Level2B", {backgroundMusic: gameState.backgroundMusic});
+      this.scene.sleep("Level2");
+      this.scene.start("Level2B", {backgroundMusic: gameState.backgroundMusic});
     }
 
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
@@ -226,7 +227,6 @@ export default class Level2 extends Phaser.Scene {
     if (gameState.Neo.y < 5) {
       this.scene.sleep('Level2');
       this.scene.run('Level1');
-      gameState.Neo.y = 25
     }
 
     if (gameState.s) {

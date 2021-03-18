@@ -12,7 +12,7 @@ export default class Highscore extends Phaser.Scene {
 
   constructor ()
   {
-      super({ key: 'Highscore', active: true,
+      super({ key: 'Highscore', active: false,
        
      });
 

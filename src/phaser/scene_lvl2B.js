@@ -181,7 +181,9 @@ export default class Level2B extends Phaser.Scene {
       },1000)
     }
     if (gameState.Neo.x > 3250) {
-      this.scene.remove('Level2B');
+      this.scene.stop('Level2B');
+      this.scene.stop('Level1');
+      this.scene.stop('Level2');
       this.scene.launch('Highscore')
       // this.scene.resume('Starfield')
       gameState.Neo.y = 25
