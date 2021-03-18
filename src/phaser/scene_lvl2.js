@@ -26,6 +26,28 @@ export default class Level2 extends Phaser.Scene {
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
+    gameState.spotlight1 = this.make.sprite({
+      x: 2800,
+      y: 25,
+      key: "mask",
+      add: false,
+      scale: 1.5,
+    });
+    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+      loop: -1,
+      yoyo: true,
+    });
+
     //Renders Neo
     gameState.Neo = this.physics.add.sprite(2800, 25, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
@@ -63,10 +85,7 @@ export default class Level2 extends Phaser.Scene {
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
     wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
+    
     wallsLayer1.setCollisionByProperty({ collides: true });
     wallsLayer2.setCollisionByProperty({ collides: true });
     this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
