@@ -199,13 +199,7 @@ export default class Level2B extends Phaser.Scene {
       clearInterval();
       //trigger game over
     }
-    
-
-    if (gameState.Neo.y < 5) {
-      this.scene.sleep('Level2');
-      this.scene.run('Level1');
-      gameState.Neo.y = 25
-    }
+  
 
     if (gameState.s) {
       this.sound.add("sparkle", {volume: 0.5}).play();
