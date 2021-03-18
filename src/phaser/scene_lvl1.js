@@ -113,6 +113,12 @@ export default class Level1 extends Phaser.Scene {
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
+      if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
+      }
+
     });
 
 
@@ -211,7 +217,12 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.start('Level2', { backgroundMusic: gameState.backgroundMusic });
+
+      this.scene.start('Level2', { 
+        backgroundMusic: gameState.backgroundMusic, 
+        energy: gameState.energy
+      });
+
       gameState.Neo.y = 1360
     }
 

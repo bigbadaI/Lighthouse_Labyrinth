@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
+import EnergyBar from "./energyBar"
 const gameState = {};
 
 export default class Level2 extends Phaser.Scene {
@@ -9,9 +10,13 @@ export default class Level2 extends Phaser.Scene {
     super({ key: 'Level2' });
   }
 
+
+
   init(data){
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
+    gameState.energy = data.energy
+
   }
 
   create() {
@@ -90,7 +95,11 @@ export default class Level2 extends Phaser.Scene {
       scale: 2,
     });
 
+
+    
+
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
+
     gameState.wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     gameState.wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     
@@ -98,8 +107,8 @@ export default class Level2 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer1, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
@@ -110,14 +119,15 @@ export default class Level2 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer2, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
+
     });
 
     //Renders and fades in and out the spotlight
@@ -135,7 +145,6 @@ export default class Level2 extends Phaser.Scene {
     //Camera to follow Neo and set to level bounds
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
-
 
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
@@ -165,6 +174,22 @@ export default class Level2 extends Phaser.Scene {
         gameState.shiftAvailable = true;
       }
     });
+
+        //energy bar
+        this.fullWidth = 300
+        const energyX = 50
+        const energyY = 50
+
+        gameState.particlesCollected = 0
+        //gameState.energy = 100
+
+        const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+        .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+        .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+        .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+        .layout()
+        .animateToFill(gameState.energy/100)
+        //.reAnimateToFill(gameState.energy/100)
   }
 
   update() {
@@ -181,48 +206,6 @@ export default class Level2 extends Phaser.Scene {
     //rotates shift powerup sprite
     gameState.powerUp.angle += 1;
 
-    // if (gameState.timer) {
-    //   //if shift is pressed then we can start timer
-    //   gameState.text
-    //   .setFill("#ffffff")
-    //   .setText(gameState.timer.getRemainingSeconds().toFixed(1));
-    //   gameState.timeLeft = gameState.timer.getRemainingSeconds();
-    // }
-
-    // if (gameState.timeLeft <= 20 && gameState.timeLeft > 10) { //30 seconds left
-    //   console.log("less than 30 secs");
-    //   if (!gameState.danger) {
-    //     gameState.danger = this.add.image(300, 225, "danger1");
-    //     //fix changing font
-    //     gameState.text.setFontSize(26);
-    //     console.log(gameState.text.font);
-    //     gameState.danger.setScrollFactor(0);
-    //     gameState.heart = this.sound.add("heart").play();
-    //     gameState.backgroundMusic.setVolume(0.01);
-    //     setInterval(() => {
-    //       this.cameras.main.shake(100, .01);
-    //     },3000);
-    //   }
-    //   //add heartbeat and footstep sounds
-    // } else if (gameState.timeLeft <= 10 && gameState.timeLeft > 0) { //10 seconds left
-    //   console.log("less than 10 secs");
-    //   if (!gameState.dangerOverlay) {
-    //     gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
-    //     gameState.dangerOverlay.setScrollFactor(0);
-    //     this.sound.add("breathe", {volume: 0.01}).play();
-    //     gameState.backgroundMusic.setRate(2.0).setVolume(0.01);
-    //     clearInterval();
-    //     setInterval(() => {
-    //       this.cameras.main.shake(300, .02);
-    //     },2000);
-    //   }
-    // } else if (gameState.timeLeft <= 0) {
-    //   gameState.danger.destroy();
-    //   gameState.dangerOverlay.destroy();
-    //   clearInterval();
-    //   //trigger game over
-    // }
-    
 
     if (gameState.Neo.y < 5) {
       this.scene.sleep('Level2');
