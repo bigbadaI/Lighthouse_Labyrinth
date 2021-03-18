@@ -81,7 +81,7 @@ export default class Level1 extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
     
     //Renders main character
-    gameState.Neo = this.physics.add.sprite(300, 1350, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -105,7 +105,7 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
       console.log('you hit a wall!');
       this.cameras.main.shake(100, .01);
-      gameState.energy -= 0.25;
+      gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100);
       if (!gameState.isPlaying)gameState.boom = true;
       const ouch = this.add.image(300, 225, "impact");

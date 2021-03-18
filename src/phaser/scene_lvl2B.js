@@ -88,7 +88,7 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      gameState.energy -= 0.25
+      gameState.energy -= 2
       bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
