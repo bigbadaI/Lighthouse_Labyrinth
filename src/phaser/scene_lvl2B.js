@@ -199,7 +199,7 @@ export default class Level2B extends Phaser.Scene {
         gameState.isPlaying = null;
       },1000)
     }
-    console.log(gameState.timer, gameState.timeLeft)
+    
     if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
