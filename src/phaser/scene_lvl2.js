@@ -32,6 +32,27 @@ export default class Level2 extends Phaser.Scene {
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
+    gameState.spotlight1 = this.make.sprite({
+      x: 2800,
+      y: 25,
+      key: "mask",
+      add: false,
+      scale: 1.5,
+    });
+    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+      loop: -1,
+      yoyo: true,
+    });
     gameState.cursors = this.input.keyboard.createCursorKeys(); 
     gameState.shiftAvailable = false;
     gameState.overylay;
@@ -72,10 +93,6 @@ export default class Level2 extends Phaser.Scene {
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
     gameState.wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     gameState.wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     
     gameState.boom = false;
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer1, () => {
@@ -103,18 +120,6 @@ export default class Level2 extends Phaser.Scene {
       }, 2000)
     });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    gameState.wallsLayer1.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-     faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-   });
-    gameState.wallsLayer2.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
-
     //Renders and fades in and out the spotlight
     this.tweens.add({
       targets: gameState.spotlight,
@@ -132,34 +137,6 @@ export default class Level2 extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
 
-    // gameState.boom = false;
-    // this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
-    // this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
       key: 'rotate',
@@ -174,6 +151,7 @@ export default class Level2 extends Phaser.Scene {
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
       // gameState.powerUp.destroy();
+      this.collided = false
       if (!this.collided) {
         this.collided = true;
         const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
@@ -192,7 +170,7 @@ export default class Level2 extends Phaser.Scene {
   update() {
   
     if (gameState.currentState === 1) {
-      this.scene.stop("Level2");
+      this.scene.sleep("Level2");
       this.scene.start("Level2B", {backgroundMusic: gameState.backgroundMusic});
     }
 
@@ -249,7 +227,6 @@ export default class Level2 extends Phaser.Scene {
     if (gameState.Neo.y < 5) {
       this.scene.sleep('Level2');
       this.scene.run('Level1');
-      gameState.Neo.y = 25
     }
 
     if (gameState.s) {

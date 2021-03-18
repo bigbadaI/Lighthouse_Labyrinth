@@ -50,6 +50,28 @@ export default class Level1 extends Phaser.Scene {
     const bgFour = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
+
+    gameState.spotlight1 = this.make.sprite({
+      x: 300,
+      y: 250,
+      key: 'mask',
+      add: false,
+      scale: 1.5
+    });
+
+    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: 'Sine.easeInOut',
+      loop: -1,
+      yoyo: true
+  });
     
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
@@ -104,11 +126,6 @@ export default class Level1 extends Phaser.Scene {
       scale: 2
     });
 
-    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 

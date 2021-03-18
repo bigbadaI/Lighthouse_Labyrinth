@@ -26,7 +26,7 @@ export const config = {
     }
   },
 
-  scene: [Starfield, Highscore, InputPanel, Preloader, StartScene, LVL1, LVL2, LVL2B],
+  scene: [Preloader, StartScene, LVL1, LVL2, LVL2B, Starfield, Highscore, InputPanel],
 
   scale: {
     zoom: 1.5
