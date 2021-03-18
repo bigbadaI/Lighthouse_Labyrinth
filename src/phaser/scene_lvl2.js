@@ -66,7 +66,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.paused = false; 
 
     //Renders Neo
-    gameState.Neo = this.physics.add.sprite(2800, 25, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(2800, 50, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -188,11 +188,21 @@ export default class Level2 extends Phaser.Scene {
         .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
         .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
         .layout()
-        .animateToFill(gameState.energy/100)
+        // .animateToFill(gameState.energy/100)
         //.reAnimateToFill(gameState.energy/100)
   }
 
   update() {
+    //Neo DEATH Statement
+    if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        // this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
+          this.scene.stop('Level2B');
+          this.scene.stop('Level1');
+          this.scene.stop('Level2');
+          this.scene.launch('Highscore') 
+      }
   
     if (gameState.currentState === 1) {
       this.scene.sleep("Level2");

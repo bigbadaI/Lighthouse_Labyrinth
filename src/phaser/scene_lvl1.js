@@ -81,7 +81,7 @@ export default class Level1 extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
     
     //Renders main character
-    gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(300, 1350, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -113,11 +113,6 @@ export default class Level1 extends Phaser.Scene {
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
-      if (gameState.energy <= 0)
-      {
-        this.physics.pause()
-        this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
-      }
 
     });
 
@@ -209,6 +204,16 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update() {
+    //Neo DEATH Statement
+    if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+          this.scene.stop('Level2B');
+          this.scene.stop('Level1');
+          this.scene.stop('Level2');
+          this.scene.launch('Highscore') 
+      }
+
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);

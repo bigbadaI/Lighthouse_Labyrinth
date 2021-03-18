@@ -143,7 +143,7 @@ export default class Level2B extends Phaser.Scene {
         gameState.danger.setScrollFactor(0);
         gameState.heart = this.sound.add("heart").play();
         gameState.backgroundMusic.setVolume(0.01);
-        setInterval(() => {
+        gameState.shake1 = setInterval(() => {
           this.cameras.main.shake(100, .01);
         },3000);
       }
@@ -155,15 +155,15 @@ export default class Level2B extends Phaser.Scene {
         gameState.dangerOverlay.setScrollFactor(0);
         this.sound.add("breathe", {volume: 0.01}).play();
         gameState.backgroundMusic.setRate(2.0).setVolume(0.01);
-        clearInterval();
-        setInterval(() => {
+        clearInterval(gameState.shake1);
+        gameState.shake2 = setInterval(() => {
           this.cameras.main.shake(300, .02);
         },2000);
       }
-    } else if (gameState.timeLeft <= 0) {
+    } else if (gameState.timeLeft <= 0.05) {
       gameState.danger.destroy();
       gameState.dangerOverlay.destroy();
-      clearInterval();
+      clearInterval(gameState.shake2);
       //trigger game over
     }
   
@@ -180,12 +180,12 @@ export default class Level2B extends Phaser.Scene {
         gameState.isPlaying = null;
       },1000)
     }
-    if (gameState.Neo.x > 3250) {
+    console.log(gameState.timer, gameState.timeLeft)
+    if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
       this.scene.stop('Level2');
       this.scene.launch('Highscore')
-      // this.scene.resume('Starfield')
       gameState.Neo.y = 25
     }
   }
