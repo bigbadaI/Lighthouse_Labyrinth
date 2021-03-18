@@ -5,7 +5,7 @@ export default class Starfield extends Phaser.Scene {
 
   constructor ()
   {
-      super({ key: 'Starfield', active: true });
+      super({ key: 'Starfield', active: false });
 
       this.stars;
 

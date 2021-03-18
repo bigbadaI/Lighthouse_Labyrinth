@@ -87,6 +87,12 @@ export default class Level1 extends Phaser.Scene {
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
+      if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
+      }
+
     });
 
 
