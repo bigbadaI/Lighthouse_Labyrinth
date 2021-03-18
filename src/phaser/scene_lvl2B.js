@@ -96,12 +96,6 @@ export default class Level2B extends Phaser.Scene {
       }, 2000)
     });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    gameState.wallsLayer3.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
 
     //Renders and fades in and out the spotlight
     this.tweens.add({
@@ -120,33 +114,6 @@ export default class Level2B extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
 
-    // gameState.boom = false;
-    // this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
-    // this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
 
   }
 
@@ -212,6 +179,12 @@ export default class Level2B extends Phaser.Scene {
       setTimeout(() => {
         gameState.isPlaying = null;
       },1000)
+    }
+    if (gameState.Neo.x > 3250) {
+      this.scene.remove('Level2B');
+      this.scene.launch('Highscore')
+      // this.scene.resume('Starfield')
+      gameState.Neo.y = 25
     }
   }
 }

@@ -72,8 +72,6 @@ export default class Level1 extends Phaser.Scene {
       loop: -1,
       yoyo: true
   });
-
-
     
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
@@ -128,11 +126,6 @@ export default class Level1 extends Phaser.Scene {
       scale: 2
     });
 
-    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    // bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    // bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    // bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    // bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
@@ -218,7 +211,7 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.start('Level2', { backgroundMusic: gameState.backgroundMusic });
+      this.scene.launch('Level2', { backgroundMusic: gameState.backgroundMusic });
       gameState.Neo.y = 1360
     }
 
