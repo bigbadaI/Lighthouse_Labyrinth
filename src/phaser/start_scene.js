@@ -19,9 +19,14 @@ export default class StartScene extends Phaser.Scene {
       fill: "#ffffff",
       fontSize: "13px"
     });
+    this.sound.add("intro", {volume: 0.07}).play(); 
+
     this.input.on("pointerdown", () => {
       this.scene.stop("StartScene");
       this.scene.start("Level1");
+      this.sound.stopAll();
     });
+
+    
   }
 }
