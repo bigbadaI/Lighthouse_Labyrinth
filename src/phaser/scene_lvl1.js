@@ -16,6 +16,8 @@ export default class Level1 extends Phaser.Scene {
     
   // 
   create() {
+    gameState.backgroundMusic = this.sound.add("music", {volume: 0.02});
+    gameState.backgroundMusic.play();
     // var time = Math.floor(game.time.totalElapsedSeconds() );
     // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
     // console.log(config.timer);
@@ -48,6 +50,28 @@ export default class Level1 extends Phaser.Scene {
     const bgFour = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
+
+    gameState.spotlight1 = this.make.sprite({
+      x: 300,
+      y: 250,
+      key: 'mask',
+      add: false,
+      scale: 1.5
+    });
+
+    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: 'Sine.easeInOut',
+      loop: -1,
+      yoyo: true
+  });
     
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
@@ -77,11 +101,13 @@ export default class Level1 extends Phaser.Scene {
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer
+    gameState.boom = false;
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
       console.log('you hit a wall!');
       this.cameras.main.shake(100, .01);
       gameState.energy -= 0.25;
       bar.animateToFill(gameState.energy/100);
+      if (!gameState.isPlaying)gameState.boom = true;
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       setTimeout(() => {
@@ -106,11 +132,6 @@ export default class Level1 extends Phaser.Scene {
       scale: 2
     });
 
-    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
@@ -142,6 +163,7 @@ export default class Level1 extends Phaser.Scene {
     
     
     //defines what happens when you collide with a particle
+    gameState.s = false;
     const hitTest = {
       contains: function (x,y) {
         
@@ -149,6 +171,7 @@ export default class Level1 extends Phaser.Scene {
         if (hit) {
           console.log('you got one!')
           energyCreator.explode()
+          gameState.s = true;
           //createEnergy3.pause()
           gameState.energy += 1
           gameState.particlesCollected += 1
@@ -157,6 +180,8 @@ export default class Level1 extends Phaser.Scene {
         return hit;
       }
     }
+    
+    
   const energyCreator = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
@@ -192,11 +217,26 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
+
       this.scene.start('Level2', { 
         backgroundMusic: gameState.backgroundMusic, 
         energy: gameState.energy
       });
+
       gameState.Neo.y = 1360
+    }
+
+    if (gameState.s) {
+      this.sound.add("sparkle", {volume: 0.05}).play();
+      gameState.s = false;
+    }
+
+    if (gameState.boom) {
+      gameState.isPlaying = this.sound.add("wallCollide", {volume: 0.02}).play();
+      gameState.boom = false;
+      setTimeout(() => {
+        gameState.isPlaying = null;
+      },1000)
     }
   }
 }

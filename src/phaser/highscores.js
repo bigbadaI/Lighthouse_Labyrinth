@@ -7,34 +7,6 @@ import arcadePNG from '../assets/arcade.png';
 const request = require('ajax-request')
 const highscoreObj = {}
 
-// const users = {
-//   1: {
-//     username: "Ho7Sho7",
-//     energy_score: 225,
-//     time_elasped: 120
-//   },
-//   2: {
-//     username: "BIGboy",
-//     energy_score: 333,
-//     time_elasped: 150
-//   },
-//   3: {
-//     username: "Uwin",
-//     energy_score: 500,
-//     time_elasped: 250
-//   },
-//   4: {
-//     username: "LabRUNER",
-//     energy_score: 400,
-//     time_elasped: 90
-//   },
-//   5: {
-//     username: "IRock",
-//     energy_score: 400,
-//     time_elasped: 90
-//   }
-// }
-
 
 export default class Highscore extends Phaser.Scene {
 
@@ -68,14 +40,14 @@ export default class Highscore extends Phaser.Scene {
       this.input.keyboard.enabled = false;
 
       this.scene.launch('InputPanel');
+      this.scene.launch('Starfield')
 
       let panel = this.scene.get('InputPanel');
+    
 
       //  Listen to events from the Input Panel scene
       panel.events.on('updateName', this.updateName, this);
-      panel.events.on('submitName', this.submitName, this);
-
-      
+      panel.events.on('submitName', this.submitName, this);  
       
   }
 
@@ -98,6 +70,7 @@ export default class Highscore extends Phaser.Scene {
         console.log(res, "======BODY======", body)
         let yNum = 100
         let placeNum = 0
+        const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
         const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
         let ok = JSON.parse(body)
           console.log(ok)
@@ -106,23 +79,15 @@ export default class Highscore extends Phaser.Scene {
           if (Object.hasOwnProperty.call(ok, key)) {
             const element = ok[key];
             console.log(element)
-            th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(0xff8200)
+            th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
             yNum += 50;
             placeNum += 1;
           }
-        }
-        
-    
-        
-      
+        }  
     })
   }
 
       displayScores(this)
-      // this.add.bitmapText(20, 360, 'arcade', '2ND   40000    ANT').setTint(0xff8200);
-      // this.add.bitmapText(20, 410, 'arcade', '3RD   30000    .-.').setTint(0xffff00);
-      // this.add.bitmapText(20, 460, 'arcade', '4TH   20000    BOB').setTint(0x00ff00);
-      // this.add.bitmapText(20, 510, 'arcade', '5TH   10000    ZIK').setTint(0x00bfff);
 
       this.add.text(200, 20, "Click to start!", {
         fill: "#ffffff",
@@ -130,8 +95,7 @@ export default class Highscore extends Phaser.Scene {
       });
      
       this.input.on("pointerdown", () => {
-        this.scene.stop("Highscores");
-        this.scene.stop("InputPanel")
+        this.scene.stop("Highscore");
         this.scene.stop("Starfield")
         this.scene.start("Preloader");
       });

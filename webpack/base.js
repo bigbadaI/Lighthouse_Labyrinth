@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const SRC = path.resolve(__dirname, 'src/main/js');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
@@ -40,6 +41,14 @@ module.exports = {
 				test: /\.(gif|png|jpe?g|svg|xml)$/i,
 				use: "file-loader",
 			},
+			{
+				test: /\.mp3$/,
+				use: 'file-loader'
+			},
+			{
+				test: /\.ogg$/,
+				use: 'file-loader'
+			}
 		],
 	},
 	plugins: [
