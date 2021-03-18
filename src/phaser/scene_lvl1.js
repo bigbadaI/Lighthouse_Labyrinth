@@ -192,7 +192,10 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.run('Level2');
+      this.scene.start('Level2', { 
+        backgroundMusic: gameState.backgroundMusic, 
+        energy: gameState.energy
+      });
       gameState.Neo.y = 1360
     }
   }

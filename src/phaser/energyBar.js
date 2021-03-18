@@ -47,9 +47,7 @@ export default class EnergyBar
     {
       return
     }
-
     const percent = Math.max(0, Math.min(1, fill))
-
     this.scene.tweens.add({
       targets: this.middle,
       displayWidth: this.width * percent,
@@ -58,10 +56,25 @@ export default class EnergyBar
       onUpdate: () => {
         this.layoutSegments()
       }
+    })
+  }
 
-
+  reAnimateToFill(fill, duration = 0)
+  {
+    if(!this.middle)
+    {
+      return
     }
-    )
+    const percent = Math.max(0, Math.min(1, fill))
+    this.scene.tweens.add({
+      targets: this.middle,
+      displayWidth: this.width * percent,
+      duration,
+      ease: Phaser.Math.Easing.Sine.Out,
+      onUpdate: () => {
+        this.layoutSegments()
+      }
+    })
   }
 
   layoutSegments()

@@ -2,11 +2,19 @@ import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
+import EnergyBar from "./energyBar"
 const gameState = {};
 
 export default class Level2 extends Phaser.Scene {
   constructor() {
     super({ key: 'Level2' });
+  }
+
+
+  init(data){
+    console.log('init', data);
+    gameState.backgroundMusic = data.backgroundMusic;
+    gameState.energy = data.energy
   }
 
   create() {
@@ -60,6 +68,9 @@ export default class Level2 extends Phaser.Scene {
       scale: 2,
     });
 
+
+    
+
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
     wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
@@ -70,16 +81,17 @@ export default class Level2 extends Phaser.Scene {
     wallsLayer1.setCollisionByProperty({ collides: true });
     wallsLayer2.setCollisionByProperty({ collides: true });
     this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-      console.log('you hit a wall!')
+      
+      console.log(bar)
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
     });
     this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-      console.log('you hit a wall!')
+      //console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 0.25
+      bar.animateToFill(gameState.energy/100)
     });
 
     //Renders and fades in and out the spotlight
@@ -107,14 +119,18 @@ export default class Level2 extends Phaser.Scene {
     // this.heart = this.sound.add("heart");
 
     this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-      console.log('you hit a wall!')
+      // console.log('you hit a wall!')
+      console.log(gameState.energy)
       this.cameras.main.shake(100, .01)
       gameState.energy -= 0.25
+      
       bar.animateToFill(gameState.energy/100)
+      
     });
 
     this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-      console.log('you hit a wall!')
+      // console.log('you hit a wall!')
+      console.log(gameState.energy)
       this.cameras.main.shake(100, .01)
       gameState.energy -= 0.25
       bar.animateToFill(gameState.energy/100)
@@ -154,6 +170,24 @@ export default class Level2 extends Phaser.Scene {
         gameState.text.setScrollFactor(0);
       }
     });
+        //energy bar
+        this.fullWidth = 300
+        const energyX = 50
+        const energyY = 50
+
+        gameState.particlesCollected = 0
+        //gameState.energy = 100
+
+        const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+        .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+        .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+        .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+        .layout()
+        .animateToFill(gameState.energy/100)
+        //.reAnimateToFill(gameState.energy/100)
+
+
+    
 
     // timer only renders properly outside...?
     // gameState.timer = this.time.addEvent({
