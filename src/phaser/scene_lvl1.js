@@ -16,6 +16,8 @@ export default class Level1 extends Phaser.Scene {
     
   // 
   create() {
+    gameState.backgroundMusic = this.sound.add("music", {volume: 0.02});
+    gameState.backgroundMusic.play();
     // var time = Math.floor(game.time.totalElapsedSeconds() );
     // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
     // console.log(config.timer);
@@ -77,11 +79,13 @@ export default class Level1 extends Phaser.Scene {
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer
+    gameState.boom = false;
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
       console.log('you hit a wall!');
       this.cameras.main.shake(100, .01);
       gameState.energy -= 0.25;
       bar.animateToFill(gameState.energy/100);
+      if (!gameState.isPlaying)gameState.boom = true;
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       setTimeout(() => {
@@ -136,6 +140,7 @@ export default class Level1 extends Phaser.Scene {
     
     
     //defines what happens when you collide with a particle
+    gameState.s = false;
     const hitTest = {
       contains: function (x,y) {
         
@@ -143,6 +148,7 @@ export default class Level1 extends Phaser.Scene {
         if (hit) {
           console.log('you got one!')
           energyCreator.explode()
+          gameState.s = true;
           //createEnergy3.pause()
           gameState.energy += 1
           gameState.particlesCollected += 1
@@ -151,6 +157,8 @@ export default class Level1 extends Phaser.Scene {
         return hit;
       }
     }
+    
+    
   const energyCreator = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
@@ -186,8 +194,21 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.run('Level2');
+      this.scene.start('Level2', { backgroundmusic: gameState.backgroundMusic });
       gameState.Neo.y = 1360
+    }
+
+    if (gameState.s) {
+      this.sound.add("sparkle", {volume: 0.05}).play();
+      gameState.s = false;
+    }
+
+    if (gameState.boom) {
+      gameState.isPlaying = this.sound.add("wallCollide", {volume: 0.02}).play();
+      gameState.boom = false;
+      setTimeout(() => {
+        gameState.isPlaying = null;
+      },1000)
     }
   }
 }

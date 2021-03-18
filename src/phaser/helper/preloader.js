@@ -26,8 +26,18 @@ import middleR from "../../assets/barHorizontal_red_mid.png";
 import leftCapShadow from "../../assets/barHorizontal_shadow_left.png";
 import rightCapShadow from "../../assets/barHorizontal_shadow_right.png";
 import middleShadow from "../../assets/barHorizontal_shadow_mid.png";
-// import heart from "../../assets/sounds/heartbeat.mp3";
-// import heartFF from "../../assets/sounds/heartbeat.mp3";
+import heart from "../../assets/sounds/heartbeat.mp3";
+import heartFF from "../../assets/sounds/heartbeat.ogg";
+import wallCollide from "../../assets/sounds/wallCollide.mp3";
+import wallCollideFF from "../../assets/sounds/wallCollide.ogg";
+import intro from "../../assets/sounds/intro.mp3";
+import introFF from "../../assets/sounds/intro.ogg";
+import sparkle from "../../assets/sounds/sparkle.mp3";
+import sparkleFF from "../../assets/sounds/sparkle.ogg";
+import breathe from "../../assets/sounds/breathe.mp3";
+import breatheFF from "../../assets/sounds/breathe.ogg";
+import music from "../../assets/sounds/Cave_01.mp3";
+import musicFF from "../../assets/sounds/Cave_01.ogg";
 const gameState = {};
 
 
@@ -73,7 +83,12 @@ export default class Preloader extends Phaser.Scene {
       frameHeight: 100,
       frameWidth: 100
     });
-    this.load.audio("heart", ["/LL/src/assets/sounds", "/LL/src/assets/sounds"]);
+    this.load.audio("heart", [heart, heartFF]);
+    this.load.audio("wallCollide", [wallCollide, wallCollideFF]);
+    this.load.audio("intro", [intro, introFF]);
+    this.load.audio("sparkle", [sparkle, sparkleFF]);
+    this.load.audio("breathe", [breathe, breatheFF]);
+    this.load.audio("music", [music, musicFF]);
   }
 
   create() {

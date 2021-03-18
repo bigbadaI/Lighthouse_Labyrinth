@@ -9,7 +9,15 @@ export default class Level2 extends Phaser.Scene {
     super({ key: 'Level2' });
   }
 
+  init(data){
+    console.log('init', data);
+    gameState.backgroundMusic = data.backgroundmusic;
+    // this.imageID = data.id;
+    // this.imageFile = data.image;
+  }
+
   create() {
+    //passes in data in object from scene 1
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height
@@ -69,6 +77,7 @@ export default class Level2 extends Phaser.Scene {
     bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer1.setCollisionByProperty({ collides: true });
     wallsLayer2.setCollisionByProperty({ collides: true });
+    
     this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
@@ -104,13 +113,21 @@ export default class Level2 extends Phaser.Scene {
     gameState.shakeAvailable = false;
     gameState.currentState = 0;
     gameState.paused = false; 
-    // this.heart = this.sound.add("heart");
+    // gameState.heart = this.sound.add("heart");
 
+    gameState.boom = false;
     this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
       gameState.energy -= 0.25
       bar.animateToFill(gameState.energy/100)
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      if (!gameState.isPlaying)gameState.boom = true;
+      gameState.boom = true;
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
     });
 
     this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
@@ -118,6 +135,12 @@ export default class Level2 extends Phaser.Scene {
       this.cameras.main.shake(100, .01)
       gameState.energy -= 0.25
       bar.animateToFill(gameState.energy/100)
+      const ouch = this.add.image(300, 225, "impact");
+      ouch.setScrollFactor(0);
+      if (!gameState.isPlaying)gameState.boom = true;
+      setTimeout(() => {
+        ouch.destroy();
+      }, 2000)
     });
 
      //animation for cluster of energy that enables shift abilty for Neo
@@ -154,14 +177,6 @@ export default class Level2 extends Phaser.Scene {
         gameState.text.setScrollFactor(0);
       }
     });
-
-    // timer only renders properly outside...?
-    // gameState.timer = this.time.addEvent({
-    //   delay: 45000,
-    //   paused: false
-    // });
-    // gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold system-ui'});
-    // gameState.text.setScrollFactor(0);
   }
 
   update() {
@@ -171,8 +186,6 @@ export default class Level2 extends Phaser.Scene {
     applyColourAnimations(gameState, this.scene.scene, shiftStates);
     //rotates shift powerup sprite
     gameState.powerUp.angle += 1;
-
-
 
     if (gameState.timer) {
       //if shift is pressed then we can start timer
@@ -191,7 +204,8 @@ export default class Level2 extends Phaser.Scene {
         gameState.text.setFontSize(26);
         console.log(gameState.text.font);
         gameState.danger.setScrollFactor(0);
-        // this.heart.play();
+        gameState.heart = this.sound.add("heart", {volume: 2.0});
+        gameState.backgroundMusic.setVolume(0.004);
         setInterval(() => {
           this.cameras.main.shake(100, .01);
         },3000);
@@ -202,6 +216,9 @@ export default class Level2 extends Phaser.Scene {
       if (!gameState.dangerOverlay) {
         gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
         gameState.dangerOverlay.setScrollFactor(0);
+        gameState.heart.setRate(2.0);
+        this.sound.add("breathe", {volume: 0.01}).play();
+        gameState.backgroundMusic.setRate(2.0)
         clearInterval();
         setInterval(() => {
           this.cameras.main.shake(300, .02);
@@ -222,5 +239,17 @@ export default class Level2 extends Phaser.Scene {
       gameState.Neo.y = 25
     }
 
+    if (gameState.s) {
+      this.sound.add("sparkle", {volume: 0.5}).play();
+      gameState.s = false;
+    }
+
+    if (gameState.boom) {
+      gameState.isPlaying = this.sound.add("wallCollide", {volume: 0.02}).play();
+      gameState.boom = false;
+      setTimeout(() => {
+        gameState.isPlaying = null;
+      },1000)
+    }
   }
 }
