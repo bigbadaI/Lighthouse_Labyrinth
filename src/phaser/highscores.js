@@ -102,20 +102,22 @@ export default class Highscore extends Phaser.Scene {
       displayScores(this)
     }, 100)
    
-
-     
-
       this.add.text(200, 20, "Click to start!", {
         fill: "#ffffff",
         fontSize: "20px",
       });
      
-      this.input.on("pointerdown", () => {
+      this.input.on("pointerdown", (name) => {
+        name = '';
+        points.points.energyAtEnd = 0;
+        points.points.finalParticlesCollected = 0; 
+        points.points.timeToComplete = 0; 
+        points.points.scientistTimeRemaining = 0;
         this.scene.stop("Highscore");
         this.scene.stop("Starfield")
-        this.scene.start("Preloader");
-      });
-  //}
+        this.scene.launch("Preloader");
+    });
+  
   }
 
   updateName (name)
