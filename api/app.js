@@ -9,6 +9,14 @@ const usersRouter = require('./routes/users');
 const testAPIRouter = require("./routes/testAPI");
 const highscoreRouter = require('./routes/highscores');
 const app = express();
+// PG database client/connection setup
+let dbParams = {};
+dbParams.connectionString = process.env.DATABASE_URL;
+const { Pool } = require('pg');
+const db = new Pool(dbParams);
+db.connect();
+module.exports = db;
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

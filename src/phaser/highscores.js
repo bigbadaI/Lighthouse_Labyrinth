@@ -4,7 +4,8 @@ import end from '../assets/end.png';
 import block from '../assets/block.png';
 import arcadeXML from '../assets/arcade.xml';
 import arcadePNG from '../assets/arcade.png';
-const request = require('ajax-request')
+import axios from 'axios'
+//const axios = require('axios')
 const highscoreObj = {}
 const points = {}
 
@@ -63,35 +64,57 @@ export default class Highscore extends Phaser.Scene {
       this.scene.stop('InputPanel');
       this.add.bitmapText(20, 50, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
 
-      request({
-        url: `http://localhose:3000/highscores/${highscoreObj.playerText}`,
-        method: 'POST'
+      axios.post({
+        url: `http://localhost:9000/highscores/`,
+        method: 'POST',
+        data: highscoreObj.playerText
       }, function(err, res, body) {
       })
 
       function displayScores(th) {
-      request({
-        url: "http://localhost:3000/highscores",
-        method: "GET"
-      }, function(err, res, body) {
-        console.log(res, "======BODY======", body)
-        let yNum = 100
-        let placeNum = 0
-        const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
-        const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
-        let ok = JSON.parse(body)
-          console.log(ok)
+        axios.get(`http://localhost:9000/highscores/`)
+        .then(function(err, res, body) {
+          console.log(res, "======BODY======", body)
+          let yNum = 100
+          let placeNum = 0
+          const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
+          const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
+          let ok = JSON.parse(body)
+            console.log(ok)
+            
+          for (const key in ok) {
+            if (Object.hasOwnProperty.call(ok, key)) {
+              const element = ok[key];
+              console.log(element)
+              th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
+              yNum += 50;
+              placeNum += 1;
+            }
+          }  
+        })
+        .catch(error => console.log(error))
+    //   axios.get({
+    //     url: "/",
+    //     method: "GET"
+    //   }, function(err, res, body) {
+    //     console.log(res, "======BODY======", body)
+    //     let yNum = 100
+    //     let placeNum = 0
+    //     const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
+    //     const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
+    //     let ok = JSON.parse(body)
+    //       console.log(ok)
           
-        for (const key in ok) {
-          if (Object.hasOwnProperty.call(ok, key)) {
-            const element = ok[key];
-            console.log(element)
-            th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
-            yNum += 50;
-            placeNum += 1;
-          }
-        }  
-    })
+    //     for (const key in ok) {
+    //       if (Object.hasOwnProperty.call(ok, key)) {
+    //         const element = ok[key];
+    //         console.log(element)
+    //         th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
+    //         yNum += 50;
+    //         placeNum += 1;
+    //       }
+    //     }  
+    // })
   }
 
       displayScores(this)

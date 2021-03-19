@@ -1,6 +1,8 @@
 const { request } = require("express");
 const express = require("express");
 const router = express.Router();
+const highScores = {};
+
 
 
 const users = {
@@ -25,13 +27,39 @@ const users = {
     time_elasped: 90
   },
 }
-router.get("/", function(req, res, next) {
-  res.send(users);
-});
 
-router.put("/:id", (req, res) => {
-  console.log(req);
-  users[req.params.id] = req;
-});
 
-module.exports = router;
+  router.put("/", (request, response) => {
+    const {  } = request.body.interview;
+
+    db.query(
+      `
+      //query to db to save the user
+      //query to save the user's score/time to db
+    `,
+      []
+    )
+      .catch(error => console.log(error));
+  });
+
+  router.get("/", function(req, res, next) {
+    res.send(users);
+});
+  // router.get("/", (request, response, next) => {
+  //   response.send(users)
+    // db.query(
+    //   `
+    //   SELECT player_stats.energy_score, player_stats.time_elapsed, users.username
+    // FROM player_stats
+    // JOIN users ON user_id = users.id
+    // ORDER BY energy_score DESC
+    // LIMIT 5
+    // `
+    // )
+    // .then((response) => {
+    //   setTimeout(() => highScores = response.status(500).json({}), 1000);
+    // })
+    // .catch(error => console.log(error));
+  // });
+
+module.exports = router
