@@ -4,6 +4,7 @@ import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import EnergyBar from "./energyBar"
 const gameState = {};
+let points = {}
 
 export default class Level2 extends Phaser.Scene {
   constructor() {
@@ -13,7 +14,8 @@ export default class Level2 extends Phaser.Scene {
   init(data){
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
-    gameState.energy = data.energy
+    gameState.energy = data.energy;
+    points = data.points;
 
   }
 
@@ -304,6 +306,8 @@ export default class Level2 extends Phaser.Scene {
     if (gameState.energy <= 0)
       {
         this.physics.pause()
+        points.energyAtEnd = gameState.energy
+        points.finalParticlesCollected = gameState.particlesCollected * 50
         // this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
