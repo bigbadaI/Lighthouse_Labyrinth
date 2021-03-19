@@ -75,7 +75,6 @@ export default class Highscore extends Phaser.Scene {
       return true
     }
 
-    
     function displayScores(th) {
       Promise.all ([
         axios.get("http://localhost:9000/highscores")
