@@ -15,6 +15,7 @@ export default class Level2B extends Phaser.Scene {
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
     gameState.energy = data.energy;
+    gameState.startTime = data.startTime;
     points = data.points;
   }
 
@@ -203,12 +204,14 @@ export default class Level2B extends Phaser.Scene {
     }
     
     if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
-      points.energyAtEnd = gameState.energy
-      points.finalParticlesCollected = gameState.particlesCollected * 50
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+      points.finalParticlesCollected += gameState.particlesCollected * 50
+      points.scientistTimeRemaining = Math.floor(gameState.timeLeft) * 100
+      points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
       this.scene.stop('Level2');
-      this.scene.launch('Highscore')
+      this.scene.launch('Highscore', {points})
       gameState.Neo.y = 25
     }
   }
