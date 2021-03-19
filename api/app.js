@@ -8,10 +8,18 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const testAPIRouter = require("./routes/testAPI");
 const highscoreRouter = require('./routes/highscores');
+require('dotenv').config();
 const app = express();
 // PG database client/connection setup
 let dbParams = {};
-dbParams.connectionString = process.env.DATABASE_URL;
+//dbParams.connectionString = process.env.;
+dbParams = {
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE
+}
 const { Pool } = require('pg');
 const db = new Pool(dbParams);
 db.connect();
@@ -31,7 +39,7 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
-app.use('/highscores', highscoreRouter)
+app.use('/highscores', highscoreRouter(db))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

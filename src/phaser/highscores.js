@@ -5,6 +5,8 @@ import block from '../assets/block.png';
 import arcadeXML from '../assets/arcade.xml';
 import arcadePNG from '../assets/arcade.png';
 import axios from 'axios'
+
+const request = require('ajax-request')
 //const axios = require('axios')
 const highscoreObj = {}
 const points = {}
@@ -36,12 +38,12 @@ export default class Highscore extends Phaser.Scene {
 
   create ()
   {
-    
+    const finalScore = points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining
       // this.add.bitmapText(20, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
       // this.add.bitmapText(20, 310, 'arcade', '1ST   50000').setTint(0xff0000);
       
       this.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
-      this.highScore = this.add.bitmapText(50, 360, 'arcade', `score:${points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining}` )
+      this.highScore = this.add.bitmapText(50, 360, 'arcade', `score:${finalScore}` )
       highscoreObj.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
 
       //  Do this, otherwise this Scene will steal all keyboard input
@@ -61,19 +63,48 @@ export default class Highscore extends Phaser.Scene {
 
   submitName ()
   {
+    const finalScore = points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining
       this.scene.stop('InputPanel');
       this.add.bitmapText(20, 50, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
 
-      axios.post({
-        url: `http://localhost:9000/highscores/`,
-        method: 'POST',
-        data: highscoreObj.playerText
-      }, function(err, res, body) {
+      // axios.post({
+      //   url: `http://localhost:9000/highscores/`,
+      //   method: 'POST',
+      //   data: highscoreObj.playerText
+      // }, function(err, res, body) {
+      // })
+      function submit(name, score, time) {
+        request({
+          url: "http://localhost:9000/highscores",
+          method: "POST",
+          data: {score, name, time }
+        }, function(err, res, body) {
+          console.log(res, "======BODY======", body)
+          // let yNum = 100
+          // let placeNum = 0
+          // const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
+          // const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
+          // let ok = JSON.parse(body)
+          //   console.log(ok)
+          // for (const key in ok) {
+          //   if (Object.hasOwnProperty.call(ok, key)) {
+          //     const element = ok[key];
+          //     console.log(element)
+          //     th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
+          //     yNum += 50;
+          //     placeNum += 1;
+          //   }
+          //}
       })
+    }
+
+
 
       function displayScores(th) {
-        axios.get(`http://localhost:9000/highscores/`)
-        .then(function(err, res, body) {
+        request({
+          url: "http://localhost:9000/highscores",
+          method: "GET"
+        }, function(err, res, body) {
           console.log(res, "======BODY======", body)
           let yNum = 100
           let placeNum = 0
@@ -81,7 +112,6 @@ export default class Highscore extends Phaser.Scene {
           const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
           let ok = JSON.parse(body)
             console.log(ok)
-            
           for (const key in ok) {
             if (Object.hasOwnProperty.call(ok, key)) {
               const element = ok[key];
@@ -90,45 +120,74 @@ export default class Highscore extends Phaser.Scene {
               yNum += 50;
               placeNum += 1;
             }
-          }  
-        })
-        .catch(error => console.log(error))
-    //   axios.get({
-    //     url: "/",
-    //     method: "GET"
-    //   }, function(err, res, body) {
-    //     console.log(res, "======BODY======", body)
-    //     let yNum = 100
-    //     let placeNum = 0
-    //     const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
-    //     const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
-    //     let ok = JSON.parse(body)
-    //       console.log(ok)
+          }
+      })
+    }
+        displayScores(this)
+        submit(highscoreObj.playerText, finalScore, points.points.timeToComplete)
+
+
+
+
+      //function displayScores(th) {
+        //axios.get(`http://localhost:9000/highscores/`)
+  //       .then(function(err, res, body) {
+  //         console.log(res, "======BODY======", body)
+  //         let yNum = 100
+  //         let placeNum = 0
+  //         const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
+  //         const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
+  //         let ok = JSON.parse(body)
+  //           console.log(ok)
+            
+  //         for (const key in ok) {
+  //           if (Object.hasOwnProperty.call(ok, key)) {
+  //             const element = ok[key];
+  //             console.log(element)
+  //             th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
+  //             yNum += 50;
+  //             placeNum += 1;
+  //           }
+  //         }  
+  //       })
+  //       .catch(error => console.log(error))
+  //   //   axios.get({
+  //   //     url: "/",
+  //   //     method: "GET"
+  //   //   }, function(err, res, body) {
+  //   //     console.log(res, "======BODY======", body)
+  //   //     let yNum = 100
+  //   //     let placeNum = 0
+  //   //     const color = [0xff8200, 0xffff00, 0x00ff00, 0x00bfff]
+  //   //     const place = ["1ST", "2ND", "3RD", "4TH", "5TH"]
+  //   //     let ok = JSON.parse(body)
+  //   //       console.log(ok)
           
-    //     for (const key in ok) {
-    //       if (Object.hasOwnProperty.call(ok, key)) {
-    //         const element = ok[key];
-    //         console.log(element)
-    //         th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
-    //         yNum += 50;
-    //         placeNum += 1;
-    //       }
-    //     }  
-    // })
-  }
+  //   //     for (const key in ok) {
+  //   //       if (Object.hasOwnProperty.call(ok, key)) {
+  //   //         const element = ok[key];
+  //   //         console.log(element)
+  //   //         th.add.bitmapText(20, yNum, 'arcade', `${place[placeNum]}   ${element.energy_score}   ${element.username}`).setTint(color[placeNum])
+  //   //         yNum += 50;
+  //   //         placeNum += 1;
+  //   //       }
+  //   //     }  
+  //   // })
+  // }
 
-      displayScores(this)
+      // displayScores(this)
 
-      this.add.text(200, 20, "Click to start!", {
-        fill: "#ffffff",
-        fontSize: "20px",
-      });
+      // this.add.text(200, 20, "Click to start!", {
+      //   fill: "#ffffff",
+      //   fontSize: "20px",
+      // });
      
-      this.input.on("pointerdown", () => {
-        this.scene.stop("Highscore");
-        this.scene.stop("Starfield")
-        this.scene.start("Preloader");
-      });
+      // this.input.on("pointerdown", () => {
+      //   this.scene.stop("Highscore");
+      //   this.scene.stop("Starfield")
+      //   this.scene.start("Preloader");
+      // });
+  //}
   }
 
   updateName (name)
