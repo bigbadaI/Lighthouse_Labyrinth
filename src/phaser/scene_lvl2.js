@@ -306,20 +306,24 @@ export default class Level2 extends Phaser.Scene {
     if (gameState.energy <= 0)
       {
         this.physics.pause()
-        points.energyAtEnd = gameState.energy
-        points.finalParticlesCollected = gameState.particlesCollected * 50
+        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
+        points.finalParticlesCollected += gameState.particlesCollected * 50
+        console.log("points", points, gameState.energy)
         // this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
-          this.scene.launch('Highscore') 
+          this.scene.launch('Highscore', {points}) 
       }
   
     if (gameState.currentState === 1) {
       this.scene.sleep("Level2");
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
+      points.finalParticlesCollected += gameState.particlesCollected * 50
       this.scene.start("Level2B", {
         backgroundMusic: gameState.backgroundMusic,
-        energy: gameState.energy
+        energy: gameState.energy,
+        points
       });
     }
 

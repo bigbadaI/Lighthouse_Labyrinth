@@ -285,8 +285,8 @@ export default class Level1 extends Phaser.Scene {
     if (gameState.energy <= 0)
       {
         this.physics.pause()
-        points.energyAtEnd = gameState.energy
-        points.finalParticlesCollected = gameState.particlesCollected * 50
+        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+        points.finalParticlesCollected += gameState.particlesCollected * 50
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
@@ -301,7 +301,8 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+      points.finalParticlesCollected += gameState.particlesCollected * 50
       this.scene.start('Level2', { 
         backgroundMusic: gameState.backgroundMusic, 
         energy: gameState.energy,
