@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "ajax-request": "^1.2.3",
+    "axios": "^0.21.1",
+    "env": "0.0.2",
     "file-system": "^2.2.2",
     "phaser": "^3.53.1",
     "react": "^16.9.0",

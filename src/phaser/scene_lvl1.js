@@ -8,6 +8,7 @@ import EnergyBar from "./energyBar"
 
 
 const gameState = {};
+const points = {energyAtEnd: 0, timeToComplete: 0, scientistTimeRemaining: 0, finalParticlesCollected: 0};
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -284,10 +285,12 @@ export default class Level1 extends Phaser.Scene {
     if (gameState.energy <= 0)
       {
         this.physics.pause()
+        points.energyAtEnd = gameState.energy
+        points.finalParticlesCollected = gameState.particlesCollected * 50
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
-          this.scene.launch('Highscore') 
+          this.scene.launch('Highscore', {points}) 
       }
 
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
@@ -301,7 +304,8 @@ export default class Level1 extends Phaser.Scene {
 
       this.scene.start('Level2', { 
         backgroundMusic: gameState.backgroundMusic, 
-        energy: gameState.energy
+        energy: gameState.energy,
+        points
       });
 
       gameState.Neo.y = 1360
