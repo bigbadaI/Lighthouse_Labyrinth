@@ -204,10 +204,10 @@ export default class Level2B extends Phaser.Scene {
     }
     
     if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
-      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 1000
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 750
       points.finalParticlesCollected += gameState.particlesCollected * 50
       points.scientistTimeRemaining = Math.floor(gameState.timeLeft) * 1000
-      points.timeToComplete = Math.floor((new Date - gameState.startTime) / 50)
+      points.timeToComplete = Math.floor((new Date - gameState.startTime) / 10)
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
       this.scene.stop('Level2');
