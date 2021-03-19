@@ -1,9 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
-import { config } from "../index";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
-import { parallaxBackground } from "./helper/backgrounds";
 import EnergyBar from "./energyBar"
 
 

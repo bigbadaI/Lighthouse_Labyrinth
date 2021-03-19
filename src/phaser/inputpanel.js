@@ -170,6 +170,7 @@ export default class InputPanel extends Phaser.Scene {
       {
           //  Submit
           this.events.emit('submitName', this.name);
+          this.name = '';
       }
       else if (x === 8 && y === 2 && nameLength > 0)
       {
