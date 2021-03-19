@@ -168,7 +168,9 @@ export default class Level1 extends Phaser.Scene {
           console.log('you got one!')
           energyCreator1.explode()
           gameState.s = true;
-          gameState.energy += 1
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
@@ -183,7 +185,9 @@ export default class Level1 extends Phaser.Scene {
           console.log('you got one!')
           energyCreator2.explode()
           gameState.s = true;
-          gameState.energy += 1
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
@@ -198,7 +202,9 @@ export default class Level1 extends Phaser.Scene {
           console.log('you got one!')
           energyCreator3.explode()
           gameState.s = true;
-          gameState.energy += 1
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
@@ -213,7 +219,9 @@ export default class Level1 extends Phaser.Scene {
           console.log('you got one!')
           energyCreator4.explode()
           gameState.s = true;
-          gameState.energy += 1
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
@@ -271,6 +279,7 @@ export default class Level1 extends Phaser.Scene {
     
     gameState.energy = 100
     gameState.particlesCollected = 0
+    gameState.startTime = new Date
     
     const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
     .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
@@ -287,6 +296,7 @@ export default class Level1 extends Phaser.Scene {
         this.physics.pause()
         points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
         points.finalParticlesCollected += gameState.particlesCollected * 50
+        points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
@@ -306,6 +316,7 @@ export default class Level1 extends Phaser.Scene {
       this.scene.start('Level2', { 
         backgroundMusic: gameState.backgroundMusic, 
         energy: gameState.energy,
+        startTime: gameState.startTime,
         points
       });
 
