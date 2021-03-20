@@ -3,15 +3,20 @@ import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
 import { gameState } from "./scene_lvl2";
+import EnergyBar from "./energyBar"
+let points = {}
 
 export default class Level2B extends Phaser.Scene {
   constructor() {
     super({ key: 'Level2B' });
   }
 
-  init(data){
+  init(data) {
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
+    gameState.energy = data.energy;
+    gameState.startTime = data.startTime;
+    points = data.points;
   }
 
   create() {
@@ -86,8 +91,8 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 2
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
@@ -96,12 +101,6 @@ export default class Level2B extends Phaser.Scene {
       }, 2000)
     });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    gameState.wallsLayer3.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
 
     //Renders and fades in and out the spotlight
     this.tweens.add({
@@ -113,6 +112,22 @@ export default class Level2B extends Phaser.Scene {
       yoyo: true,
     });
 
+    //energy bar
+    this.fullWidth = 300
+    const energyX = 50
+    const energyY = 50
+
+    gameState.particlesCollected = 0
+    //gameState.energy = 100
+
+    const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .layout()
+    // .animateToFill(gameState.energy/100)
+    //.reAnimateToFill(gameState.energy/100)
+
     
     
     //Camera to follow Neo and set to level bounds
@@ -120,37 +135,11 @@ export default class Level2B extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
 
-    // gameState.boom = false;
-    // this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
-    // this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
 
   }
 
   update() {
+    
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
@@ -176,7 +165,7 @@ export default class Level2B extends Phaser.Scene {
         gameState.danger.setScrollFactor(0);
         gameState.heart = this.sound.add("heart").play();
         gameState.backgroundMusic.setVolume(0.01);
-        setInterval(() => {
+        gameState.shake1 = setInterval(() => {
           this.cameras.main.shake(100, .01);
         },3000);
       }
@@ -188,15 +177,15 @@ export default class Level2B extends Phaser.Scene {
         gameState.dangerOverlay.setScrollFactor(0);
         this.sound.add("breathe", {volume: 0.01}).play();
         gameState.backgroundMusic.setRate(2.0).setVolume(0.01);
-        clearInterval();
-        setInterval(() => {
+        clearInterval(gameState.shake1);
+        gameState.shake2 = setInterval(() => {
           this.cameras.main.shake(300, .02);
         },2000);
       }
-    } else if (gameState.timeLeft <= 0) {
+    } else if (gameState.timeLeft <= 0.05) {
       gameState.danger.destroy();
       gameState.dangerOverlay.destroy();
-      clearInterval();
+      clearInterval(gameState.shake2);
       //trigger game over
     }
   
@@ -212,6 +201,18 @@ export default class Level2B extends Phaser.Scene {
       setTimeout(() => {
         gameState.isPlaying = null;
       },1000)
+    }
+    
+    if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+      points.finalParticlesCollected += gameState.particlesCollected * 50
+      points.scientistTimeRemaining = Math.floor(gameState.timeLeft) * 100
+      points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
+      this.scene.stop('Level2B');
+      this.scene.stop('Level1');
+      this.scene.stop('Level2');
+      this.scene.launch('Highscore', {points})
+      gameState.Neo.y = 25
     }
   }
 }

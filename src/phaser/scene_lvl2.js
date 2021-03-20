@@ -2,7 +2,9 @@ import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
+import EnergyBar from "./energyBar"
 const gameState = {};
+let points = {}
 
 export default class Level2 extends Phaser.Scene {
   constructor() {
@@ -12,6 +14,10 @@ export default class Level2 extends Phaser.Scene {
   init(data){
     console.log('init', data);
     gameState.backgroundMusic = data.backgroundMusic;
+    gameState.energy = data.energy;
+    gameState.startTime = data.startTime;
+    points = data.points;
+
   }
 
   create() {
@@ -32,6 +38,27 @@ export default class Level2 extends Phaser.Scene {
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
 
+    gameState.spotlight1 = this.make.sprite({
+      x: 2800,
+      y: 25,
+      key: "mask",
+      add: false,
+      scale: 1.5,
+    });
+    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+      loop: -1,
+      yoyo: true,
+    });
     gameState.cursors = this.input.keyboard.createCursorKeys(); 
     gameState.shiftAvailable = false;
     gameState.overylay;
@@ -40,7 +67,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.paused = false; 
 
     //Renders Neo
-    gameState.Neo = this.physics.add.sprite(2800, 25, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(2800, 50, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -69,20 +96,20 @@ export default class Level2 extends Phaser.Scene {
       scale: 2,
     });
 
+
+    
+
     //Adds the spotlightmasking. Couldn't figure out how to modulize this for helper function
+
     gameState.wallsLayer1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     gameState.wallsLayer2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg1.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg2.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg3.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bg4.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     
     gameState.boom = false;
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer1, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 2
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
@@ -93,26 +120,15 @@ export default class Level2 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer2, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 0.25
-      // bar.animateToFill(gameState.energy/100)
+      gameState.energy -= 1
+      bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
-    });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.7);
-    gameState.wallsLayer1.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-     faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-   });
-    gameState.wallsLayer2.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 234, 48, 65),
-    faceColor: new Phaser.Display.Color(40, 39, 37, 255),
     });
 
     //Renders and fades in and out the spotlight
@@ -131,35 +147,6 @@ export default class Level2 extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
-
-    // gameState.boom = false;
-    // this.physics.add.collider(gameState.Neo, wallsLayer2, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
-    // this.physics.add.collider(gameState.Neo, wallsLayer1, () => {
-    //   console.log('you hit a wall!')
-    //   this.cameras.main.shake(100, .01)
-    //   gameState.energy -= 0.25
-    //   bar.animateToFill(gameState.energy/100)
-    //   const ouch = this.add.image(300, 225, "impact");
-    //   ouch.setScrollFactor(0);
-    //   if (!gameState.isPlaying)gameState.boom = true;
-    //   setTimeout(() => {
-    //     ouch.destroy();
-    //   }, 2000)
-    // });
-
      //animation for cluster of energy that enables shift abilty for Neo
      this.anims.create({
       key: 'rotate',
@@ -174,6 +161,7 @@ export default class Level2 extends Phaser.Scene {
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
       // gameState.powerUp.destroy();
+      this.collided = false
       if (!this.collided) {
         this.collided = true;
         const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
@@ -187,13 +175,167 @@ export default class Level2 extends Phaser.Scene {
         gameState.shiftAvailable = true;
       }
     });
+
+    const curveArr = [ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]
+    const curve = new Phaser.Curves.Spline(curveArr);
+    const particles = this.add.particles('energyBall');
+    gameState.s = false;
+    const hitTest1 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator1.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest2 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator2.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest3 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator3.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest4 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator4.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    
+    
+  const energyCreator1 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2506,
+    y: 785,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest1 }
+  });
+
+  const energyCreator2 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2041,
+    y: 400,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest2 }
+  });
+  const energyCreator3 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 687,
+    y: 1195,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest3 }
+  });
+  const energyCreator4 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 157,
+    y: 279,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest4 }
+  });
+
+        //energy bar
+        this.fullWidth = 300
+        const energyX = 50
+        const energyY = 50
+
+        gameState.particlesCollected = 0
+        //gameState.energy = 100
+
+        const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
+        .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
+        .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
+        .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+        .layout()
+        // .animateToFill(gameState.energy/100)
+        //.reAnimateToFill(gameState.energy/100)
   }
 
   update() {
+    
+    //Neo DEATH Statement
+    if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
+        points.finalParticlesCollected += gameState.particlesCollected * 50
+        points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
+        console.log("points", points, gameState.energy)
+        // this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
+          this.scene.stop('Level2B');
+          this.scene.stop('Level1');
+          this.scene.stop('Level2');
+          this.scene.launch('Highscore', {points}) 
+      }
   
     if (gameState.currentState === 1) {
-      this.scene.stop("Level2");
-      this.scene.start("Level2B", {backgroundMusic: gameState.backgroundMusic});
+      this.scene.sleep("Level2");
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
+      points.finalParticlesCollected += gameState.particlesCollected * 50
+      this.scene.start("Level2B", {
+        backgroundMusic: gameState.backgroundMusic,
+        energy: gameState.energy,
+        startTime: gameState.startTime,
+        points
+      });
     }
 
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
@@ -203,53 +345,10 @@ export default class Level2 extends Phaser.Scene {
     //rotates shift powerup sprite
     gameState.powerUp.angle += 1;
 
-    // if (gameState.timer) {
-    //   //if shift is pressed then we can start timer
-    //   gameState.text
-    //   .setFill("#ffffff")
-    //   .setText(gameState.timer.getRemainingSeconds().toFixed(1));
-    //   gameState.timeLeft = gameState.timer.getRemainingSeconds();
-    // }
-
-    // if (gameState.timeLeft <= 20 && gameState.timeLeft > 10) { //30 seconds left
-    //   console.log("less than 30 secs");
-    //   if (!gameState.danger) {
-    //     gameState.danger = this.add.image(300, 225, "danger1");
-    //     //fix changing font
-    //     gameState.text.setFontSize(26);
-    //     console.log(gameState.text.font);
-    //     gameState.danger.setScrollFactor(0);
-    //     gameState.heart = this.sound.add("heart").play();
-    //     gameState.backgroundMusic.setVolume(0.01);
-    //     setInterval(() => {
-    //       this.cameras.main.shake(100, .01);
-    //     },3000);
-    //   }
-    //   //add heartbeat and footstep sounds
-    // } else if (gameState.timeLeft <= 10 && gameState.timeLeft > 0) { //10 seconds left
-    //   console.log("less than 10 secs");
-    //   if (!gameState.dangerOverlay) {
-    //     gameState.dangerOverlay = this.add.image(300, 225, "redOverlay");
-    //     gameState.dangerOverlay.setScrollFactor(0);
-    //     this.sound.add("breathe", {volume: 0.01}).play();
-    //     gameState.backgroundMusic.setRate(2.0).setVolume(0.01);
-    //     clearInterval();
-    //     setInterval(() => {
-    //       this.cameras.main.shake(300, .02);
-    //     },2000);
-    //   }
-    // } else if (gameState.timeLeft <= 0) {
-    //   gameState.danger.destroy();
-    //   gameState.dangerOverlay.destroy();
-    //   clearInterval();
-    //   //trigger game over
-    // }
-    
 
     if (gameState.Neo.y < 5) {
       this.scene.sleep('Level2');
       this.scene.run('Level1');
-      gameState.Neo.y = 25
     }
 
     if (gameState.s) {

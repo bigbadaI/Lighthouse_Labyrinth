@@ -1,13 +1,12 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
-import { config } from "../index";
 import { pause } from "./helper/pause_functions";
 import { applyColourAnimations } from "./helper/colour_shift";
-import { parallaxBackground } from "./helper/backgrounds";
 import EnergyBar from "./energyBar"
 
 
 const gameState = {};
+const points = {energyAtEnd: 0, timeToComplete: 0, scientistTimeRemaining: 0, finalParticlesCollected: 0};
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -50,6 +49,28 @@ export default class Level1 extends Phaser.Scene {
     const bgFour = this.add.image(width + 360, height + height + 30, 'BG1')
     .setOrigin(0, 1)
     .setScrollFactor(0.25)
+
+    gameState.spotlight1 = this.make.sprite({
+      x: 300,
+      y: 250,
+      key: 'mask',
+      add: false,
+      scale: 1.5
+    });
+
+    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight1);
+
+    this.tweens.add({
+      targets: gameState.spotlight1,
+      alpha: 0,
+      duration: 2000,
+      ease: 'Sine.easeInOut',
+      loop: -1,
+      yoyo: true
+  });
     
     //Loads the Walls and features layers of the level
     const map = this.make.tilemap({ key: "LVL1" });
@@ -83,7 +104,7 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, wallsLayer, () => {
       console.log('you hit a wall!');
       this.cameras.main.shake(100, .01);
-      gameState.energy -= 0.25;
+      gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100);
       if (!gameState.isPlaying)gameState.boom = true;
       const ouch = this.add.image(300, 225, "impact");
@@ -91,6 +112,7 @@ export default class Level1 extends Phaser.Scene {
       setTimeout(() => {
         ouch.destroy();
       }, 2000)
+
     });
 
 
@@ -104,11 +126,6 @@ export default class Level1 extends Phaser.Scene {
       scale: 2
     });
 
-    //these two mask the walls and some objects so they can be revealed by the gameState.spotlight
-    bgOne.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgTwo.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgThree.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
-    bgFour.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     bgWalls.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
     wallsLayer.mask = new Phaser.Display.Masks.BitmapMask(this, gameState.spotlight);
 
@@ -141,16 +158,68 @@ export default class Level1 extends Phaser.Scene {
     
     //defines what happens when you collide with a particle
     gameState.s = false;
-    const hitTest = {
+    const hitTest1 = {
       contains: function (x,y) {
         
         const hit = gameState.Neo.body.hitTest(x,y);
         if (hit) {
           console.log('you got one!')
-          energyCreator.explode()
+          energyCreator1.explode()
           gameState.s = true;
-          //createEnergy3.pause()
-          gameState.energy += 1
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest2 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator2.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest3 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator3.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
+          gameState.particlesCollected += 1
+          bar.animateToFill(gameState.energy/100)
+        }
+        return hit;
+      }
+    }
+    const hitTest4 = {
+      contains: function (x,y) {
+        
+        const hit = gameState.Neo.body.hitTest(x,y);
+        if (hit) {
+          console.log('you got one!')
+          energyCreator4.explode()
+          gameState.s = true;
+          if (gameState.energy <= 100) {
+            gameState.energy += 1
+          }
           gameState.particlesCollected += 1
           bar.animateToFill(gameState.energy/100)
         }
@@ -159,7 +228,7 @@ export default class Level1 extends Phaser.Scene {
     }
     
     
-  const energyCreator = particles.createEmitter({
+  const energyCreator1 = particles.createEmitter({
     frame: { cycle: false },
     scale: { start: 0.04, end: 0 },
     blendMode: 'ADD',
@@ -167,7 +236,38 @@ export default class Level1 extends Phaser.Scene {
     x: 10,
     y: 50,
     quantity: 1,
-    deathZone: { type: 'onEnter', source: hitTest }
+    deathZone: { type: 'onEnter', source: hitTest1 }
+  });
+
+  const energyCreator2 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 775,
+    y: 13,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest2 }
+  });
+  const energyCreator3 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 2475,
+    y: -80,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest3 }
+  });
+  const energyCreator4 = particles.createEmitter({
+    frame: { cycle: false },
+    scale: { start: 0.04, end: 0 },
+    blendMode: 'ADD',
+    emitZone: { type: 'edge', source:curve, quantity: 350, yoyo: false },
+    x: 1635,
+    y: 468,
+    quantity: 1,
+    deathZone: { type: 'onEnter', source: hitTest4 }
   });
     
     //energy bar
@@ -177,6 +277,7 @@ export default class Level1 extends Phaser.Scene {
     
     gameState.energy = 100
     gameState.particlesCollected = 0
+    gameState.startTime = new Date
     
     const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
     .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
@@ -186,6 +287,20 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update() {
+    
+    //Neo DEATH Statement
+    if (gameState.energy <= 0)
+      {
+        this.physics.pause()
+        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+        points.finalParticlesCollected += gameState.particlesCollected * 50
+        points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
+          this.scene.stop('Level2B');
+          this.scene.stop('Level1');
+          this.scene.stop('Level2');
+          this.scene.launch('Highscore', {points}) 
+      }
+
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
@@ -194,7 +309,15 @@ export default class Level1 extends Phaser.Scene {
     //Conditional to load Level 2
     if (gameState.Neo.y > 1375) {
       this.scene.sleep('Level1');
-      this.scene.start('Level2', { backgroundMusic: gameState.backgroundMusic });
+      points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 100
+      points.finalParticlesCollected += gameState.particlesCollected * 50
+      this.scene.start('Level2', { 
+        backgroundMusic: gameState.backgroundMusic, 
+        energy: gameState.energy,
+        startTime: gameState.startTime,
+        points
+      });
+
       gameState.Neo.y = 1360
     }
 
