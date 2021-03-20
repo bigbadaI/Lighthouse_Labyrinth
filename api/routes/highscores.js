@@ -5,7 +5,7 @@ const highScores = {};
 
 
 module.exports = (db) => {
-  router.put("/", (request, response) => {
+  router.post("/", (request, response) => {
     console.log("======post request=======", request.body.name, request.body);
     const { name, score, time } = request.body;
     console.log(score, name, time);

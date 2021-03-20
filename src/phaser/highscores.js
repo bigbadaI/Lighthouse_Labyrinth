@@ -38,19 +38,21 @@ export default class Highscore extends Phaser.Scene {
 
   create ()
   {
-    const finalScore = points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining
+    let finalScore = points.points.energyAtEnd + points.points.finalParticlesCollected - points.points.timeToComplete + points.points.scientistTimeRemaining
+    if (finalScore < 0) finalScore = 0
       // this.add.bitmapText(20, 260, 'arcade', 'RANK  SCORE   NAME').setTint(0xff00ff);
       // this.add.bitmapText(20, 310, 'arcade', '1ST   50000').setTint(0xff0000);
       
       this.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
-      this.highScore = this.add.bitmapText(50, 360, 'arcade', `score:${finalScore}` ).setTint(0xff0000)
+      this.highScore = this.add.bitmapText(20, 360, 'arcade', `score:${finalScore}` ).setTint(0xff0000)
       highscoreObj.playerText = this.add.bitmapText(405, 360, 'arcade', '').setTint(0xff0000);
 
       //  Do this, otherwise this Scene will steal all keyboard input
       this.input.keyboard.enabled = false;
 
       this.scene.launch('InputPanel');
-      this.scene.launch('Starfield')
+      this.scene.launch('Starfield');
+      this.highScorePull = 1;
 
       let panel = this.scene.get('InputPanel');
     
@@ -71,8 +73,8 @@ export default class Highscore extends Phaser.Scene {
       
     function submit() {
       const url = 'http://localhost:9000/highscores'
-      axios.put(url, data)
-      return true
+      axios.post(url, data)
+      // return true
     }
 
     function displayScores(th) {
@@ -91,32 +93,30 @@ export default class Highscore extends Phaser.Scene {
         } 
         
       })
-      return
+      // return
     }
     
-    
+    if (this.highScorePull = 1) {
     submit()
     setTimeout(() => {
 
       displayScores(this)
     }, 100)
+    this.highScorePull = 2}
    
       this.add.text(200, 20, "Click to start!", {
         fill: "#ffffff",
         fontSize: "20px",
       });
      
+  
       this.input.on("pointerdown", (name) => {
         name = '';
         points.points.energyAtEnd = 0;
         points.points.finalParticlesCollected = 0; 
         points.points.timeToComplete = 0; 
         points.points.scientistTimeRemaining = 0;
-        this.scene.stop("Highscore");
-        this.scene.stop("Starfield")
-        this.scene.launch("Preloader");
-        
-
+        location.reload()   
     });
   
   }
