@@ -18,7 +18,7 @@ export default class Level2B extends Phaser.Scene {
     gameState.startTime = data.startTime;
     points = data.points;
     gameState.currentState = data.current;
-    console.log(gameState.currentState)
+    console.log(gameState.currentState) //1 for some raisin ?
   }
 
   create() {
@@ -48,7 +48,7 @@ export default class Level2B extends Phaser.Scene {
     .setScrollFactor(0.25)
 
     gameState.cursors = this.input.keyboard.createCursorKeys(); 
-    gameState.shiftAvailable = false;
+    gameState.shiftAvailable = true;
     gameState.overylay;
     gameState.shakeAvailable = false;
     gameState.paused = false; 
@@ -212,8 +212,11 @@ export default class Level2B extends Phaser.Scene {
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
       this.scene.stop('Level2');
-      this.sound.get("heart").stop();
-      this.sound.get("breathe").stop();
+      //if the music is added remove it when you die
+      if (gameState.timeLeft <= 20) {
+        this.sound.get("heart").stop();
+        this.sound.get("breathe").stop();
+      }
       this.scene.launch('Highscore', {points})
       gameState.Neo.y = 25
     }

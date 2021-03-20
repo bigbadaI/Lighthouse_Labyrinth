@@ -96,7 +96,7 @@ export default class Level1 extends Phaser.Scene {
     gameState.shiftAvailable = false;
     gameState.overylay;
     gameState.shakeAvailable = false;
-    gameState.currentState = 0;
+    gameState.currentState = 1;
     gameState.paused = false;
    
     //Adds collision factors so far just new and wallsLayer
