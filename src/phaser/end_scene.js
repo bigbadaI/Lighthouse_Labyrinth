@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import BG from "../assets/backgrounds/start_scene.jpg";
 const gameState = {};
+let points = {};
 let follower;
 let path;
 let graphics;
@@ -75,6 +76,7 @@ export default class EndScene extends Phaser.Scene {
   }
 
   init(data) {
+    console.log('init', data);
     points = data.points;
   }
 
@@ -151,6 +153,7 @@ export default class EndScene extends Phaser.Scene {
       gameState.overlay.destroy();
       //EndB
       this.scene.stop('EndScene');
+      // this.customPipeline.destroy('Custom');
       this.scene.launch('EndB', {points});
     }
     

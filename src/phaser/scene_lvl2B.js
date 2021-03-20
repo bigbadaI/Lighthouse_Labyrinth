@@ -93,7 +93,7 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      gameState.energy -= 2
+      // gameState.energy -= 2
       bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact");
       ouch.setScrollFactor(0);
@@ -221,7 +221,10 @@ export default class Level2B extends Phaser.Scene {
         this.sound.get("breathe").stop();
       }
       //escaped maze run end scenes, else highscore
-      gameState.Neo.x > 3250 ? this.scene.launch('EndScene', {points}) : this.scene.launch('Highscore', {points})
+      if (gameState.Neo.x > 3250) {
+        this.scene.launch('EndScene', {points})
+      }
+      // gameState.Neo.x > 3250 ? this.scene.launch('EndScene', {points}) : this.scene.launch('Highscore', {points})
     
     }
   }
