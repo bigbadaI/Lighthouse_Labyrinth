@@ -67,7 +67,8 @@ const NeoMovment = function(gameState) {
 
 
 export {
-  NeoMovment
+  NeoMovment,
+  NeoMoves
 }
 
 

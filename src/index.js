@@ -10,32 +10,27 @@ import Preloader from "./phaser/helper/preloader";
 import InputPanel from "./phaser/inputpanel";
 import Starfield from './phaser/starfield';
 import Highscore from './phaser/highscores';
+import Neo from "./assets/Neo.png";
 
-
-
-export const config = {
-  type: Phaser.AUTO,
-  parent: "phaser",
+var config = {
+  type: Phaser.WEBGL,
   width: 600,
   height: 450,
+  parent: 'phaser',
   physics: {
     default: 'arcade',
     arcade: {
       gravity: 0,
       debug: false
-    }
+    },
   },
-
-
   scene: [Preloader, StartScene, LVL1, LVL2, LVL2B, Starfield, Highscore, InputPanel],
-
-
   scale: {
     zoom: 1.5
   }
 };
 
-const game = new Phaser.Game(config);
+var game = new Phaser.Game(config);
 
 ReactDOM.render(
   <App />,

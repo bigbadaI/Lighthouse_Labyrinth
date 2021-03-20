@@ -38,7 +38,9 @@ import breathe from "../../assets/sounds/breathe.mp3";
 import breatheFF from "../../assets/sounds/breathe.ogg";
 import music from "../../assets/sounds/Cave_01.mp3";
 import musicFF from "../../assets/sounds/Cave_01.ogg";
-const gameState = {};
+import zap from "../../assets/sounds/zap.mp3";
+import zapFF from "../../assets/sounds/zap.ogg";
+import darkmatter from "../../assets/darkMatter.png";
 
 
 export default class Preloader extends Phaser.Scene {
@@ -83,12 +85,17 @@ export default class Preloader extends Phaser.Scene {
       frameHeight: 100,
       frameWidth: 100
     });
+    this.load.spritesheet('darkmatter', darkmatter, {
+      frameHeight: 192,
+      frameWidth: 192
+    });
     this.load.audio("heart", [heart, heartFF]);
     this.load.audio("wallCollide", [wallCollide, wallCollideFF]);
     this.load.audio("intro", [intro, introFF]);
     this.load.audio("sparkle", [sparkle, sparkleFF]);
     this.load.audio("breathe", [breathe, breatheFF]);
     this.load.audio("music", [music, musicFF]);
+    this.load.audio("zap", [zap, zapFF]);
   }
 
   create() {
