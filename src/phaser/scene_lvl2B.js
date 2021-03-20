@@ -17,7 +17,7 @@ export default class Level2B extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
-    gameState.currentState = data.current;
+    gameState.currentState = data.current - 1;
     console.log(gameState.currentState) //1 for some raisin ?
   }
 
