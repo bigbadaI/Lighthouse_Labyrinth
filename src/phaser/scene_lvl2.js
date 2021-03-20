@@ -331,6 +331,7 @@ export default class Level2 extends Phaser.Scene {
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
+          gameState.backgroundMusic.stop()
           this.scene.launch('Highscore', {points}) 
       }
   
