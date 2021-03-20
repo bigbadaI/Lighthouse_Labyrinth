@@ -315,9 +315,9 @@ export default class Level2 extends Phaser.Scene {
     if (gameState.energy <= 0)
       {
         this.physics.pause()
-        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
+        points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 750
         points.finalParticlesCollected += gameState.particlesCollected * 50
-        points.timeToComplete = Math.floor((new Date - gameState.startTime) / 100)
+        points.timeToComplete = Math.floor((new Date - gameState.startTime) / 10)
         console.log("points", points, gameState.energy)
         // this.add.text(100, 100, "You lose, good day sir/madam").setScrollFactor(0)
           this.scene.stop('Level2B');
