@@ -17,7 +17,7 @@ export default class Level2B extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
-    gameState.currentState = data.current;
+    gameState.currentState = data.current - 1;
     console.log(gameState.currentState) //1 for some raisin ?
   }
 
@@ -215,9 +215,9 @@ export default class Level2B extends Phaser.Scene {
       //if the music is added remove it when you die
       if (gameState.timeLeft <= 20) {
         this.sound.get("heart").stop();
-        if (gameState.timeLeft <= 10) {
+      if (gameState.timeLeft <= 10) {
         this.sound.get("breathe").stop();
-        }
+      }
         gameState.backgroundMusic.stop()
         clearInterval(gameState.shake1);
         clearInterval(gameState.shake2);
