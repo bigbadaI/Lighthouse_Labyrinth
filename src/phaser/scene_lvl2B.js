@@ -213,12 +213,14 @@ export default class Level2B extends Phaser.Scene {
       this.scene.stop('Level1');
       this.scene.stop('Level2');
       //if the music is added remove it when you die
-       //if the music is added remove it when you die
-       if (gameState.timeLeft <= 20) {
+      if (gameState.timeLeft <= 20) {
         this.sound.get("heart").stop();
-      }
       if (gameState.timeLeft <= 10) {
         this.sound.get("breathe").stop();
+      }
+        gameState.backgroundMusic.stop()
+        clearInterval(gameState.shake1);
+        clearInterval(gameState.shake2);
       }
       this.scene.launch('Highscore', {points})
       gameState.Neo.y = 25
