@@ -21,14 +21,12 @@
     "url": "https://github.com/photonstorm/phaser3-project-template/issues"
   },
   "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
-  "devDependencies": {
+  "dependencies": {
+    "ajax-request": "^1.2.3",
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.6"
-  },
-  "dependencies": {
-    "ajax-request": "^1.2.3",
+    "babel-loader": "^8.0.6",
     "axios": "^0.21.1",
     "env": "0.0.2",
     "file-system": "^2.2.2",
