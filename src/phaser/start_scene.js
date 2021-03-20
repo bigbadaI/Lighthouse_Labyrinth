@@ -106,18 +106,16 @@ export default class StartScene extends Phaser.Scene {
       gameState.animation = 0;
     }, 7000);
   
-    gameState.nextScene = false; //if all animation is done we can access next scene
-    if(gameState.Scene) {
-      this.add.text(200, 50, "Click to start!", {
-        fill: "#ffffff",
-        fontSize: "20px",
-      });
-      this.input.on("pointerdown", () => {
-        this.scene.stop("StartScene");
-        this.scene.start("Level1");
-        this.sound.stopAll();
-      });
-    } 
+    
+    this.add.text(240, 435, "Click to start...", {
+      fill: "#ffffff",
+      fontSize: "14px",
+    });
+    this.input.on("pointerdown", () => {
+      this.scene.stop("StartScene");
+      this.scene.start("Level1");
+      this.sound.stopAll();
+    });
 
     this.label = this.add.text(15, 30, '', {
       fill: "#ffffff",
@@ -151,6 +149,11 @@ export default class StartScene extends Phaser.Scene {
         yoyo: true,
         repeat: -1
     });
+    gameState.runScientist = false;
+    
+    gameState.red = this.add.image(300, 250, "redOverlay");
+    gameState.red.visible = false;
+    gameState.timeout = true;
   }
 
 
@@ -193,7 +196,18 @@ export default class StartScene extends Phaser.Scene {
       gameState.Neo.x = path.vec.x;
       gameState.Neo.y = path.vec.y;
     }
-    
+
+    if (gameState.runScientist) {
+        this.cameras.main.shake(100, .01);
+        setTimeout(() => {
+          gameState.red.visible = true;
+          console.log("hi im running");
+          setTimeout(() => {
+            gameState.red.visible = false;
+          }, 1000)
+        },3000);
+      }
+
     //custom pipeline rendering animation update
     this.customPipeline.set1f('uTime', gameState.time);
     gameState.time += 0.05;
@@ -209,16 +223,12 @@ export default class StartScene extends Phaser.Scene {
           this.cameras.main.flash();
           this.sound.add("zap").setVolume(0.2).play();
           gameState.runPath = true;
-          gameState.nextScene = true; //doesn't work have to add in update
-          //turn on neo's spotlight 
-          //this will run 3 times and create diff timeouts
-          // setTimeout(() => {
-          //     setInterval(() => {
-          //       const red = this.add.image(300, 250, "redOverlay");
-          //       this.cameras.main.shake(100, .01);
-          //     },3000);
-          //     red.destroy(); 
-          // }, 9000)
+          if (gameState.timeout) {
+            setTimeout(() => {
+              gameState.runScientist = true;
+            }, 12000);
+            gameState.timeout = false;
+          }
         }
       }
     }
