@@ -80,7 +80,7 @@ export default class StartScene extends Phaser.Scene {
     this.load.image("BG", BG);
   }
   create() {
-    this.sound.add("intro", {volume: 0.07}).play();
+    gameState.intro = this.sound.add("intro", {volume: 0.07}).play();
   
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
@@ -114,7 +114,7 @@ export default class StartScene extends Phaser.Scene {
     this.input.on("pointerdown", () => {
       this.scene.stop("StartScene");
       this.scene.start("Level1");
-      this.sound.stopAll();
+      this.sound.get("intro").stop();
     });
 
     this.label = this.add.text(15, 30, '', {
@@ -154,6 +154,8 @@ export default class StartScene extends Phaser.Scene {
     gameState.red = this.add.image(300, 250, "redOverlay");
     gameState.red.visible = false;
     gameState.timeout = true;
+
+    gameState.isStart = true;
   }
 
 

@@ -334,7 +334,8 @@ export default class Level2 extends Phaser.Scene {
         backgroundMusic: gameState.backgroundMusic,
         energy: gameState.energy,
         startTime: gameState.startTime,
-        points
+        points,
+        current: gameState.currentState
       });
     }
 

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { NeoMovment } from "./helper/movement_functions";
 import { pause } from "./helper/pause_functions";
-import { applyColourAnimations } from "./helper/colour_shift";
+import { applyColourAnimations, checkOverlay } from "./helper/colour_shift";
 import { gameState } from "./scene_lvl2";
 import EnergyBar from "./energyBar"
 let points = {}
@@ -17,6 +17,8 @@ export default class Level2B extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
+    gameState.currentState = data.current;
+    console.log(gameState.currentState)
   }
 
   create() {
@@ -49,12 +51,12 @@ export default class Level2B extends Phaser.Scene {
     gameState.shiftAvailable = false;
     gameState.overylay;
     gameState.shakeAvailable = false;
-    gameState.currentState = 2; //neo is initially at index of 2
     gameState.paused = false; 
 
     //Renders Neo
+    console.log(gameState.current);
     gameState.Neo = this.physics.add.sprite(gameState.Neo.x,gameState.Neo.y, "Neo").setScale(0.09);
-    gameState.Neo.setFrame(1);
+    gameState.Neo.setFrame(gameState.currentState);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
       gameState.Neo.width * 0.5,
@@ -135,11 +137,10 @@ export default class Level2B extends Phaser.Scene {
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
 
 
-
+    checkOverlay(gameState, this.scene.scene); //keeps overlay if shift active
   }
 
   update() {
-    
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
     pause(gameState);
     NeoMovment(gameState);
@@ -163,7 +164,7 @@ export default class Level2B extends Phaser.Scene {
         gameState.text.setFontSize(26);
         console.log(gameState.text.font);
         gameState.danger.setScrollFactor(0);
-        gameState.heart = this.sound.add("heart").play();
+        this.sound.add("heart").play();
         gameState.backgroundMusic.setVolume(0.01);
         gameState.shake1 = setInterval(() => {
           this.cameras.main.shake(100, .01);
@@ -211,6 +212,8 @@ export default class Level2B extends Phaser.Scene {
       this.scene.stop('Level2B');
       this.scene.stop('Level1');
       this.scene.stop('Level2');
+      this.sound.get("heart").stop();
+      this.sound.get("breathe").stop();
       this.scene.launch('Highscore', {points})
       gameState.Neo.y = 25
     }

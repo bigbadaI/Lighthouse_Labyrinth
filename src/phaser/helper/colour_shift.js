@@ -17,6 +17,30 @@ const removeOverlay = function(gameState) {
   }
 }
 
+const checkOverlay = function(gameState, level) {
+  console.log(gameState.currentState)
+  if (gameState.currentState === 2) {
+    //infrared
+    gameState.shake = true;
+    gameState.overlay = level.add.image(300, 225, "redOverlay");
+    gameState.Neo.setFrame(gameState.currentState);
+    gameState.currentState = 0;
+  } else if (gameState.currentState === 0) {
+    //ultraviolet
+    gameState.overlay = level.add.image(300, 225, "purpOverlay");
+    gameState.Neo.setFrame(gameState.currentState);
+    gameState.currentState++;
+  } else {
+    //neoVision
+    removeOverlay(gameState);
+    gameState.Neo.setFrame(gameState.currentState);
+    gameState.currentState++;
+  }
+  if (gameState.overlay) {
+    gameState.overlay.setScrollFactor(0);
+  }
+}
+
 const applyColourAnimations = function(gameState, level, shiftStates) {
   if (gameState.shiftAvailable) {
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
@@ -55,5 +79,6 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
 //didn't export removeOverlay its only used in the applyColourAnimations
 export {
   removeShift,
-  applyColourAnimations
+  applyColourAnimations,
+  checkOverlay
 }
