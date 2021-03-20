@@ -167,7 +167,7 @@ export default class Level2 extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
       yoyo: true
-  });
+    });
     //defining sprite sheet and playing the animation
     gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.5);
     gameState.powerUp.play("rotate");
