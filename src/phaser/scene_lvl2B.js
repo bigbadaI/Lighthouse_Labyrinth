@@ -204,6 +204,7 @@ export default class Level2B extends Phaser.Scene {
       },1000)
     }
     
+    //if game ends pass in all of this info
     if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
       points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 750
       points.finalParticlesCollected += gameState.particlesCollected * 50
@@ -219,8 +220,9 @@ export default class Level2B extends Phaser.Scene {
       if (gameState.timeLeft <= 10) {
         this.sound.get("breathe").stop();
       }
-      this.scene.launch('Highscore', {points})
-      gameState.Neo.y = 25
+      //escaped maze run end scenes, else highscore
+      gameState.Neo.x > 3250 ? this.scene.launch('EndScene', {points}) : this.scene.launch('Highscore', {points})
+    
     }
   }
 }

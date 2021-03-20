@@ -6,7 +6,8 @@ import StartScene from "./phaser/start_scene"
 import LVL1 from "./phaser/scene_lvl1";
 import LVL2 from "./phaser/scene_lvl2";
 import LVL2B from "./phaser/scene_lvl2B";
-import EndScene from "./phaser/end_scene"
+import EndScene from "./phaser/end_scene";
+import EndB from "./phaser/endB";
 import Preloader from "./phaser/helper/preloader";
 import InputPanel from "./phaser/inputpanel";
 import Starfield from './phaser/starfield';
@@ -25,7 +26,7 @@ var config = {
       debug: false
     },
   },
-  scene: [Preloader,EndScene, StartScene, LVL1, LVL2, LVL2B, Starfield, Highscore, InputPanel],
+  scene: [Preloader,StartScene, LVL1, LVL2, LVL2B, EndScene, EndB, Starfield, Highscore, InputPanel],
   scale: {
     zoom: 1.5
   }
