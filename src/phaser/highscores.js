@@ -115,6 +115,8 @@ export default class Highscore extends Phaser.Scene {
         this.scene.stop("Highscore");
         this.scene.stop("Starfield")
         this.scene.launch("Preloader");
+        
+
     });
   
   }
