@@ -83,9 +83,9 @@ export default class StartScene extends Phaser.Scene {
   
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
-    this.customPipeline = this.renderer.pipelines.add('Custom', new gameState.CustomPipeline(this.game));
+    this.customPipeline = this.renderer.pipelines.add('Intro', new gameState.CustomPipeline(this.game));
     this.customPipeline.set2f('uResolution', this.game.config.width, this.game.config.height);
-    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Custom");
+    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Intro");
     
     //Neo animation
     gameState.Neo = this.add.sprite(300,300, "energyBall").setScale(0.09);

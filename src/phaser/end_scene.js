@@ -6,7 +6,7 @@ let follower;
 let path;
 let graphics;
 
-const CustomPipeline = new Phaser.Class({
+let CustomPipeline = new Phaser.Class({
 
   Extends: Phaser.Renderer.WebGL.Pipelines.SinglePipeline,
 
@@ -88,8 +88,8 @@ export default class EndScene extends Phaser.Scene {
     this.cameras.main.flash(2000); //can also set a colour flash on the first
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
-    this.customPipeline = this.renderer.pipelines.add('Custom', new CustomPipeline(this.game));
-    this.customPipeline.set2f('uResolution', this.game.config.width, this.game.config.height);
+    gameState.customPipeline = this.renderer.pipelines.add('Custom', new CustomPipeline(this.game));
+    gameState.customPipeline.set2f('uResolution', this.game.config.width, this.game.config.height);
     gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Custom"); 
 
     //Neo animation
@@ -119,7 +119,7 @@ export default class EndScene extends Phaser.Scene {
 
   update() {
     //custom pipeline rendering animation update
-    this.customPipeline.set1f('uTime', gameState.time);
+    gameState.customPipeline.set1f('uTime', gameState.time);
     gameState.time += 0.05;
 
     graphics.clear();
@@ -153,7 +153,8 @@ export default class EndScene extends Phaser.Scene {
       gameState.overlay.destroy();
       //EndB
       this.scene.stop('EndScene');
-      // this.customPipeline.destroy('Custom');
+      this.cameras.main.flash(3000); //can also set a colour flash on the first
+      this.cameras.main.shake(3000)
       this.scene.launch('EndB', {points});
     }
     

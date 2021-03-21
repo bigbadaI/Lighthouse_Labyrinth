@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import BG from "../assets/backgrounds/galaxyBG.png";
 const gameState = {};
-let points = {}
+let points = {};
 let follower;
 let path;
 let graphics;
@@ -136,17 +136,15 @@ export default class EndB extends Phaser.Scene {
 
   init(data) {
     console.log('init', data);
-    gameState.points = data.points;
+    points = data.points;
   }
 
   create() {
-    this.cameras.main.flash(3000); //can also set a colour flash on the first
-    this.cameras.main.shake(3000)
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
-    this.customPipeline = this.renderer.pipelines.add('Custom', new gameState.CustomPipeline(this.game));
+    this.customPipeline = this.renderer.pipelines.add('Custom2', new gameState.CustomPipeline(this.game));
     this.customPipeline.set2f('uResolution', this.game.config.width, this.game.config.height);
-    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Custom");
+    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Custom2");
 
     //Neo animation
     gameState.scale = 0.8;
@@ -156,7 +154,7 @@ export default class EndB extends Phaser.Scene {
     setTimeout(() => {
       gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(gameState.scale);
       gameState.Neo.setFrame(gameState.currentState);
-    }, 4000)
+    }, 1000)
     //every 5 seconds neos state changes
     setInterval(() => {
       gameState.currentState === 2? gameState.currentState = 0 : gameState.currentState++;
@@ -207,18 +205,13 @@ export default class EndB extends Phaser.Scene {
       }
     }
 
-    if (gameState.scale <= 0 && gameState.scale >= -5) {
-     this.cameras.main.shake(2000);
-     this.cameras.main.flash(2000);
-     this.sound.add("zap").setVolume(0.2).play();
-    }
-
-    console.log(gameState.scale);
-    if (gameState.scale <= -5) {
-      gameState.overlay.destroy();
-      //EndB
-      this.scene.stop('EndB');
-      this.scene.launch('Highscore', {points});
+    if (gameState.scale <= 0 ) {
+        this.cameras.main.shake(2000);
+        this.cameras.main.flash(2000);
+        this.sound.add("zap").setVolume(0.2).play();
+        gameState.overlay.destroy();
+        this.scene.stop('EndB');
+        this.scene.launch('Highscore', {points});
     }
   }
 

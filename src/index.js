@@ -26,7 +26,7 @@ var config = {
       debug: false
     },
   },
-  scene: [Preloader, EndScene, EndB, StartScene, LVL1, LVL2, LVL2B, Starfield, Highscore, InputPanel],
+  scene: [Preloader, StartScene, LVL1, LVL2, LVL2B, EndScene, EndB, Starfield, Highscore, InputPanel],
   scale: {
     zoom: 1.5
   }

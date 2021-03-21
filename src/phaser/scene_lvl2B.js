@@ -216,9 +216,11 @@ export default class Level2B extends Phaser.Scene {
       //if the music is added remove it when you die
       if (gameState.timeLeft <= 20) {
         this.sound.get("heart").stop();
+        clearInterval(gameState.shake1);
       }
       if (gameState.timeLeft <= 10) {
         this.sound.get("breathe").stop();
+        clearInterval(gameState.shake2);
       }
       //escaped maze run end scenes, else highscore
       if (gameState.Neo.x > 3250) {
