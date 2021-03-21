@@ -135,6 +135,7 @@ export default class Level2B extends Phaser.Scene {
 
     checkOverlay(gameState, this.scene.scene); //keeps overlay if shift active
   }
+  
 
   update() {
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];

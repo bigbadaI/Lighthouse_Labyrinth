@@ -115,6 +115,27 @@ export default class EndScene extends Phaser.Scene {
         yoyo: false,
         repeat: -1
     });
+
+    this.label = this.add.text(15, 30, '', {
+      fill: "#ffffff",
+      fontSize: "16px",
+      align: "center"
+    });
+    this.typewriteText("You have escaped the grasps of the scientist...this time. \n Forth and onwards through space.")
+  }
+
+  typewriteText(text)
+  {
+    const length = text.length;
+    let i = 0;
+    this.time.addEvent({
+      callback: () => {
+        this.label.text += text[i]
+        ++i
+      },
+      repeat: length - 1,
+      delay: 100
+    })
   }
 
   update() {

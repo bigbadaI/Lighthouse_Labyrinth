@@ -17,23 +17,13 @@ export default class Level1 extends Phaser.Scene {
   create() {
     gameState.backgroundMusic = this.sound.add("music", {volume: 0.02});
     gameState.backgroundMusic.play();
-    // var time = Math.floor(game.time.totalElapsedSeconds() );
-    // this.game.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 32, 3);
-    // console.log(config.timer);
-    // function createTimer() {
-    //   this.timeLabel = this.game.add.text(this.game.world.centerX, 100, "00:00", {font: "100px Arial", fill: "#fff"}); 
-    //   this.timeLabel.anchor.setTo(0.5, 0);
-    //   this.timeLabel.align = 'center';
-    // }
-    // this.startTime = new Date();
-	  // this.totalTime = 120;
-	  // this.timeElapsed = 0;
-	  // this.createTimer();
-	  // this.gameTimer = game.time.events.loop(100, function(){
-		// this.updateTimer();
-    // });
+
+    gameState.instruct = this.add.text(230, 430, "Use the arrow keys to move around!", {
+      fill: "#ffffff",
+      fontSize: "15px",
+      align: "center"
+    });
   
-    
     //Creates the Parallax Background
     const width = this.scale.width
     const height = this.scale.height

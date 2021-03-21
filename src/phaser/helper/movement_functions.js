@@ -18,6 +18,12 @@ const NeoMovment = function(gameState) {
   const MOVE = function(x, y) {
     gameState.Neo.setVelocity(x, y);
   };
+
+  //delete arrow key intructions only on scene one
+  if(gameState.instruct && (LEFT || RIGHT || UP || LEFT || DOWN)) {
+    gameState.instruct.destroy();
+  }
+
   const speed = 300;
   if (LEFT) {
     removeShift(gameState);
@@ -64,7 +70,6 @@ const NeoMovment = function(gameState) {
   else {
     MOVE(0, 0);
   }
-
 };
 
 
