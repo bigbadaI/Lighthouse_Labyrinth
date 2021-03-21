@@ -27,8 +27,7 @@ export default class Level2B extends Phaser.Scene {
       delay: 45000, 
       paused: false
     });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold system-ui', fontSize: "14px"});
-    console.log(gameState.text.font);
+    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", fontSize: "15px"});
     gameState.text.setScrollFactor(0);
     //passes in data in object from scene 1
     //Creates the Parallax Background
@@ -159,8 +158,7 @@ export default class Level2B extends Phaser.Scene {
       if (!gameState.danger) {
         gameState.danger = this.add.image(300, 225, "danger1").setAlpha(0.5);
         //fix changing font
-        gameState.text.setFontSize(26);
-        console.log(gameState.text.font);
+        gameState.text.setFontSize("26px");
         gameState.danger.setScrollFactor(0);
         this.sound.add("heart").play();
         gameState.backgroundMusic.setVolume(0.01);
