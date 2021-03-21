@@ -6,11 +6,13 @@ This repository was the great experience and learning opurtunity for using Phase
 
 ## Final product
 
-!["Screenshot of the Main page"]()
-!["Screenshot of the Level1"]()
-!["Screenshot of the HighScores"]()
+!["Screenshot of the Main page"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.38.35%20PM.png?raw=true)
+!["Screenshot of the Level1"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.39.04%20PM.png?raw=true)
+!["Screenshot of the HighScores"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.39.35%20PM.png?raw=true)
 
 ## Setup
+
+To use this repository 1st fork it then copy a clone to your local 
 
 Install dependencies with 
 ```sh
@@ -20,6 +22,18 @@ Run the program
 ```sh
 npm start
 ```
+If you want to setup a Highscores as well 
+Change into api directory in another termnial
+
+Install dependencies with 
+```sh
+npm install
+```
+Run the program 
+```sh
+npm start
+```
+
 
 ## Stack
 - Node.js
