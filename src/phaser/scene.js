@@ -80,7 +80,7 @@ export default class playGame extends Phaser.Scene {
     gameState.shiftAvailable = true;
     gameState.overylay;
     gameState.shakeAvailable = false;
-    gameState.currentState = 0;
+    gameState.currentState = 1;
     gameState.paused = false;
     
     /* Glowing has disappeared that the moment adding in the map

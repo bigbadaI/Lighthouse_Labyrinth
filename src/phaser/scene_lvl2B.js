@@ -17,8 +17,8 @@ export default class Level2B extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
-    gameState.currentState = data.current;
-    console.log(gameState.currentState)
+    gameState.currentState = data.current - 1;
+    console.log(gameState.currentState) //1 for some raisin ?
   }
 
   create() {
@@ -48,7 +48,7 @@ export default class Level2B extends Phaser.Scene {
     .setScrollFactor(0.25)
 
     gameState.cursors = this.input.keyboard.createCursorKeys(); 
-    gameState.shiftAvailable = false;
+    gameState.shiftAvailable = true;
     gameState.overylay;
     gameState.shakeAvailable = false;
     gameState.paused = false; 

@@ -63,8 +63,9 @@ export default class Level2 extends Phaser.Scene {
     gameState.shiftAvailable = false;
     gameState.overylay;
     gameState.shakeAvailable = false;
-    gameState.currentState = 2; //neo is initially at index of 2
+    gameState.currentState = 1; //neo is initially at index of 1
     gameState.paused = false; 
+    gameState.twoB = false;
 
     //Renders Neo
     gameState.Neo = this.physics.add.sprite(2800, 50, "Neo").setScale(0.09);
@@ -156,7 +157,7 @@ export default class Level2 extends Phaser.Scene {
       yoyo: true
     });
     //defining sprite sheet and playing the animation
-    gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.5);
+    gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.4);
     gameState.powerUp.play("rotate");
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
@@ -310,6 +311,13 @@ export default class Level2 extends Phaser.Scene {
   }
 
   update() {
+
+    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
+    pause(gameState);
+    NeoMovment(gameState);
+    applyColourAnimations(gameState, this.scene.scene, shiftStates);
+    //rotates shift powerup sprite
+    gameState.powerUp.angle += 1;
     
     //Neo DEATH Statement
     if (gameState.energy <= 0)
@@ -323,10 +331,12 @@ export default class Level2 extends Phaser.Scene {
           this.scene.stop('Level2B');
           this.scene.stop('Level1');
           this.scene.stop('Level2');
+          gameState.backgroundMusic.stop()
           this.scene.launch('Highscore', {points}) 
       }
   
-    if (gameState.currentState === 1) {
+    //current change is updated right after animation so has to be one after UV
+    if (gameState.twoB) {
       this.scene.sleep("Level2");
       points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy
       points.finalParticlesCollected += gameState.particlesCollected * 50
@@ -338,14 +348,6 @@ export default class Level2 extends Phaser.Scene {
         current: gameState.currentState
       });
     }
-
-    const shiftStates = ["ultraviolet", "neoVision", "infrared"];
-    pause(gameState);
-    NeoMovment(gameState);
-    applyColourAnimations(gameState, this.scene.scene, shiftStates);
-    //rotates shift powerup sprite
-    gameState.powerUp.angle += 1;
-
 
     if (gameState.Neo.y < 5) {
       this.scene.sleep('Level2');

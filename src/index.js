@@ -35,6 +35,6 @@ var config = {
 var game = new Phaser.Game(config);
 
 ReactDOM.render(
-  <App />,
+  //<App />,
   document.getElementById("root") || document.createElement("div")
 );
