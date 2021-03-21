@@ -107,7 +107,7 @@ export default class Level1 extends Phaser.Scene {
       gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100);
       if (!gameState.isPlaying)gameState.boom = true;
-      const ouch = this.add.image(300, 225, "impact");
+      const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
       setTimeout(() => {
         ouch.destroy();

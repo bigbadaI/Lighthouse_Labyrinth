@@ -80,7 +80,7 @@ export default class StartScene extends Phaser.Scene {
   }
   create() {
     gameState.intro = this.sound.add("intro", {volume: 0.07}).play();
-  
+    gameState.skip = false;
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
     this.customPipeline = this.renderer.pipelines.add('Intro', new gameState.CustomPipeline(this.game));
@@ -199,22 +199,22 @@ export default class StartScene extends Phaser.Scene {
     }
 
     if (gameState.runScientist) {
-        const interval = setInterval(() => {
-          this.cameras.main.shake(100, .01);
+        this.cameras.main.shake(100, .01);
+        setTimeout(() => {
           gameState.red.visible = true;
-          console.log("hi im running");
-          setInterval(() => {
+          setTimeout(() => {
             gameState.red.visible = false;
           }, 1000)
         },3000);
-        //change scene automaticlly after 10 seconds
-        setTimeout(() => {
+        if (gameState.skip) {
+          // change scene automaticlly after 10 seconds
+          setTimeout(() => {
           this.scene.start("Level1");
           this.scene.remove("StartScene");
           this.sound.get("intro").stop();
-          clearInterval(interval);
-        },13000);
-        gameState.runScientist = false;
+        },12000);
+        }
+        gameState.skip = false;
       }
 
     //custom pipeline rendering animation update
@@ -235,6 +235,7 @@ export default class StartScene extends Phaser.Scene {
           if (gameState.timeout) {
             setTimeout(() => {
               gameState.runScientist = true;
+              gameState.skip = true;
             }, 12000);
             gameState.timeout = false;
           }

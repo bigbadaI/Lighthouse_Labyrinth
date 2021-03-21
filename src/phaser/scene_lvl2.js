@@ -111,7 +111,7 @@ export default class Level2 extends Phaser.Scene {
       this.cameras.main.shake(100, .01)
       gameState.energy -= 2
       bar.animateToFill(gameState.energy/100)
-      const ouch = this.add.image(300, 225, "impact");
+      const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
       setTimeout(() => {
@@ -123,7 +123,7 @@ export default class Level2 extends Phaser.Scene {
       this.cameras.main.shake(100, .01)
       gameState.energy -= 1
       bar.animateToFill(gameState.energy/100)
-      const ouch = this.add.image(300, 225, "impact");
+      const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
       setTimeout(() => {
@@ -157,7 +157,7 @@ export default class Level2 extends Phaser.Scene {
       yoyo: true
     });
     //defining sprite sheet and playing the animation
-    gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.4);
+    gameState.powerUp = this.physics.add.sprite(163, 999, "shiftEnable").setScale(0.3);
     gameState.powerUp.play("rotate");
 
     this.physics.add.collider(gameState.powerUp, gameState.Neo, () => {
@@ -305,9 +305,8 @@ export default class Level2 extends Phaser.Scene {
         .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
         .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
         .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
-        .layout()
-        // .animateToFill(gameState.energy/100)
-        //.reAnimateToFill(gameState.energy/100)
+        .layout();
+        bar.reAnimateToFill(gameState.energy/100)
   }
 
   update() {
