@@ -149,7 +149,8 @@ export default class Level2B extends Phaser.Scene {
       //if shift is pressed then we can start timer
       gameState.text
       .setFill("#ffffff")
-      .setText(gameState.timer.getRemainingSeconds().toFixed(1));
+      .setText(gameState.timer.getRemainingSeconds().toFixed(1))
+      .setDepth(1);
       gameState.timeLeft = gameState.timer.getRemainingSeconds();
     }
 
