@@ -27,8 +27,7 @@ export default class Level2B extends Phaser.Scene {
       delay: 45000, 
       paused: false
     });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", font: 'bold system-ui', fontSize: "14px"});
-    console.log(gameState.text.font);
+    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", fontSize: "15px"});
     gameState.text.setScrollFactor(0);
     //passes in data in object from scene 1
     //Creates the Parallax Background
@@ -93,9 +92,9 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      gameState.energy -= 2
+      // gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100)
-      const ouch = this.add.image(300, 225, "impact");
+      const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
       if (!gameState.isPlaying)gameState.boom = true;
       setTimeout(() => {
@@ -127,11 +126,8 @@ export default class Level2B extends Phaser.Scene {
     .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
     .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
     .layout()
-    // .animateToFill(gameState.energy/100)
-    //.reAnimateToFill(gameState.energy/100)
+    bar.reAnimateToFill(gameState.energy/100)
 
-    
-    
     //Camera to follow Neo and set to level bounds
     this.cameras.main.setBounds(0, 0, 3200, 1600)
     this.cameras.main.startFollow(gameState.Neo, true, 0.5, 0.5)
@@ -139,6 +135,7 @@ export default class Level2B extends Phaser.Scene {
 
     checkOverlay(gameState, this.scene.scene); //keeps overlay if shift active
   }
+  
 
   update() {
     const shiftStates = ["ultraviolet", "neoVision", "infrared"];
@@ -152,17 +149,17 @@ export default class Level2B extends Phaser.Scene {
       //if shift is pressed then we can start timer
       gameState.text
       .setFill("#ffffff")
-      .setText(gameState.timer.getRemainingSeconds().toFixed(1));
+      .setText(gameState.timer.getRemainingSeconds().toFixed(1))
+      .setDepth(1);
       gameState.timeLeft = gameState.timer.getRemainingSeconds();
     }
 
     if (gameState.timeLeft <= 20 && gameState.timeLeft > 10) { //30 seconds left
       console.log("less than 30 secs");
       if (!gameState.danger) {
-        gameState.danger = this.add.image(300, 225, "danger1");
+        gameState.danger = this.add.image(300, 225, "danger1").setAlpha(0.5);
         //fix changing font
-        gameState.text.setFontSize(26);
-        console.log(gameState.text.font);
+        gameState.text.setFontSize("26px");
         gameState.danger.setScrollFactor(0);
         this.sound.add("heart").play();
         gameState.backgroundMusic.setVolume(0.01);
@@ -204,6 +201,7 @@ export default class Level2B extends Phaser.Scene {
       },1000)
     }
     
+    //if game ends pass in all of this info
     if (gameState.Neo.x > 3250 || gameState.energy <= 0 || gameState.timeLeft <= 0) {
       points.energyAtEnd = gameState.energy < 0 ? 0 : gameState.energy * 750
       points.finalParticlesCollected += gameState.particlesCollected * 50
@@ -215,15 +213,14 @@ export default class Level2B extends Phaser.Scene {
       //if the music is added remove it when you die
       if (gameState.timeLeft <= 20) {
         this.sound.get("heart").stop();
+        clearInterval(gameState.shake1);
+      }
       if (gameState.timeLeft <= 10) {
         this.sound.get("breathe").stop();
-      }
-        gameState.backgroundMusic.stop()
-        clearInterval(gameState.shake1);
         clearInterval(gameState.shake2);
       }
-      this.scene.launch('Highscore', {points})
-      gameState.Neo.y = 25
+      //escaped maze run end scenes, else highscore
+      gameState.Neo.x > 3250 ? this.scene.launch('EndScene', {points}) : this.scene.launch('Highscore', {points})
     }
   }
 }

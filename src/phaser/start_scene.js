@@ -7,70 +7,6 @@ let curve;
 let points;
 let graphics;
 
-var CustomPipeline = new Phaser.Class({
-
-  Extends: Phaser.Renderer.WebGL.Pipelines.SinglePipeline,
-
-  initialize:
-
-  function CustomPipeline (game)
-  {
-      Phaser.Renderer.WebGL.Pipelines.SinglePipeline.call(this, {
-          game: game,
-          fragShader: `
-          precision mediump float;
-          uniform float uTime;
-          uniform vec2 uResolution;
-          uniform sampler2D uMainSampler;
-          uniform vec2      mouse;
-
-          const float Tau        = 6.2832;
-          const float speed  = .02;
-          const float density    = .04;
-          const float shape  = .04;
-
-
-          float random( vec2 seed ) {
-            return fract(sin(seed.x+seed.y*1e3)*1e5);
-          }
-          float Cell(vec2 coord) {
-            vec2 cell = fract(coord) * vec2(.5,2.) - vec2(.0,.5);
-            return (1.-length(cell*2.-1.))*step(random(floor(coord)),density)*2.;
-            }
-
-            void main()
-            {
-              vec2 p = gl_FragCoord.xy / uResolution  - 0.5;
-
-            float a = fract(atan(p.x, p.y) / Tau);
-            float d = length(p);
-
-            vec2 coord = vec2(pow(d, shape), a)*256.;
-        
-            vec2 delta = vec2(-uTime*speed*256., .5);
-            // vec2 delta = vec2(-uTime*speed*256., cos(length(p)*10.)*2e0+uTime*5e-1); // wavy wavy
-
-            float c = 0.;
-            for(int i=0; i<3; i++) {
-                coord += delta;
-                c = max(c, Cell(coord));
-            }
-
-            gl_FragColor = vec4(c*d);
-            }  
-            `,
-            uniforms: [
-                'uProjectionMatrix',
-                'uViewMatrix',
-                'uModelMatrix',
-                'uMainSampler',
-                'uResolution',
-                'uTime'
-            ]
-      });
-  }
-});
-
 export default class StartScene extends Phaser.Scene {
   constructor() {
     super({ key: "StartScene" });
@@ -78,15 +14,78 @@ export default class StartScene extends Phaser.Scene {
 
   preload() {
     this.load.image("BG", BG);
+    gameState.CustomPipeline = new Phaser.Class({
+
+      Extends: Phaser.Renderer.WebGL.Pipelines.SinglePipeline,
+    
+      initialize:
+    
+      function CustomPipeline (game)
+      {
+          Phaser.Renderer.WebGL.Pipelines.SinglePipeline.call(this, {
+              game: game,
+              fragShader: `
+              precision mediump float;
+              uniform float uTime;
+              uniform vec2 uResolution;
+              uniform sampler2D uMainSampler;
+              uniform vec2      mouse;
+    
+              const float Tau        = 6.2832;
+              const float speed  = .02;
+              const float density    = .04;
+              const float shape  = .04;
+    
+    
+              float random( vec2 seed ) {
+                return fract(sin(seed.x+seed.y*1e3)*1e5);
+              }
+              float Cell(vec2 coord) {
+                vec2 cell = fract(coord) * vec2(.5,2.) - vec2(.0,.5);
+                return (1.-length(cell*2.-1.))*step(random(floor(coord)),density)*2.;
+                }
+    
+                void main()
+                {
+                  vec2 p = gl_FragCoord.xy / uResolution  - 0.5;
+    
+                float a = fract(atan(p.x, p.y) / Tau);
+                float d = length(p);
+    
+                vec2 coord = vec2(pow(d, shape), a)*256.;
+            
+                vec2 delta = vec2(-uTime*speed*256., .5);
+                // vec2 delta = vec2(-uTime*speed*256., cos(length(p)*10.)*2e0+uTime*5e-1); // wavy wavy
+    
+                float c = 0.;
+                for(int i=0; i<3; i++) {
+                    coord += delta;
+                    c = max(c, Cell(coord));
+                }
+    
+                gl_FragColor = vec4(c*d);
+                }  
+                `,
+                uniforms: [
+                    'uProjectionMatrix',
+                    'uViewMatrix',
+                    'uModelMatrix',
+                    'uMainSampler',
+                    'uResolution',
+                    'uTime'
+                ]
+          });
+      }
+    });
   }
   create() {
     gameState.intro = this.sound.add("intro", {volume: 0.07}).play();
-  
+    gameState.skip = false;
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
-    this.customPipeline = this.renderer.pipelines.add('Custom', new CustomPipeline(this.game));
+    this.customPipeline = this.renderer.pipelines.add('Intro', new gameState.CustomPipeline(this.game));
     this.customPipeline.set2f('uResolution', this.game.config.width, this.game.config.height);
-    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Custom");
+    gameState.BG = this.add.sprite(300, 200, "BG").setScale(2).setPipeline("Intro");
     
     //Neo animation
     gameState.Neo = this.add.sprite(300,300, "energyBall").setScale(0.09);
@@ -203,11 +202,19 @@ export default class StartScene extends Phaser.Scene {
         this.cameras.main.shake(100, .01);
         setTimeout(() => {
           gameState.red.visible = true;
-          console.log("hi im running");
           setTimeout(() => {
             gameState.red.visible = false;
           }, 1000)
         },3000);
+        if (gameState.skip) {
+          // change scene automaticlly after 10 seconds
+          setTimeout(() => {
+          this.scene.start("Level1");
+          this.scene.remove("StartScene");
+          this.sound.get("intro").stop();
+        },12000);
+        }
+        gameState.skip = false;
       }
 
     //custom pipeline rendering animation update
@@ -228,6 +235,7 @@ export default class StartScene extends Phaser.Scene {
           if (gameState.timeout) {
             setTimeout(() => {
               gameState.runScientist = true;
+              gameState.skip = true;
             }, 12000);
             gameState.timeout = false;
           }

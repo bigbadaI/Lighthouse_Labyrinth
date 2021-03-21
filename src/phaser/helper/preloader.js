@@ -63,7 +63,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("energyBall", NeoImg);
     this.load.image("mask", mask)
     this.load.image("danger1", danger1);
-    // this.load.image("danger2", danger2);
     this.load.image("impact", impact);
     this.load.image('left-capW', leftCapW);
 	  this.load.image('middleW', middleW);
