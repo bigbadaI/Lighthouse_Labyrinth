@@ -199,14 +199,22 @@ export default class StartScene extends Phaser.Scene {
     }
 
     if (gameState.runScientist) {
-        this.cameras.main.shake(100, .01);
-        setTimeout(() => {
+        const interval = setInterval(() => {
+          this.cameras.main.shake(100, .01);
           gameState.red.visible = true;
           console.log("hi im running");
-          setTimeout(() => {
+          setInterval(() => {
             gameState.red.visible = false;
           }, 1000)
         },3000);
+        //change scene automaticlly after 10 seconds
+        setTimeout(() => {
+          this.scene.start("Level1");
+          this.scene.remove("StartScene");
+          this.sound.get("intro").stop();
+          clearInterval(interval);
+        },13000);
+        gameState.runScientist = false;
       }
 
     //custom pipeline rendering animation update

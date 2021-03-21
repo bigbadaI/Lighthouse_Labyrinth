@@ -140,6 +140,7 @@ export default class EndB extends Phaser.Scene {
   }
 
   create() {
+    this.sound.add("sparkle", {volume: 0.05}).play();
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
     this.customPipeline = this.renderer.pipelines.add('Custom2', new gameState.CustomPipeline(this.game));
