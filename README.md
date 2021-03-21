@@ -22,8 +22,8 @@ Run the program
 ```sh
 npm start
 ```
-If you want to setup a Highscores as well 
-Change into api directory in another termnial
+If you want to setup a Highscores as well.
+Change into api directory in another termnial set up a postgresSQL database and add a .env file for linking to the express server then.
 
 Install dependencies with 
 ```sh
