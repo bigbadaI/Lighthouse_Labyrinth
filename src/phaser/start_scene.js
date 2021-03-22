@@ -243,8 +243,7 @@ export default class StartScene extends Phaser.Scene {
     },2500)
     setTimeout(() => {
       clearInterval(on);
-      clearInterval(off);
-    },7500)
+    },7000)
     if (gameState.skip) {
     // change scene automaticlly after 13 seconds
     setTimeout(() => {
