@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import star3 from '../assets/star3.png'
+import star3 from '../assets/star4.png'
 
 export default class Starfield extends Phaser.Scene {
 
