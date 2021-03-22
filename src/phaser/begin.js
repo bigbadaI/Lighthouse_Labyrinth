@@ -26,7 +26,7 @@ export default class Begin extends Phaser.Scene {
     gameState.paused = false;
 
     this.input.on("pointerdown", () => {
-      this.scene.start("StartScene", {sound: intro, muted});
+      this.scene.start("StartScene", {sound: intro, muted: gameState.muted});
       this.scene.remove("Begin");
     });
   }
