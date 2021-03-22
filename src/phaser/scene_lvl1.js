@@ -70,7 +70,7 @@ export default class Level1 extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
     
     //Renders main character
-    gameState.Neo = this.physics.add.sprite(300, 250, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(300, 1350, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1); //added to select Neo from sprite sheet
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
