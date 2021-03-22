@@ -40,7 +40,7 @@ export default class Level2 extends Phaser.Scene {
 
     gameState.spotlight1 = this.make.sprite({
       x: 2800,
-      y: 25,
+      y: 75,
       key: "mask",
       add: false,
       scale: 1.5,

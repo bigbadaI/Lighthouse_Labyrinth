@@ -27,7 +27,7 @@ export default class Level2B extends Phaser.Scene {
       delay: 45000, 
       paused: false
     });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", fontSize: "15px"});
+    gameState.text = this.add.text(325, 40, '', { fill: "#ffffff", fontSize: "15px"});
     gameState.text.setScrollFactor(0);
     //passes in data in object from scene 1
     //Creates the Parallax Background
@@ -92,7 +92,7 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 2;
+      gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
