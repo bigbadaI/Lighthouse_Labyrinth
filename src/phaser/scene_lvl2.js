@@ -164,7 +164,7 @@ export default class Level2 extends Phaser.Scene {
       this.collided = false
       if (!this.collided) {
         this.collided = true;
-        const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
+        const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPRESS SHIFT!!!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
           fontSize: '15px', 
           fill: '#FFFFFF', 
           align: "center" 

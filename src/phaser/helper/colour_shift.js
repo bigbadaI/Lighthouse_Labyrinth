@@ -63,7 +63,7 @@ const applyColourAnimations = function(gameState, level, shiftStates) {
         //ultraviolet
         gameState.twoB = true;
         console.log("purple", gameState.currentState);
-        gameState.overlay = level.add.image(300, 225, "purpOverlay");
+        gameState.overlay = level.add.image(300, 225, "purpOverlay").setAlpha(0.6);
         gameState.Neo.setFrame(gameState.currentState);
         gameState.currentState++;
       } else if(gameState.currentState === 1) {
