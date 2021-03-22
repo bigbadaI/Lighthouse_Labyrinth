@@ -262,7 +262,7 @@ export default class Level1 extends Phaser.Scene {
     
     //energy bar
     this.fullWidth = 300
-    const energyX = 50
+    const energyX = 10
     const energyY = 50
     
     gameState.energy = 100
@@ -270,10 +270,17 @@ export default class Level1 extends Phaser.Scene {
     gameState.startTime = new Date
     
     const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
-    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
-    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
-    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
+    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0).setAlpha(0.6))
+    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0).setAlpha(0.6))
+    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0).setAlpha(0.6))
     .layout()
+
+    const graphics = this.add.graphics();
+    graphics.lineStyle(2, 0xffffff, 1);
+    //  32px radius on the corners
+    graphics.strokeRoundedRect(10, 35, 310, 30, 5).setScrollFactor(0).setAlpha(0.75);
+
+    
   }
 
   update() {
