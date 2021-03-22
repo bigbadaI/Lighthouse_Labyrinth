@@ -40,7 +40,7 @@ export default class Level2 extends Phaser.Scene {
 
     gameState.spotlight1 = this.make.sprite({
       x: 2800,
-      y: 25,
+      y: 75,
       key: "mask",
       add: false,
       scale: 1.5,
@@ -68,7 +68,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.twoB = false;
 
     //Renders Neo
-    gameState.Neo = this.physics.add.sprite(2800, 50, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(2800, 75, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(

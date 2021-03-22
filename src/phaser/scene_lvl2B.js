@@ -27,7 +27,7 @@ export default class Level2B extends Phaser.Scene {
       delay: 45000, 
       paused: false
     });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", fontSize: "15px"});
+    gameState.text = this.add.text(50, 65, '', { fill: "#ffffff", fontSize: "15px"});
     gameState.text.setScrollFactor(0);
     //passes in data in object from scene 1
     //Creates the Parallax Background
