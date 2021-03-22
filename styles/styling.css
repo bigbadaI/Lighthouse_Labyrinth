@@ -17,6 +17,7 @@ img {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: 3.5em;
   z-index: 9;
 } 
 h1 {
@@ -25,8 +26,23 @@ h1 {
   font-size: 2.5em;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.container-fluid {
+  font-family: 'Courier New', Courier, monospace;
 }
+
+footer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1.5em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#foot_article {
+  margin: 2em;
+}
+
+/* img.d-inline-block align-top {
+  max-width: 0px;
+  max-height: 0px;
+} */
