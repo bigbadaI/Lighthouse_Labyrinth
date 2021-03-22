@@ -68,7 +68,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.twoB = false;
 
     //Renders Neo
-    gameState.Neo = this.physics.add.sprite(2800, 75, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(2800, 100, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -361,7 +361,7 @@ export default class Level2 extends Phaser.Scene {
     }
 
     if (gameState.s) {
-      this.sound.add("sparkle", {volume: 0.5}).play();
+      this.sound.add("sparkle", {volume: 0.05}).play();
       gameState.s = false;
     }
 
