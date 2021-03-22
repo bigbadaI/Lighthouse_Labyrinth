@@ -2,6 +2,7 @@ import Phaser from "phaser";
 //sprite sheet replace Neo image
 import NeoSpriteSheet from "../../assets/NeoSpriteSheet.png";
 import NeoImg from "../../assets/Neo.png";
+import NeoNav from "../../assets/NeoNav.png";
 import pause from "../../assets/pause_button.png";
 import infrared from "../../assets/colourSelector/NeoInfrared.png";
 import ultraviolet from "../../assets/colourSelector/NeoUltraviolet.png";
@@ -61,6 +62,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("BG1", BG1);
     this.load.image("BG2")
     this.load.image("energyBall", NeoImg);
+    this.load.image("NeoNav", NeoNav);
     this.load.image("mask", mask)
     this.load.image("danger1", danger1);
     this.load.image("impact", impact);
@@ -99,7 +101,7 @@ export default class Preloader extends Phaser.Scene {
 
   create() {
 
-    this.scene.start("StartScene")
+    this.scene.start("Begin")
 
   }
 }

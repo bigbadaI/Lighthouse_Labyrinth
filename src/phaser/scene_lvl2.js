@@ -17,7 +17,6 @@ export default class Level2 extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
-
   }
 
   create() {

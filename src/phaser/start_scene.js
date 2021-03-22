@@ -12,6 +12,10 @@ export default class StartScene extends Phaser.Scene {
     super({ key: "StartScene" });
   }
 
+  initialize(data) {
+    gameState.intro = data.sound;
+  }
+
   preload() {
     this.load.image("BG", BG);
     gameState.CustomPipeline = new Phaser.Class({
@@ -79,7 +83,6 @@ export default class StartScene extends Phaser.Scene {
     });
   }
   create() {
-    gameState.intro = this.sound.add("intro", {volume: 0.07}).play();
     gameState.skip = false;
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;

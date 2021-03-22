@@ -3,7 +3,8 @@ body {
   height: 100%;
   position: relative;
 }
-img {
+
+.bg {
   position: absolute;
   width: 100vw;
   height: 100vw;
@@ -42,7 +43,6 @@ footer {
   margin: 2em;
 }
 
-/* img.d-inline-block align-top {
-  max-width: 0px;
-  max-height: 0px;
-} */
+#logo {
+  margin: 0.2em 0em 0em 0em;
+}

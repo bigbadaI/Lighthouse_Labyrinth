@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App.jsx";
+import Begin from "./phaser/begin";
 import StartScene from "./phaser/start_scene"
 import LVL1 from "./phaser/scene_lvl1";
 import LVL2 from "./phaser/scene_lvl2";
@@ -26,7 +27,7 @@ var config = {
       debug: false
     },
   },
-  scene: [Preloader, StartScene, LVL1, LVL2, LVL2B, EndScene, EndB, Starfield, Highscore, InputPanel],
+  scene: [Preloader, Begin, StartScene, LVL1, LVL2, LVL2B, EndScene, EndB, Starfield, Highscore, InputPanel],
   scale: {
     zoom: 1.5
   }
