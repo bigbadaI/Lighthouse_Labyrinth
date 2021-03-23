@@ -2,22 +2,66 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="stylesheet" href="./styles/styling.css"/>
 		<title>Lighthouse Labyrinth</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+		<link rel="stylesheet" href="./styles/styling.css"/>
+	
+		<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">
+					<img id="logo" src="/src/assets/NeoNav.png" alt="" width="20" height="20" class="d-inline-block align-top">
+					Lighthouse Labyrinth
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarText">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Share</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#about_tag">About</a>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+		</nav>
+
 	</head>
 	<body>
-		<img src="./src/assets/backgrounds/caveBackground.jpeg" alt="cave"/>
+		<img class="bg" src="./src/assets/backgrounds/caveBackground.jpeg" alt="cave"/>
 		<div class="main-body">
 			<div id="root"></div>
 			<div id="phaser"></div>
 		</div>
-		<!-- <audio autoplay loop id="myaudio" controls>
-			<source src="./src/assets/sounds/Cave_01.mp3" type="audio/mpeg"/>
-		</audio> -->
-		<!-- <script>
-			var audio = document.getElementById("myaudio");
-			audio.volume = 0.02;
-		</script> -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 	</body>
+	<footer id="about_tag">
+		<div id="foot_article" class="card text-white bg-dark mb-3" style="max-width: 56rem;">
+			<div class="card-body">
+				<h5 class="card-title">Where it all started</h5>
+				<p class="card-text">The idea for the game of a little neutrino finding its way back to the sun was inspired by one of the teachers at Lighthouse Labs. After a lecture, Christian Nally was talking about his previous job experiences and he went on to explain his time working at The Sudbury Neutrino Observatory. After learning about neutrinos, Zoey (one of the developers) combined her love of video games and coding to come up with a video game demo: Lighthouse Labyrinth.</p>
+			</div>
+			</div>
+			<div id="foot_article" class="card text-white bg-dark mb-3" style="max-width: 56rem;">
+				<div class="card-body">
+					<h5 class="card-title">Who</h5>
+					<p class="card-text">Lighthouse Labyrinth was brought to you by Zoey Farago, Jaime Reuss, and Alex Van Der Voort, three passionate and creative web developers. </p>
+				</div>
+			</div>
+			<div id="foot_article" class="card text-white bg-dark mb-3" style="max-width: 56rem;">
+				<div class="card-body">
+					<h5 class="card-title">Credits</h5>
+					<p class="card-text">The demo for Lighthouse Labyrinth was developed with Phaser 3 a JavaScript game engine. Sound from Zapsplat and SoundBible. Fragment Shader source code for WebGL Pipelines from Phaser 2 examples.
+					   </p>
+				</div>
+	</footer>
 	
 </html>
+

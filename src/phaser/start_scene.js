@@ -12,6 +12,10 @@ export default class StartScene extends Phaser.Scene {
     super({ key: "StartScene" });
   }
 
+  initialize(data) {
+    gameState.intro = data.sound;
+  }
+
   preload() {
     this.load.image("BG", BG);
     gameState.CustomPipeline = new Phaser.Class({
@@ -79,7 +83,6 @@ export default class StartScene extends Phaser.Scene {
     });
   }
   create() {
-    gameState.intro = this.sound.add("intro", {volume: 0.07}).play();
     gameState.skip = false;
     //creating background starfield and attaching it to background image so it encompasses full background
     gameState.time = 0;
@@ -198,24 +201,9 @@ export default class StartScene extends Phaser.Scene {
       gameState.Neo.y = path.vec.y;
     }
 
-    if (gameState.runScientist) {
-        this.cameras.main.shake(100, .01);
-        setTimeout(() => {
-          gameState.red.visible = true;
-          setTimeout(() => {
-            gameState.red.visible = false;
-          }, 1000)
-        },3000);
-        if (gameState.skip) {
-          // change scene automaticlly after 10 seconds
-          setTimeout(() => {
-          this.scene.start("Level1");
-          this.scene.remove("StartScene");
-          this.sound.get("intro").stop();
-        },12000);
-        }
-        gameState.skip = false;
-      }
+    // if (gameState.runScientist) {
+        
+    //   }
 
     //custom pipeline rendering animation update
     this.customPipeline.set1f('uTime', gameState.time);
@@ -232,16 +220,38 @@ export default class StartScene extends Phaser.Scene {
           this.cameras.main.flash();
           this.sound.add("zap").setVolume(0.2).play();
           gameState.runPath = true;
-          if (gameState.timeout) {
-            setTimeout(() => {
-              gameState.runScientist = true;
-              gameState.skip = true;
+          setTimeout(() => {
+            this.scientist();
+            gameState.skip = true;
             }, 12000);
-            gameState.timeout = false;
-          }
         }
       }
     }
-    
+
+    // if (gameState.skip) {
+    //   gameState.red.visible = false;
+    // }
+  }
+
+  scientist() {
+    const on = setInterval(() => {
+      this.cameras.main.shake(300, .01);
+      gameState.red.visible = true;
+    }, 2000)
+    const off = setInterval(() => {
+      gameState.red.visible = false;
+    },2500)
+    setTimeout(() => {
+      clearInterval(on);
+    },7000)
+    if (gameState.skip) {
+    // change scene automaticlly after 13 seconds
+    setTimeout(() => {
+      this.scene.start("Level1");
+      this.scene.remove("StartScene");
+      this.sound.get("intro").stop();
+    },13000);
+    }
+     gameState.skip = false;
   }
 }

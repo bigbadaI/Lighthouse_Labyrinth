@@ -17,7 +17,6 @@ export default class Level2 extends Phaser.Scene {
     gameState.energy = data.energy;
     gameState.startTime = data.startTime;
     points = data.points;
-
   }
 
   create() {
@@ -165,13 +164,25 @@ export default class Level2 extends Phaser.Scene {
       this.collided = false
       if (!this.collided) {
         this.collided = true;
-        const info = this.add.text(220, 980, 'You collided with stray charged particles\nand have unlocked a new abilty\nPress Shift!\nThe collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!', { 
+        const info = this.add.text(220, 940, 'You collided with stray charged particles\nand have unlocked a new abilty', { 
+          fontSize: '15px', 
+          fill: '#FFFFFF', 
+          align: "center" 
+        });
+        const info2 = this.add.text(350, 980, 'PRESS SHIFT!', { 
+          fontSize: '15px', 
+          fill: '#FF0000', 
+          align: "center" 
+        });
+        const info3 = this.add.text(220, 1000, "The collision alerted a nearby scientist\nHURRY BEFORE YOU ARE CAUGHT\nAND EXPERIMENTED ON FOR LIFE!", { 
           fontSize: '15px', 
           fill: '#FFFFFF', 
           align: "center" 
         });
         setTimeout(() => {
           info.destroy();
+          info2.destroy();
+          info3.destroy();
         }, 10000)
         gameState.shiftAvailable = true;
       }
