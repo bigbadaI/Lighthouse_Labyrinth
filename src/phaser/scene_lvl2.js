@@ -39,7 +39,7 @@ export default class Level2 extends Phaser.Scene {
 
     gameState.spotlight1 = this.make.sprite({
       x: 2800,
-      y: 25,
+      y: 75,
       key: "mask",
       add: false,
       scale: 1.5,
@@ -67,7 +67,7 @@ export default class Level2 extends Phaser.Scene {
     gameState.twoB = false;
 
     //Renders Neo
-    gameState.Neo = this.physics.add.sprite(2800, 50, "Neo").setScale(0.09);
+    gameState.Neo = this.physics.add.sprite(2800, 100, "Neo").setScale(0.09);
     gameState.Neo.setFrame(1);
     //Code to reduce Neo hit box size
     gameState.Neo.body.setSize(
@@ -306,18 +306,25 @@ export default class Level2 extends Phaser.Scene {
 
         //energy bar
         this.fullWidth = 300
-        const energyX = 50
+        const energyX = 10
         const energyY = 50
 
         gameState.particlesCollected = 0
         //gameState.energy = 100
 
         const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
-        .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
-        .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
-        .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
-        .layout();
+          .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0).setAlpha(0.6))
+          .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0).setAlpha(0.6))
+          .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0).setAlpha(0.6))
+          .layout()
+
         bar.reAnimateToFill(gameState.energy/100)
+        //below adds outline around energy bar
+        const graphics = this.add.graphics();
+        graphics.lineStyle(2, 0xffffff, 1);
+        graphics.strokeRoundedRect(10, 35, 310, 30, 5).setScrollFactor(0).setAlpha(0.75);
+
+        
   }
 
   update() {
@@ -365,7 +372,7 @@ export default class Level2 extends Phaser.Scene {
     }
 
     if (gameState.s) {
-      this.sound.add("sparkle", {volume: 0.5}).play();
+      this.sound.add("sparkle", {volume: 0.05}).play();
       gameState.s = false;
     }
 

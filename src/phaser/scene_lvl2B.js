@@ -27,7 +27,7 @@ export default class Level2B extends Phaser.Scene {
       delay: 45000, 
       paused: false
     });
-    gameState.text = this.add.text(20, 420, '', { fill: "#ffffff", fontSize: "15px"});
+    gameState.text = this.add.text(325, 40, '', { fill: "#ffffff", fontSize: "15px"});
     gameState.text.setScrollFactor(0);
     //passes in data in object from scene 1
     //Creates the Parallax Background
@@ -92,7 +92,7 @@ export default class Level2B extends Phaser.Scene {
     this.physics.add.collider(gameState.Neo, gameState.wallsLayer3, () => {
       console.log('you hit a wall!')
       this.cameras.main.shake(100, .01)
-      // gameState.energy -= 2;
+      gameState.energy -= 2;
       bar.animateToFill(gameState.energy/100)
       const ouch = this.add.image(300, 225, "impact").setAlpha(0.07);
       ouch.setScrollFactor(0);
@@ -115,18 +115,24 @@ export default class Level2B extends Phaser.Scene {
 
     //energy bar
     this.fullWidth = 300
-    const energyX = 50
+    const energyX = 10
     const energyY = 50
 
     gameState.particlesCollected = 0
     //gameState.energy = 100
 
     const bar = new EnergyBar(this, energyX,energyY,this.fullWidth)
-    .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0))
-    .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0))
-    .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0))
-    .layout()
+      .withLeftCap(this.add.image(0,0, 'left-capW').setScrollFactor(0).setAlpha(0.6))
+      .withMiddle(this.add.image(0,0, 'middleW').setScrollFactor(0).setAlpha(0.6))
+      .withRightCap(this.add.image(0,0, 'right-capW').setScrollFactor(0).setAlpha(0.6))
+      .layout()
+
     bar.reAnimateToFill(gameState.energy/100)
+
+    //below adds outline around energy bar
+    const graphics = this.add.graphics();
+    graphics.lineStyle(2, 0xffffff, 1);
+    graphics.strokeRoundedRect(10, 35, 310, 30, 5).setScrollFactor(0).setAlpha(0.75);
 
     //Camera to follow Neo and set to level bounds
     this.cameras.main.setBounds(0, 0, 3200, 1600)
