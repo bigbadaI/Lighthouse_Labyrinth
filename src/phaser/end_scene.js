@@ -121,7 +121,7 @@ export default class EndScene extends Phaser.Scene {
       fontSize: "16px",
       align: "center"
     });
-    this.typewriteText("You have escaped the grasps of the scientist...this time. \n Forth and onwards through space.")
+    this.typewriteText("You have escaped the grasps of the scientist...this time. \n Onwards through space.")
   }
 
   typewriteText(text)
