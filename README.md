@@ -13,8 +13,8 @@ Neo colour shifting to UV lighting !["UV"](https://raw.githubusercontent.com/big
 Neo colour shifting to infrared lighthing !["red"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/redNeo.png)
 Outro scene if you escape the maze. !["outro1"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/outro1.png)
 Into space the journey continues... !["outro2"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/outro-scene.png)
-Highscore dashboard. !["scores"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/scoreboard.png)
-The about section of our webpage !["weboage"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/website-about.png)
+The highscore dashboard. !["scores"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/scoreboard.png)
+The about section of our webpage. !["weboage"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/website-about.png)
 ## Setup
 
 To use this repository 1st fork it then copy a clone to your local 
