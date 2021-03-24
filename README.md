@@ -6,15 +6,15 @@ This repository was a great experience and learning opportunity for using Phaser
 
 ## Final product
 
-Introduction scene of Neo the Neutrino. !["Intro"](intro.png)
-Neo and an energy particle that Neo can collect for health points. !["Energy"](energy.png)
-Collision warning. !["ouch"](ouch.png)
-Neo colour shifting to UV lighting !["UV"](purpleNeo.png)
-Neo colour shifting to infrared lighthing !["red"](redNeo.png)
-Outro scene if you escape the maze. !["outro1"](outro1.png)
-Into space the journey continues... !["outro2"](outro-scene.png)
-Highscore dashboard. !["scores"] (scoreboard.png)
-The about section of our webpage !["weboage"](website-about.png)
+Introduction scene of Neo the Neutrino. !["Intro"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/intro.png)
+Neo and an energy particle that Neo can collect for health points. !["Energy"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/energy.png)
+Collision warning. !["ouch"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/ouch.png)
+Neo colour shifting to UV lighting !["UV"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/purpleNeo.png)
+Neo colour shifting to infrared lighthing !["red"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/redNeo.png)
+Outro scene if you escape the maze. !["outro1"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/outro1.png)
+Into space the journey continues... !["outro2"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/outro-scene.png)
+Highscore dashboard. !["scores"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/scoreboard.png)
+The about section of our webpage !["weboage"](https://raw.githubusercontent.com/bigbadaI/Lighthouse_Labyrinth/master/docs/website-about.png)
 ## Setup
 
 To use this repository 1st fork it then copy a clone to your local 
