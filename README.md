@@ -2,7 +2,7 @@
 
 Lighthouse Labyrinth is a video game demo created as a Lighthouse Labs final project. It is an adventure maze game built with the Phaser3 JavaScript game engine. On the back-end express is used to connect to a Postgres database.
 
-This repository was a great experience and learning opportunity for using Phaser3. Plenty of experience learning a new format and working with a group to bring this to life.
+This repository was a great experience and a wonderful learning opportunity to learn a new library: Phaser3. This experience provided the abilty to take on a new format and learn it quickly, as well as it provided an opportunity to learn about working in a group dynamic. Bringing this game demo to life was an incredible and unforgettable task!
 
 ## Final product
 
