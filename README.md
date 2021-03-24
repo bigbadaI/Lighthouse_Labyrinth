@@ -1,15 +1,20 @@
 # Lighthouse Labyrinth
 
-Lighthouse Labyrinth is are final project for our Lighthouse Labs Web-Development Bootcamp. It is an adventure maze game built with Phaser3. On the back-end we use express to connect to our Postgres database
+Lighthouse Labyrinth is a video game demo created as a Lighthouse Labs final project. It is an adventure maze game built with the Phaser3 JavaScript game engine. On the back-end express is used to connect to a Postgres database.
 
-This repository was the great experience and learning opurtunity for using Phaser3. Plenty of experience learning a new format and working with a group to bring this to life.
+This repository was a great experience and learning opportunity for using Phaser3. Plenty of experience learning a new format and working with a group to bring this to life.
 
 ## Final product
 
-!["Screenshot of the Main page"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.38.35%20PM.png?raw=true)
-!["Screenshot of the Level1"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.39.04%20PM.png?raw=true)
-!["Screenshot of the HighScores"](https://github.com/bigbadaI/Lighthouse_Labyrinth/blob/add/readme/docs/Screen%20Shot%202021-03-21%20at%2012.39.35%20PM.png?raw=true)
-
+Introduction scene of Neo the Neutrino!["Intro"](intro.png)
+Neo and an energy particle that Neo can collect for health points! ["Energy"](energy.png)
+Collision warning. ["ouch"](ouch.png)
+Neo colour shifting to UV lighting ["UV"](purpleNeo.png)
+Neo colour shifting to infrared lighthing ["red"](redNeo.png)
+Outro scene if you escape the maze. ["outro1"](outro1.png)
+Into space the journey continues...["outro2"](outro-scene.png)
+Highscore dashboard. ["scores"](scoreboard.png)
+The about section of our webpage ["weboage"](website-about.png)
 ## Setup
 
 To use this repository 1st fork it then copy a clone to your local 
